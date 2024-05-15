@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark px-2">
+  <div
+    class="side-nav-button p-2 me-3 text-light"
+    (click)="this.SideNavToggled()"
+  >
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <a href="#" class="navbar-brand px-4">Header and Sidenav</a>
+
+  <div class="navbar-collapse">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          role="button"
+          data-bs-toggle="dropdown"
+          href="#"
+        >
+          Menu 1</a
+        >
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li><a href="#" class="dropdown-item">Child 1</a></li>
+          <li><a href="#" class="dropdown-item">Child 2</a></li>
+          <li><a href="#" class="dropdown-item">Child 3</a></li>
+          <li><a href="#" class="dropdown-item">Child 4</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <form class="d-flex me-5">
+    <input type="search" placeholder="Search" class="form-control me-2" />
+    <button class="btn btn-outline-light" type="submit">Search</button>
+  </form>
+
+  <div class="profile-logo dropstart">
+    <button
+      class="btn btn-outline-light dropdown-toggle"
+      data-bs-toggle="dropdown"
+    >
+      User
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li><a class="dropdown-item" href="#">Sign Up</a></li>
+      <li><a class="dropdown-item" href="#">Log In</a></li>
+      <li><a class="dropdown-item" href="#">Profile</a></li>
+      <li><a class="dropdown-item" href="#">Log Out</a></li>
+    </ul>
+  </div>
+</nav>
