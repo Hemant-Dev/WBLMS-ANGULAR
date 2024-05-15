@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderSidenavComponent } from './Components/header-sidenav/header-sidenav.component';
 import { NotFound404Component } from './Components/not-found404/not-found404.component';
+import { ProfileComponent } from './Components/profile/profile.component';
+import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { NotFound404Component } from './Components/not-found404/not-found404.com
     LoginComponent,
     HeaderSidenavComponent,
     NotFound404Component,
+    ProfileComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

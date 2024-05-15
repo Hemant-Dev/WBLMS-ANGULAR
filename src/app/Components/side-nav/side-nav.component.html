@@ -2,7 +2,7 @@
   <ul class="nav-list" [class.nav-list-open]="sideNavStatus">
     <li *ngFor="let item of list" class="nav-list-item">
       <span
-        ><a (click)="handleNavmenuClick(item.route)">
+        ><a [routerLink]="[item.route]">
           <i [class]="item.icon"></i>
           {{ item.name }}
         </a></span

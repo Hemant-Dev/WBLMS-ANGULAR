@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './Components/login/login.component';
 import { HeaderSidenavComponent } from './Components/header-sidenav/header-sidenav.component';
 import { NotFound404Component } from './Components/not-found404/not-found404.component';
+import { ProfileComponent } from './Components/profile/profile.component';
+import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,10 @@ const routes: Routes = [
     path: 'home',
     component: HeaderSidenavComponent,
     title: 'WBLMS',
+    children: [
+      { path: 'profile', component: ProfileComponent },
+      { path: 'dashboard', component: DashboardComponent },
+    ],
   },
   {
     path: '**',

@@ -10,9 +10,9 @@ export class SideNavComponent {
   list = [
     {
       number: '1',
-      name: 'Home',
-      icon: 'fa-solid fa-house',
-      route: 'home',
+      name: 'Dashboard',
+      icon: 'fa-solid fa-chart-pie',
+      route: 'dashboard',
     },
     {
       number: '2',
@@ -28,9 +28,4 @@ export class SideNavComponent {
     },
   ];
   @Input() sideNavStatus: boolean = false;
-
-  constructor(private router: Router) {}
-  handleNavmenuClick(route: string) {
-    this.router.navigate([route]);
-  }
 }
