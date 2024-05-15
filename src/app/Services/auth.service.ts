@@ -7,7 +7,7 @@ import { TokenApi } from '../Models/token-api';
   providedIn: 'root',
 })
 export class AuthService {
-  baseURL: string = 'https://localhost:7115/api/Users';
+  baseURL: string = 'https://localhost:7184/api/Auth';
   userPayload: any;
 
   constructor(private _http: HttpClient, private router: Router) {

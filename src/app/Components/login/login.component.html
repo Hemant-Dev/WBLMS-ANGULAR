@@ -4,7 +4,8 @@
       <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4">
         <div class="panel border bg-white">
           <div class="panel-heading">
-            <h3 class="pt-3 font-weight-bold">Login</h3>
+            <img src="../../../assets/img/WBLMS-logo.jfif" alt="WBLMS-logo" />
+            <h3 class="pt-3 font-weight-bold">WBLMS - Login</h3>
           </div>
           <div class="panel-body p-3">
             <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
@@ -12,25 +13,26 @@
                 <div
                   class="input-field"
                   [class.error]="
-                    loginForm.controls['username'].touched &&
-                    loginForm.hasError('required', 'username')
+                    loginForm.controls['email'].touched &&
+                    loginForm.hasError('required', 'email')
                   "
                 >
                   <span class="fa fa-user p-2"></span>
                   <input
-                    formControlName="username"
+                    formControlName="email"
                     type="text"
-                    placeholder="Username"
+                    placeholder="email"
                   />
                 </div>
                 <small
                   *ngIf="
-                    loginForm.controls['username'].touched &&
-                    loginForm.hasError('required', 'username')
+                    loginForm.controls['email'].touched &&
+                    loginForm.hasError('required', 'email')
                   "
                   class="text-danger"
-                  >*Username is required</small
+                  >*Email is required</small
                 >
+                <small *ngIf="" class="text-danger">*Email is Invalid*</small>
               </div>
               <div class="form-group pt-3">
                 <div
@@ -77,10 +79,10 @@
               >
                 Login
               </button>
-              <div class="text-center pt-4 text-muted">
+              <!-- <div class="text-center pt-4 text-muted">
                 Don't have an account?
                 <a id="forget" routerLink="/signup">Sign Up</a>
-              </div>
+              </div> -->
             </form>
           </div>
           <div class="mx-3 my-2 py-2 bordert">
@@ -88,15 +90,15 @@
               class="text-center py-3 d-flex flex-column align-items-center"
               id="oauth"
             >
-              <a href="https://www.facebook.com" target="_blank" class="px-2"
+              <!-- <a href="https://www.facebook.com" target="_blank" class="px-2"
                 ><span class="fa-brands fa-facebook-f"></span
-              ></a>
+              ></a> -->
               <a id="google" target="_blank" class="px-2"
                 ><span class="fa-brands fa-google"></span
               ></a>
-              <a href="https://github.com" target="_blank" class="px-2"
+              <!-- <a href="https://github.com" target="_blank" class="px-2"
                 ><span class="fa-brands fa-github"></span
-              ></a>
+              ></a> -->
             </div>
           </div>
         </div>

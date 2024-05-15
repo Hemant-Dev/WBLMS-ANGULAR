@@ -30,25 +30,25 @@ export class LoginComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
     });
-    google.accounts.id.initialize({
-      client_id:
-        '305979783667-3cq7k7pbggp74drkgdku7m93a83nqv9d.apps.googleusercontent.com',
-      callback: (resp: any) => {
-        // console.log(resp);
-        this.handleGoogleLogin(resp);
-      },
-      auto_select: false,
-      cancel_on_tap_outside: true,
-    });
-    google.accounts.id.renderButton(document.getElementById('google'), {
-      theme: 'filled_blue',
-      size: 'large',
-      shape: 'rectangle',
-      width: '100',
-    });
+    // google.accounts.id.initialize({
+    //   client_id:
+    //     '305979783667-3cq7k7pbggp74drkgdku7m93a83nqv9d.apps.googleusercontent.com',
+    //   callback: (resp: any) => {
+    //     // console.log(resp);
+    //     this.handleGoogleLogin(resp);
+    //   },
+    //   auto_select: false,
+    //   cancel_on_tap_outside: true,
+    // });
+    // google.accounts.id.renderButton(document.getElementById('google'), {
+    //   theme: 'filled_blue',
+    //   size: 'large',
+    //   shape: 'rectangle',
+    //   width: '100',
+    // });
   }
   hideShowPassword() {
     this.isText = !this.isText;
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameToStore(tokenPayload.name);
           this.userStore.setRoleToStore(tokenPayload.role);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['home']);
           // this.toast.success({
           //   detail: 'Success',
           //   summary: res.message,

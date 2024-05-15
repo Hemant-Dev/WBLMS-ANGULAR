@@ -1,6 +1,6 @@
 .outer {
   height: 100vh;
-  background: linear-gradient(to bottom, #c9c9ff 50%, #6e6ef6 90%) no-repeat;
+  background: linear-gradient(to bottom, #f9fcff 50%, #dee4ea 90%) no-repeat;
 }
 .panel-heading {
   text-align: center;
@@ -48,6 +48,7 @@ a:hover {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
   border: none;
   outline: none;
