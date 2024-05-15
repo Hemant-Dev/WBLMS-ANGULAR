@@ -1,8 +1,8 @@
 <div class="side-nav-content">
   <ul class="nav-list" [class.nav-list-open]="sideNavStatus">
-    <li *ngFor="let item of list; track: item" class="nav-list-item">
+    <li *ngFor="let item of list" class="nav-list-item">
       <span
-        ><a href="#">
+        ><a (click)="handleNavmenuClick(item.route)">
           <i [class]="item.icon"></i>
           {{ item.name }}
         </a></span

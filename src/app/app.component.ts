@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'WBLMS-Angular';
-  sideNavStatus: boolean = false;
+  // title = 'WBLMS-Angular';
+  // sideNavStatus: boolean = false;
 }

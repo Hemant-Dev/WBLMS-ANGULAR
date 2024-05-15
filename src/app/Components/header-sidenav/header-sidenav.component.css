@@ -1,4 +1,4 @@
-/* app-header {
+app-header {
   position: fixed;
   width: 100%;
   top: 0px;
@@ -37,4 +37,4 @@ app-side-nav {
 .display-area-shrink {
   width: calc(100% - 250px);
   left: 250px;
-} */
+}

@@ -1,4 +1,4 @@
-<!-- <div class="container-fluid g-0">
+<div class="container-fluid g-0">
   <app-header (sideNavToggled)="sideNavStatus = $event"></app-header>
 
   <main>
@@ -9,8 +9,7 @@
 
     <div class="display-area p-3" [class.display-area-shrink]="sideNavStatus">
       <p class="fs-1 fw-bold fst-italic">Main Display Area</p>
+      <router-outlet></router-outlet>
     </div>
   </main>
-</div> -->
-
-<router-outlet></router-outlet>
+</div>
