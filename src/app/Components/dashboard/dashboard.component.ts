@@ -47,8 +47,8 @@ export class DashboardComponent implements OnInit {
       this.employeeService
         .getEmployees(1, 4, '', '', this.inititalEmployeeObj)
         .subscribe({
-          next: (data) => {
-            this.employees = data.data.dataArray;
+          next: (res) => {
+            this.employees = res.data.dataArray;
             this.userStore.getFullNameFromStore().subscribe((val) => {
               const fullNameFromToken = this.auth.getFullNameFromToken();
               this.fullName = val || fullNameFromToken;
