@@ -22,6 +22,7 @@ const routes: Routes = [
     title: 'WBLMS',
     children: [
       { path: 'register', component: RegisterComponent },
+      { path: 'register/:id', component: RegisterComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employee', component: EmployeeComponent },

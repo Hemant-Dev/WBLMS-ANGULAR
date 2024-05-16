@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { GenderModel } from 'src/app/Models/GenderModel';
@@ -31,24 +31,27 @@ export class RegisterComponent {
     createdById: 1
   }
 
-  gendersData! : GenderModel[] ;
-  roleData! : RolesModel[];
-  managerData! : ManagerModel[];
+  gendersData!: GenderModel[];
+  roleData!: RolesModel[];
+  managerData!: ManagerModel[];
 
   employees: EmployeeModel[] = [];
-  
+
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'emailAddress', 'contactNumber'];
   searchText: string = '';
 
   constructor(
-    private employeeService : EmployeeRxjsService,
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router,
-  ){}
+    private employeeService: EmployeeRxjsService,
+    // private fb: FormBuilder,
+    // private auth: AuthService,
+    // private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   async ngOnInit() {
     // await this.getAllEmployee();
+    this.initialEmployeeData.id = Number(this.route.snapshot.paramMap.get('id'));
+    // console.log(this.initialEmployeeData)
     this.fetchData();
   }
 
@@ -63,11 +66,26 @@ export class RegisterComponent {
   }
 
   async handleSubmit() {
-    try {
-      const result = await CreateEmployeeAsync(this.initialEmployeeData);
-    } catch (error) {
-      console.log(error)
+    console.log(this.initialEmployeeData)
+    if (this.initialEmployeeData.id) {
+
+    } else {
+      try {
+        this.employeeService
+          .createEmployees(this.initialEmployeeData)
+          .subscribe({
+            next: (response: any) => {
+              console.log(response)
+              this.initialEmployeeData = response.data;
+              console.log(this.initialEmployeeData)
+            }
+          })
+        const result = await CreateEmployeeAsync(this.initialEmployeeData);
+      } catch (error) {
+        console.log(error)
+      }
     }
+
   }
   type: string = 'password';
   isText: boolean = false;
@@ -75,29 +93,11 @@ export class RegisterComponent {
 
   signupForm!: FormGroup;
 
-
-  onSubmit() {
-    console.log(this.initialEmployeeData)
-    // if (this.signupForm.valid) {
-    //   // console.log(this.signupForm.value);
-    //   this.auth.signUp(this.signupForm.value).subscribe({
-    //     next: (res: any) => {
-    //       // const response = res as Response;
-    //       // alert(response.message);
-
-    //       this.signupForm.reset();
-    //       this.router.navigate(['login']);
-    //     },
-    //     error: (err) => {
-
-    //       console.log(err);
-    //     },
-    //   });
-    // } else {
-    //   console.log('Form is Invalid');
-    //   ValidateForm.validateAllFormFields(this.signupForm);
-    // }
+  onNameChange(event : any){
+    const newVal = event.target.value;
+    console.log(newVal)
   }
+
   hideShowPassword() {
     this.isText = !this.isText;
     this.isText
@@ -105,45 +105,60 @@ export class RegisterComponent {
       : (this.eyeIcon = 'fa fa-eye-slash');
     this.isText ? (this.type = 'text') : (this.type = 'password');
   }
- 
-  fetchGenders(){
-    this.employeeService
-    .getGenders()
-    .subscribe({
-      next : (response : any) => {
-        console.log(response)
-        this.gendersData = response.data;
-        console.log(this.gendersData)
-      }
-    })
+
+  onChangeRole() {
+    this.fetchManagers();
   }
-  fetchRoles(){
+  fetchGenders() {
     this.employeeService
-    .getRoles()
-    .subscribe({
-      next : (response : any) => {
-        console.log(response)
-        this.roleData = response.data;
-        console.log(this.roleData)
-      }
-    })
+      .getGenders()
+      .subscribe({
+        next: (response: any) => {
+          console.log(response)
+          this.gendersData = response.data;
+          console.log(this.gendersData)
+        }
+      })
   }
-  fetchManagers(){
+  fetchRoles() {
     this.employeeService
-    .getManagers(this.initialEmployeeData.roleId)
-    .subscribe({
-      next : (response : any) => {
-        console.log(response)
-        this.managerData = response.data;
-        console.log(this.managerData)
-      }
-    })
+      .getRoles()
+      .subscribe({
+        next: (response: any) => {
+          console.log(response)
+          this.roleData = response.data;
+          console.log(this.roleData)
+        }
+      })
   }
-   fetchData() {
+  fetchEmployee() {
+    this.employeeService
+      .getEmployeesById(this.initialEmployeeData.id)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response.data);
+          this.initialEmployeeData = response.data;
+          console.log(this.initialEmployeeData)
+        }
+      })
+  }
+  fetchManagers() {
+    this.employeeService
+      .getManagers(this.initialEmployeeData.roleId)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response)
+          this.managerData = response.data;
+          console.log(this.managerData)
+        }
+      })
+  }
+  fetchData() {
     this.fetchGenders();
     this.fetchManagers();
     this.fetchRoles();
+    this.fetchEmployee
   }
-  
+
 }
 
