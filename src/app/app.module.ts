@@ -27,6 +27,7 @@ import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining
     DashboardComponent,
     EmployeeComponent,
     LeavesRemainingDashboardComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

@@ -19,8 +19,10 @@ const routes: Routes = [
     component: HeaderSidenavComponent,
     title: 'WBLMS',
     children: [
+      { path: 'register', component: RegisterComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'employee', component: EmployeeComponent },
     ],
     canActivate: [AuthGuard],
   },
