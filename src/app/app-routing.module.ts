@@ -5,11 +5,12 @@ import { HeaderSidenavComponent } from './Components/header-sidenav/header-siden
 import { NotFound404Component } from './Components/not-found404/not-found404.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { AuthGuard } from './Guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'dashboard', component: DashboardComponent },
     ],
+    canActivate: [AuthGuard],
   },
   {
     path: '**',
