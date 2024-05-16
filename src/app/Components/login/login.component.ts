@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     },[]);
 
     console.log("Hie")
+    console.log("Hie")
 
     // google.accounts.id.initialize({
     //   client_id:
