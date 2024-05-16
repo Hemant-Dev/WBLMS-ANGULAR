@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TokenInterceptor } from 'src/app/Interceptors/token.interceptor';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { PaginatedModel } from 'src/app/Models/PaginatedModel';
+import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { GetEmployeeAsync } from 'src/app/Services/employee.service';
@@ -17,6 +18,14 @@ export class DashboardComponent implements OnInit {
   employees!: EmployeeModel[];
   role!: string;
   fullName!: string;
+  email!: string;
+  employeeId!: string;
+  initialUserSessionObj: UserSessionModel = {
+    employeeId: 0,
+    fullName: '',
+    email: '',
+    role: '',
+  };
   inititalEmployeeObj: EmployeeModel = {
     id: 0,
     firstName: '',
@@ -36,33 +45,49 @@ export class DashboardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     // console.log(this.auth.getToken());
-    this.fetchEmployeeData();
-  }
-  fetchEmployeeData() {
+    // this.fetchEmployeeData();
     if (
       this.auth.getRoleFromToken() === 'Admin' ||
       this.auth.getRoleFromToken() === 'HR' ||
       this.auth.getRoleFromToken() === 'Team Lead'
     ) {
-      this.employeeService
-        .getEmployees(1, 4, '', '', this.inititalEmployeeObj)
-        .subscribe({
-          next: (res) => {
-            this.employees = res.data.dataArray;
-            this.userStore.getFullNameFromStore().subscribe((val) => {
-              const fullNameFromToken = this.auth.getFullNameFromToken();
-              this.fullName = val || fullNameFromToken;
-            });
-            this.userStore.getRoleFromStore().subscribe((val) => {
-              const roleFromToken = this.auth.getRoleFromToken();
-              this.role = val || roleFromToken;
-            });
-            // console.log(data.data.dataArray);
-          },
-          error: (err) => console.log(err),
-        });
+      this.fetchSessionData();
     } else {
       console.log(`Unauthorized for current ${this.role}`);
     }
+  }
+  fetchEmployeeData() {
+    this.employeeService
+      .getEmployees(1, 4, '', '', this.inititalEmployeeObj)
+      .subscribe({
+        next: (res) => {
+          this.employees = res.data.dataArray;
+          // console.log(data.data.dataArray);
+        },
+        error: (err) => console.log(err),
+      });
+  }
+
+  fetchSessionData() {
+    this.userStore.getFullNameFromStore().subscribe((val) => {
+      const fullNameFromToken = this.auth.getFullNameFromToken();
+      this.fullName = val || fullNameFromToken;
+      this.initialUserSessionObj.fullName = this.fullName;
+    });
+    this.userStore.getRoleFromStore().subscribe((val) => {
+      const roleFromToken = this.auth.getRoleFromToken();
+      this.role = val || roleFromToken;
+      this.initialUserSessionObj.role = this.role;
+    });
+    this.userStore.getEmailFromStore().subscribe((val) => {
+      const emailFromToken = this.auth.getEmailFromToken();
+      this.email = val || emailFromToken;
+      this.initialUserSessionObj.email = this.email;
+    });
+    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
+      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+      this.employeeId = val || employeeIdFromToken;
+      this.initialUserSessionObj.employeeId = Number(this.employeeId);
+    });
   }
 }

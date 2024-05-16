@@ -66,6 +66,18 @@ export class AuthService {
     }
   }
 
+  getEmailFromToken() {
+    if (this.userPayload) {
+      return this.userPayload.email;
+    }
+  }
+
+  getEmployeeIdFromToken() {
+    if (this.userPayload) {
+      return this.userPayload.employeeId;
+    }
+  }
+
   renewToken(tokenApi: TokenApi) {
     return this._http.post<any>(this.baseURL + `/refresh`, tokenApi);
   }

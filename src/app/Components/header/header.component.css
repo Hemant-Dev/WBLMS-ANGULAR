@@ -15,3 +15,7 @@ nav {
   /* background-color: orange; */
   border-radius: 30%;
 }
+
+#logo {
+  cursor: pointer;
+}

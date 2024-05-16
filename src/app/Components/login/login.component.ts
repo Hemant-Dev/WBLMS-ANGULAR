@@ -73,6 +73,8 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameToStore(tokenPayload.name);
           this.userStore.setRoleToStore(tokenPayload.role);
+          this.userStore.setEmailToStore(tokenPayload.email);
+          this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
           this.router.navigate(['home']);
           // this.toast.success({
           //   detail: 'Success',

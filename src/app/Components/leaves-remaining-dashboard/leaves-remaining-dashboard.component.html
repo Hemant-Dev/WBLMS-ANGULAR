@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-sm-3">
+<div class="row" *ngIf="this.userSessionObj.role !== 'Admin'">
+  <div class="col-sm-4">
     <div class="card bg-info">
       <div class="card-body">
         <h5 class="card-title">Employee Id</h5>
@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
     <div class="card bg-info">
       <div class="card-body">
         <h5 class="card-title">Total Leaves</h5>
@@ -19,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
     <div class="card bg-info">
       <div class="card-body">
         <h5 class="card-title">Balance Leaves</h5>
