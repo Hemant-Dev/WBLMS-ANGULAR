@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
@@ -7,11 +7,13 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { GetEmployeeAsync, CreateEmployeeAsync } from 'src/app/Services/employee.service';
 
 @Component({
-  selector: 'app-employee',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class EmployeeComponent {
+export class RegisterComponent {
+
+
   initialEmployeeData: EmployeeModel = {
     id: 0,
     firstName: '',
@@ -60,7 +62,7 @@ export class EmployeeComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   onSubmit() {
     if (this.signupForm.valid) {
@@ -69,13 +71,13 @@ export class EmployeeComponent {
         next: (res: any) => {
           // const response = res as Response;
           // alert(response.message);
-          
+
           this.signupForm.reset();
           this.router.navigate(['login']);
         },
         error: (err) => {
-         
-            console.log(err);
+
+          console.log(err);
         },
       });
     } else {
@@ -90,4 +92,5 @@ export class EmployeeComponent {
       : (this.eyeIcon = 'fa fa-eye-slash');
     this.isText ? (this.type = 'text') : (this.type = 'password');
   }
+
 }

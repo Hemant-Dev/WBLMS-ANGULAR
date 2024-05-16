@@ -5,6 +5,8 @@ import { HeaderSidenavComponent } from './Components/header-sidenav/header-siden
 import { NotFound404Component } from './Components/not-found404/not-found404.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { EmployeeComponent } from './Components/employee/employee.component';
+import { RegisterComponent } from './Components/register/register.component';
 
 const routes: Routes = [
   {
@@ -18,8 +20,10 @@ const routes: Routes = [
     component: HeaderSidenavComponent,
     title: 'WBLMS',
     children: [
+      { path: 'register', component: RegisterComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'employee', component: EmployeeComponent },
     ],
   },
   {

@@ -1,0 +1,106 @@
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4">
+        <div class="panel border bg-white">
+          <div class="panel-heading">
+            <img src="../../../assets/img/WBLMS-logo.jfif" alt="WBLMS-logo" />
+            <h3 class="pt-3 font-weight-bold">WBLMS - Register</h3>
+          </div>
+          <div class="panel-body p-3">
+            <form>
+              <div class="row">
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <span class="fa fa-user p-2"></span>
+                      <input type="text" placeholder="First Name" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <span class="fa fa-user p-2"></span>
+                      <input type="text" placeholder="Last Name" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <span class="fa fa-user p-2"></span>
+                      <input type="text" placeholder="Contact Number" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <select class="form-select" aria-label="Gender">
+                        <option selected disabled>Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <select class="form-select" aria-label="Gender">
+                        <option selected disabled>Select Role</option>
+                        <option value="Employee">HR</option>
+                        <option value="Employee">Team Leader</option>
+                        <option value="Employee">Employee</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm">
+                  <div class="form-group pt-3">
+                    <div class="input-field">
+                      <select class="form-select" aria-label="Gender">
+                        <option selected disabled>Select Manager</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group pt-3">
+                <div class="input-field">
+                  <span class="fa fa-user p-2"></span>
+                  <input type="text" placeholder="Email" />
+                </div>
+              </div>
+              <div class="form-group pt-3">
+                <div class="input-field">
+                  <span class="fa fa-lock p-2"></span>
+                  <input [type]="type" placeholder="Password" />
+                  <span
+                    (click)="hideShowPassword()"
+                    class="fa {{ eyeIcon }}"
+                  ></span>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary btn-block mt-4 w-100"
+              >
+                Register
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
