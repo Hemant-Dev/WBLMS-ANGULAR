@@ -29,12 +29,13 @@ export class LoginComponent implements OnInit {
     private ngZone: NgZone
   ) {}
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    },[]);
-
-    console.log("Hie")
+    this.loginForm = this.fb.group(
+      {
+        email: ['', Validators.required],
+        password: ['', Validators.required],
+      },
+      []
+    );
 
     // google.accounts.id.initialize({
     //   client_id:
