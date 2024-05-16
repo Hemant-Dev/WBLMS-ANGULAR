@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
+import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 
 @Component({
@@ -15,9 +16,11 @@ export class LeavesRemainingDashboardComponent implements OnInit {
     totalLeaves: 0,
   };
 
-  @Input() employeeId!: number;
+  @Input() userSessionObj!: UserSessionModel;
   ngOnInit(): void {
-    this.getLeaveBalanceByEmployeeId(6);
+    if (this.userSessionObj.role !== 'Admin') {
+      this.getLeaveBalanceByEmployeeId(this.userSessionObj.employeeId);
+    }
   }
   constructor(private leaveRequestService: LeaveRequestsService) {}
   getLeaveBalanceByEmployeeId(employeeId: number) {
