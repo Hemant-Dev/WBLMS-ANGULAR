@@ -3,7 +3,11 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
+import { GenderModel } from 'src/app/Models/GenderModel';
+import { ManagerModel } from 'src/app/Models/ManagerModel';
+import { RolesModel } from 'src/app/Models/RolesModels';
 import { AuthService } from 'src/app/Services/auth.service';
+import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { GetEmployeeAsync, CreateEmployeeAsync } from 'src/app/Services/employee.service';
 
 @Component({
@@ -21,19 +25,31 @@ export class RegisterComponent {
     password: '',
     emailAddress: '',
     contactNumber: '',
-    genderId: 1,
-    roleId: 1,
-    managerId: 1,
+    genderId: 0,
+    roleId: 0,
+    managerId: 0,
     createdById: 1
   }
 
+  gendersData! : GenderModel[] ;
+  roleData! : RolesModel[];
+  managerData! : ManagerModel[];
+
   employees: EmployeeModel[] = [];
+  
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'emailAddress', 'contactNumber'];
   searchText: string = '';
 
+  constructor(
+    private employeeService : EmployeeRxjsService,
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+  ){}
 
   async ngOnInit() {
-    await this.getAllEmployee();
+    // await this.getAllEmployee();
+    this.fetchData();
   }
 
   async getAllEmployee() {
@@ -58,32 +74,29 @@ export class RegisterComponent {
   eyeIcon: string = 'fa fa-eye-slash';
 
   signupForm!: FormGroup;
-  constructor(
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router,
-  ) { }
+
 
   onSubmit() {
-    if (this.signupForm.valid) {
-      // console.log(this.signupForm.value);
-      this.auth.signUp(this.signupForm.value).subscribe({
-        next: (res: any) => {
-          // const response = res as Response;
-          // alert(response.message);
+    console.log(this.initialEmployeeData)
+    // if (this.signupForm.valid) {
+    //   // console.log(this.signupForm.value);
+    //   this.auth.signUp(this.signupForm.value).subscribe({
+    //     next: (res: any) => {
+    //       // const response = res as Response;
+    //       // alert(response.message);
 
-          this.signupForm.reset();
-          this.router.navigate(['login']);
-        },
-        error: (err) => {
+    //       this.signupForm.reset();
+    //       this.router.navigate(['login']);
+    //     },
+    //     error: (err) => {
 
-          console.log(err);
-        },
-      });
-    } else {
-      console.log('Form is Invalid');
-      ValidateForm.validateAllFormFields(this.signupForm);
-    }
+    //       console.log(err);
+    //     },
+    //   });
+    // } else {
+    //   console.log('Form is Invalid');
+    //   ValidateForm.validateAllFormFields(this.signupForm);
+    // }
   }
   hideShowPassword() {
     this.isText = !this.isText;
@@ -92,5 +105,45 @@ export class RegisterComponent {
       : (this.eyeIcon = 'fa fa-eye-slash');
     this.isText ? (this.type = 'text') : (this.type = 'password');
   }
-
+ 
+  fetchGenders(){
+    this.employeeService
+    .getGenders()
+    .subscribe({
+      next : (response : any) => {
+        console.log(response)
+        this.gendersData = response.data;
+        console.log(this.gendersData)
+      }
+    })
+  }
+  fetchRoles(){
+    this.employeeService
+    .getRoles()
+    .subscribe({
+      next : (response : any) => {
+        console.log(response)
+        this.roleData = response.data;
+        console.log(this.roleData)
+      }
+    })
+  }
+  fetchManagers(){
+    this.employeeService
+    .getManagers(this.initialEmployeeData.roleId)
+    .subscribe({
+      next : (response : any) => {
+        console.log(response)
+        this.managerData = response.data;
+        console.log(this.managerData)
+      }
+    })
+  }
+   fetchData() {
+    this.fetchGenders();
+    this.fetchManagers();
+    this.fetchRoles();
+  }
+  
 }
+

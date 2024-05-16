@@ -13,6 +13,7 @@ import { ProfileComponent } from './Components/profile/profile.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { EmployeeComponent } from './Components/employee/employee.component';
 import { TokenInterceptor } from './Interceptors/token.interceptor';
+import { RegisterComponent } from './Components/register/register.component';
 
 @NgModule({
   declarations: [
