@@ -8,7 +8,7 @@
             <h3 class="pt-3 font-weight-bold">WBLMS - Register</h3>
           </div>
           <div class="panel-body p-3">
-            <form>
+            <form (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-sm">
                   <div class="form-group pt-3">
@@ -39,11 +39,10 @@
                 <div class="col-sm">
                   <div class="form-group pt-3">
                     <div class="input-field">
-                      <select class="form-select" aria-label="Gender">
-                        <option selected disabled>Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
+                      <select class="form-select" name="genderId" aria-label="Gender" [(ngModel)]="initialEmployeeData.genderId"
+                      >
+                        <option selected disabled [value]="0">Select Gender</option>
+                        <option  *ngFor="let gender of gendersData" [value]="gender.id">{{gender.genderName}}</option>
                       </select>
                     </div>
                   </div>
@@ -53,11 +52,9 @@
                 <div class="col-sm">
                   <div class="form-group pt-3">
                     <div class="input-field">
-                      <select class="form-select" aria-label="Gender">
-                        <option selected disabled>Select Role</option>
-                        <option value="Employee">HR</option>
-                        <option value="Employee">Team Leader</option>
-                        <option value="Employee">Employee</option>
+                      <select class="form-select" name="roleId" aria-label="Role" [(ngModel)]="initialEmployeeData.roleId">
+                        <option selected disabled [value]="0">Select Role</option>
+                        <option *ngFor="let role of roleData" [value]="role.id">{{role.roleName}}</option>
                       </select>
                     </div>
                   </div>
@@ -65,11 +62,9 @@
                 <div class="col-sm">
                   <div class="form-group pt-3">
                     <div class="input-field">
-                      <select class="form-select" aria-label="Gender">
-                        <option selected disabled>Select Manager</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
+                      <select [disabled]="initialEmployeeData.roleId == 0" class="form-select" name="managerId" aria-label="Manager Name" [(ngModel)]="initialEmployeeData.managerId">
+                        <option selected disabled [value]="0">Select Manager</option>
+                        <option *ngFor="let manager of managerData" [value]="0">{{manager.managerName}}</option>
                       </select>
                     </div>
                   </div>
@@ -97,6 +92,9 @@
               >
                 Register
               </button>
+              <button (click)="fetchGenders()">Genders</button>
+              <button (click)="fetchRoles()">Roles</button>
+              <button (click)="fetchManagers()">Managers</button>
             </form>
           </div>
         </div>

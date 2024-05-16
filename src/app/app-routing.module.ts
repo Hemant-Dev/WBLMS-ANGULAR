@@ -6,6 +6,8 @@ import { NotFound404Component } from './Components/not-found404/not-found404.com
 import { ProfileComponent } from './Components/profile/profile.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { AuthGuard } from './Guards/auth.guard';
+import { EmployeeComponent } from './Components/employee/employee.component';
+import { RegisterComponent } from './Components/register/register.component';
 
 const routes: Routes = [
   {
@@ -24,7 +26,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employee', component: EmployeeComponent },
     ],
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: '**',
