@@ -9,7 +9,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   { path: 'login', component: LoginComponent, title: 'Login' },

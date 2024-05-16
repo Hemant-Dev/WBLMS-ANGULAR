@@ -11,6 +11,7 @@ import { HeaderSidenavComponent } from './Components/header-sidenav/header-siden
 import { NotFound404Component } from './Components/not-found404/not-found404.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { EmployeeComponent } from './Components/employee/employee.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     NotFound404Component,
     ProfileComponent,
     DashboardComponent,
+    EmployeeComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-interface EmployeeModel {
+export interface EmployeeModel {
     id : number,
     firstName : string,
     lastName : string,
@@ -6,16 +6,16 @@ interface EmployeeModel {
     emailAddress : string,
     contactNumber : string,
     genderId : number,
-    genderName : string,
+    genderName? : string,
     roleId : number,
-    roleType : string,
+    roleType? : string,
     managerId : number,
-    managerName : string,
+    managerName? : string,
     createdById : number,
-    createdByName : string,
-    joiningDate : string,
-    updatedById : number,
-    updatedByName : string,
-    updatedDate : string,
-    tokenId : number
+    createdByName? : string,
+    joiningDate? : string | Date,
+    updatedById? : number,
+    updatedByName? : string,
+    updatedDate? : string,
+    tokenId? : number
 }

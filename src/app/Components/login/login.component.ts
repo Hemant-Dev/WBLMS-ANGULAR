@@ -32,7 +32,10 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
-    });
+    },[]);
+
+    console.log("Hie")
+
     // google.accounts.id.initialize({
     //   client_id:
     //     '305979783667-3cq7k7pbggp74drkgdku7m93a83nqv9d.apps.googleusercontent.com',
