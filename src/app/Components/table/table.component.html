@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Employee</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" *ngFor="let header of tableHeader">
+            {{ header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employeesList">
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.emailAddress }}</td>
+          <td>{{ employee.contactNumber }}</td>
+          <td>{{ employee.genderName }}</td>
+          <td>{{ employee.roleName }}</td>
+          <td>{{ employee.managerName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ul>
+  <li *ngFor="let e of employeesList">
+    {{ e.firstName }}
+  </li>
+</ul>

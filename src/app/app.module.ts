@@ -15,6 +15,7 @@ import { EmployeeComponent } from './Components/employee/employee.component';
 import { TokenInterceptor } from './Interceptors/token.interceptor';
 import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining-dashboard/leaves-remaining-dashboard.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { TableComponent } from './Components/table/table.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { RegisterComponent } from './Components/register/register.component';
     EmployeeComponent,
     LeavesRemainingDashboardComponent,
     RegisterComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
