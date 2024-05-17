@@ -17,8 +17,12 @@ export class LeavesRemainingDashboardComponent implements OnInit {
   };
 
   @Input() userSessionObj!: UserSessionModel;
+
   ngOnInit(): void {
-    if (this.userSessionObj.role !== 'Admin') {
+    if (
+      this.userSessionObj.role !== 'Admin' &&
+      this.userSessionObj.role !== ''
+    ) {
       this.getLeaveBalanceByEmployeeId(this.userSessionObj.employeeId);
     }
   }
