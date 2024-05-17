@@ -42,7 +42,9 @@
       User
     </button>
     <ul class="dropdown-menu dropdown-menu-dark">
-      <li><a class="dropdown-item btn" href="#">Profile</a></li>
+      <li>
+        <a class="dropdown-item btn" [routerLink]="['profile']">Profile</a>
+      </li>
       <li><a class="dropdown-item btn" (click)="handleLogout()">Log Out</a></li>
     </ul>
   </div>
