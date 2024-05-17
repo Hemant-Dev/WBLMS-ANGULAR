@@ -46,15 +46,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.auth.getToken());
     // this.fetchEmployeeData();
-    if (
-      this.auth.getRoleFromToken() === 'Admin' ||
-      this.auth.getRoleFromToken() === 'HR' ||
-      this.auth.getRoleFromToken() === 'Team Lead'
-    ) {
-      this.fetchSessionData();
-    } else {
-      console.log(`Unauthorized for current ${this.role}`);
-    }
+    // if (
+    //   this.auth.getRoleFromToken() === 'Admin' ||
+    //   this.auth.getRoleFromToken() === 'HR' ||
+    //   this.auth.getRoleFromToken() === 'Team Lead'
+    // ) {
+    //   this.fetchSessionData();
+    // } else {
+    //   console.log(`Unauthorized for current ${this.role}`);
+    // }
+    this.fetchSessionData();
   }
   fetchEmployeeData() {
     this.employeeService

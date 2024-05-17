@@ -30,52 +30,30 @@ export class EmployeeRxjsService {
     );
   }
 
-  getEmployeesById(
-    id : number
-  ): Observable<EmployeeModel> {
-    return this.http.get<EmployeeModel>(
-      this.api_url + `/${id}`
-    );
+  getEmployeesById(id: number): Observable<any> {
+    return this.http.get<any>(this.api_url + `/${id}`);
   }
 
-  deleteEmployeesById(
-    id : number
-  ): Observable<EmployeeModel> {
-    return this.http.delete<EmployeeModel>(
-      this.api_url + `/${id}`
-    );
+  deleteEmployeesById(id: number): Observable<EmployeeModel> {
+    return this.http.delete<EmployeeModel>(this.api_url + `/${id}`);
   }
 
-  updateEmployeesById(
-    data : EmployeeModel
-  ): Observable<EmployeeModel> {
-    return this.http.put<EmployeeModel>(
-      this.api_url + `/${data.id}`, data
-    );
+  updateEmployeesById(data: EmployeeModel): Observable<EmployeeModel> {
+    return this.http.put<EmployeeModel>(this.api_url + `/${data.id}`, data);
   }
-  createEmployees(
-    data : EmployeeModel
-  ): Observable<EmployeeModel> {
-    return this.http.post<EmployeeModel>(
-      this.api_url, data
-    );
+  createEmployees(data: EmployeeModel): Observable<EmployeeModel> {
+    return this.http.post<EmployeeModel>(this.api_url, data);
   }
 
-  getGenders() : Observable<GenderModel[]> {
-    return this.http.get<GenderModel[]>(
-      this.api_url+`/gender`
-    );
+  getGenders(): Observable<GenderModel[]> {
+    return this.http.get<GenderModel[]>(this.api_url + `/gender`);
   }
 
-  getManagers(id : number) : Observable<ManagerModel[]> {
-    return this.http.get<ManagerModel[]>(
-      this.api_url+`/manager/${id}`
-    );
+  getManagers(id: number): Observable<ManagerModel[]> {
+    return this.http.get<ManagerModel[]>(this.api_url + `/manager/${id}`);
   }
 
-  getRoles() : Observable<RolesModel[]> {
-    return this.http.get<RolesModel[]>(
-      this.api_url+`/roles`
-    );
+  getRoles(): Observable<RolesModel[]> {
+    return this.http.get<RolesModel[]>(this.api_url + `/roles`);
   }
 }
