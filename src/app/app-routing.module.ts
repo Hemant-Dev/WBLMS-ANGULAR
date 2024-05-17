@@ -29,7 +29,7 @@ const routes: Routes = [
       { path: 'employee', component: EmployeeComponent },
       { path: 'table', component: TableComponent },
     ],
-   // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

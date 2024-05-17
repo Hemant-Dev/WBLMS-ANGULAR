@@ -2,9 +2,11 @@ declare var google: any;
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -81,8 +83,9 @@ export class LoginComponent implements OnInit {
           //   summary: res.message,
           //   duration: 3000,
           // });
+          successToast('Logged in successfully!');
         },
-        error: (err) => console.log(err),
+        error: (err) => errorToast(err),
         // this.toast.error({
         //   detail: 'Error',
         //   summary: err,
@@ -90,7 +93,9 @@ export class LoginComponent implements OnInit {
         // }),
       });
     } else {
-      console.log('Form is invalid');
+      // console.log('Form is invalid');
+      errorAlert('Form is Invalid!');
+      // errorToast('Form is Invalid');
       ValidateForm.validateAllFormFields(this.loginForm);
     }
   }
