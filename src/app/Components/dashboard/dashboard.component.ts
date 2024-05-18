@@ -34,18 +34,18 @@ export class DashboardComponent implements OnInit {
     emailAddress: '',
     contactNumber: '',
     genderId: 0,
-    genderName :"",
+    genderName: '',
     roleId: 0,
-    roleName : "",
+    roleName: '',
     managerId: 0,
-    managerName : "",
+    managerName: '',
     createdById: 0,
   };
   constructor(
     private auth: AuthService,
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService
-  ) { }
+  ) {}
   ngOnInit(): void {
     // console.log(this.auth.getToken());
     // this.fetchEmployeeData();
@@ -59,14 +59,13 @@ export class DashboardComponent implements OnInit {
     //   console.log(`Unauthorized for current ${this.role}`);
     // }
     this.fetchSessionData();
-    this.fetchEmployeeData()
+    // this.fetchEmployeeData()
   }
   fetchEmployeeData() {
     this.employeeService
       .getEmployees(1, 4, '', '', this.inititalEmployeeObj)
       .subscribe({
         next: (res) => {
-
           console.log(res.data.dataArray);
           this.employees = res.data.dataArray;
           console.log(this.employees);

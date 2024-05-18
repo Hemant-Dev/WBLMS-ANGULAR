@@ -9,6 +9,7 @@ import { AuthGuard } from './Guards/auth.guard';
 import { EmployeeComponent } from './Components/employee/employee.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
+import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'login', component: LoginComponent, title: 'Login' },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent,
+  },
   {
     path: 'home',
     component: HeaderSidenavComponent,

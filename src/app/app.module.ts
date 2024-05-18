@@ -16,6 +16,7 @@ import { TokenInterceptor } from './Interceptors/token.interceptor';
 import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining-dashboard/leaves-remaining-dashboard.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
+import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { TableComponent } from './Components/table/table.component';
     LeavesRemainingDashboardComponent,
     RegisterComponent,
     TableComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

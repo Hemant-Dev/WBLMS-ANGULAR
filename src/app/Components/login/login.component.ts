@@ -2,11 +2,11 @@ declare var google: any;
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { AuthService } from 'src/app/Services/auth.service';
+import { ResetService } from 'src/app/Services/reset.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     // private toast: NgToastService,
     private userStore: UserStoreService,
-    // private resetService: ResetPasswordService,
+    private resetService: ResetService,
     private ngZone: NgZone
   ) {}
   ngOnInit(): void {
@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
       });
     } else {
       // console.log('Form is invalid');
-      errorAlert('Form is Invalid!');
+      // errorAlert('Form is Invalid!');
       // errorToast('Form is Invalid');
       ValidateForm.validateAllFormFields(this.loginForm);
     }
@@ -112,27 +112,29 @@ export class LoginComponent implements OnInit {
       console.log(this.resetPasswordEmail);
 
       // API Call
-      // this.resetService
-      //   .sendResetPasswordLink(this.resetPasswordEmail)
-      //   .subscribe({
-      //     next: (res) => {
-      //       this.toast.success({
-      //         detail: 'Success',
-      //         summary: 'Reset Link sent Successfully!',
-      //         duration: 3000,
-      //       });
-      //       this.resetPasswordEmail = '';
-      //       const buttonRef = document.getElementById('closeBtn');
-      //       buttonRef?.click();
-      //     },
-      //     error: (err) => {
-      //       this.toast.error({
-      //         detail: 'Error',
-      //         summary: 'Something went wrong: ' + err.error,
-      //         duration: 3000,
-      //       });
-      //     },
-      //   });
+      this.resetService
+        .sendResetPasswordLink(this.resetPasswordEmail)
+        .subscribe({
+          next: (res) => {
+            // this.toast.success({
+            //   detail: 'Success',
+            //   summary: 'Reset Link sent Successfully!',
+            //   duration: 3000,
+            // });
+            successToast('Reset Link sent Successfully!');
+            this.resetPasswordEmail = '';
+            const buttonRef = document.getElementById('closeBtn');
+            buttonRef?.click();
+          },
+          error: (err) => {
+            // this.toast.error({
+            //   detail: 'Error',
+            //   summary: 'Something went wrong: ' + err.error,
+            //   duration: 3000,
+            // });
+            errorToast('Something went wrong');
+          },
+        });
     } else {
       console.log('Invalid Email');
     }
