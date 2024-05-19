@@ -74,6 +74,8 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  fetchLeaveRequestsData() {}
+
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();

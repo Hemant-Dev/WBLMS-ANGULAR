@@ -17,6 +17,7 @@ import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
     RegisterComponent,
     TableComponent,
     ResetPasswordComponent,
+    LeaveRequestsTableComponent,
   ],
   imports: [
     BrowserModule,

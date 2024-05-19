@@ -3,10 +3,16 @@
     {{ emp.firstName }}
   </li>
 </ul> -->
-<app-leaves-remaining-dashboard
-  [userSessionObj]="initialUserSessionObj"
-></app-leaves-remaining-dashboard>
-<app-table
-  [employeesList]="employees"
->
-</app-table>
+<div class="col-sm-12 row">
+  <app-leaves-remaining-dashboard
+    [userSessionObj]="initialUserSessionObj"
+  ></app-leaves-remaining-dashboard>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <app-leave-requests-table></app-leave-requests-table>
+  </div>
+  <div class="col-sm-6">
+    <!-- <app-table [employeesList]="employees"> </app-table> -->
+  </div>
+</div>
