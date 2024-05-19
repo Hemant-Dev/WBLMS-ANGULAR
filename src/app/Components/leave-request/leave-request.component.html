@@ -21,14 +21,14 @@
       </div>
       <div class="row mb-3">
         <div class="col">
-          <label for="startDate" class="form-label">Start Date</label>
-          <input type="date" name="startDate" (change)="calculateLeaveDays()" [(ngModel)]="initialLeaveRequestData.startDate" class="form-control" id="startDate">
+          <label for="endDate" class="form-label">End Date</label>
+          <input [disabled]="initialLeaveRequestData.startDate === '0001-01-01'" type="date" name="endDate" [(ngModel)]="initialLeaveRequestData.endDate" (change)="calculateLeaveDays()" class="form-control" id="endDate">
         </div>
         <div class="col">
           <label  for="endDate" class="form-label">End Date</label>
           <input [disabled]="initialLeaveRequestData.startDate === '0001-01-01'" type="date" name="endDate" [(ngModel)]="initialLeaveRequestData.endDate" (change)="calculateLeaveDays()" class="form-control" id="endDate">
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check form-switch mb-3">
           <input class="form-check-input" type="checkbox" name="isHalfDay" [(ngModel)]="initialLeaveRequestData.isHalfDay" value="" id="halfDay">
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>
