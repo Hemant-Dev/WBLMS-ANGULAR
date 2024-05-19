@@ -9,6 +9,7 @@ export class UserStoreService {
   private role$ = new BehaviorSubject<string>('');
   private email$ = new BehaviorSubject<string>('');
   private employeeId$ = new BehaviorSubject<string>('');
+  private managerId$ = new BehaviorSubject<string>('');
   constructor() {}
 
   public getRoleFromStore() {
@@ -35,4 +36,12 @@ export class UserStoreService {
   public setEmployeeIdToStore(employeeId: string) {
     this.employeeId$.next(employeeId);
   }
+  public getManagerIdFromStore(){
+    return this.managerId$.asObservable();
+  }
+
+  public setManagerIdFromStore(managerId : string) {
+    return this.managerId$.next(managerId);
+  }
+
 }
