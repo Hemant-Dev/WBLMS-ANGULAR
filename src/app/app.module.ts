@@ -27,6 +27,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
+import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +44,7 @@ import { CommonModule } from '@angular/common';
     TableComponent,
     ResetPasswordComponent,
     LeaveRequestsTableComponent,
+    LeaveRequestComponent,
   ],
   imports: [
     BrowserModule,

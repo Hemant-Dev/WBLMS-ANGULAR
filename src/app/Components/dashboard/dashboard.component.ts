@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
     private auth: AuthService,
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService
-  ) {}
+  ) { }
   ngOnInit(): void {
     // console.log(this.auth.getToken());
     // this.fetchEmployeeData();
@@ -59,11 +59,11 @@ export class DashboardComponent implements OnInit {
     //   console.log(`Unauthorized for current ${this.role}`);
     // }
     this.fetchSessionData();
-    // this.fetchEmployeeData()
+    this.fetchEmployeeData()
   }
   fetchEmployeeData() {
     this.employeeService
-      .getEmployees(1, 4, '', '', this.inititalEmployeeObj)
+      .getEmployees(1, 5, '', '', this.inititalEmployeeObj)
       .subscribe({
         next: (res) => {
           console.log(res.data.dataArray);
@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  fetchLeaveRequestsData() {}
+  fetchLeaveRequestsData() { }
 
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {

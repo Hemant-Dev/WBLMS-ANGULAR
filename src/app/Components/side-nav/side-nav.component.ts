@@ -26,6 +26,13 @@ export class SideNavComponent {
       icon: 'fa-solid fa-calendar',
       route: 'leaveRequests',
     },
+    {
+      number: '4',
+      name: 'Test',
+      icon: 'fa-solid fa-calendar',
+      route: 'test',
+    },
+    
   ];
   @Input() sideNavStatus: boolean = false;
 }

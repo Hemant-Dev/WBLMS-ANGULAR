@@ -7,6 +7,7 @@ import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
+
 @Component({
   selector: 'app-leave-requests-table',
   templateUrl: './leave-requests-table.component.html',
@@ -41,6 +42,37 @@ export class LeaveRequestsTableComponent implements OnInit {
     private userStore: UserStoreService,
     private router: Router
   ) {}
+  leaveRequest = {
+    name: '',
+    phoneNumber: ''
+  };
+
+  bootstrap : any;
+
+  // submitLeaveRequest() {
+  //   // Handle the form submission logic here
+  //   console.log(this.leaveRequest);
+  //   // You can reset the form and close the modal after submission
+  //   this.leaveRequest = { name: '', phoneNumber: '' };
+  // //   const modalElement = document.getElementById('addLeaveRequestModal');
+  // //   const modalInstance = this.bootstrap.Modal.getInstance(modalElement);
+  // //  // modalInstance.hide();
+  // }
+  submitLeaveRequest() {
+    // Handle the form submission logic here
+    console.log(this.leaveRequest);
+
+    // You can reset the form and close the modal after submission
+    this.leaveRequest = { name: '', phoneNumber: '' };
+
+    // Close the modal using Bootstrap's data attributes
+    const modalElement = document.getElementById('addLeaveRequestModal');
+    if (modalElement) {
+      const modalInstance = new this.bootstrap.Modal(modalElement);
+      modalInstance.hide();
+    }
+  }
+
   ngOnInit() {
     this.fetchSessionData();
     if (this.role !== 'Employee') {

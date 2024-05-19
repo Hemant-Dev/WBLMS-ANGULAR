@@ -1,0 +1,45 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addLeaveRequestModalLabel">Leave Request Form</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="leaveType" class="form-label">Leave Type</label>
+        <select class="form-select" id="leaveType">
+          <option selected disabled [value]="0">Select Leave Type</option>
+          <option *ngFor="let leaveType of leaveTypeData"
+            [value]="leaveType.id"
+          >
+            {{leaveType.leaveTypeName}}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="leaveReason" class="form-label">Reason</label>
+        <textarea class="form-control" id="leaveReason" rows="3"></textarea>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control" id="startDate">
+        </div>
+        <div class="col">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" class="form-control" id="endDate">
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" value="" id="halfDay">
+          <label class="form-check-label" for="halfDay">Half Day</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="numberOfLeaveDays" class="form-label">Number of Leave Days</label>
+        <input type="text" class="form-control" id="numberOfLeaveDays" readonly>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" onclick="handleSubmit()">Submit</button>
+    </div>
+  </div>

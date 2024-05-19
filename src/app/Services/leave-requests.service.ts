@@ -9,9 +9,12 @@ import { UpdateRequestStatus } from '../Models/update-request-status';
   providedIn: 'root',
 })
 export class LeaveRequestsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   leave_api_url = API_URL + 'LeaveRequest';
+
+  leave_type_url = API_URL + 'leavetype';
+
   getLeavesBalances(employeeId: number): Observable<any> {
     return this.http.get<any>(
       this.leave_api_url + `/leavesBalance/${employeeId}`
@@ -27,7 +30,7 @@ export class LeaveRequestsService {
   ): Observable<any> {
     return this.http.post<any>(
       this.leave_api_url +
-        `/paginated?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
+      `/paginated?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
       leaveReqObj
     );
   }
@@ -37,5 +40,15 @@ export class LeaveRequestsService {
     requestObj: UpdateRequestStatus
   ): Observable<any> {
     return this.http.put(this.leave_api_url + `/${id}`, requestObj);
+  }
+
+  createLeaveRequest(
+    data: LeaveRequestModel
+  ): Observable<any> {
+    return this.http.post(this.leave_api_url, data);
+  }
+
+  getLeaveType() : Observable<any> {
+    return this.http.get(this.leave_api_url+'/leavetype');
   }
 }
