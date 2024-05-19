@@ -24,7 +24,7 @@ export class SideNavComponent {
       number: '3',
       name: 'Leave Requests',
       icon: 'fa-solid fa-calendar',
-      route: 'leaveRequests',
+      route: 'leave-request',
     },
   ];
   @Input() sideNavStatus: boolean = false;

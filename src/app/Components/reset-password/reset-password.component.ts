@@ -23,7 +23,7 @@ export class ResetPasswordComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private resetService: ResetService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.resetPasswordForm = this.fb.group(
       {

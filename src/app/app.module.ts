@@ -17,6 +17,8 @@ import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
     RegisterComponent,
     TableComponent,
     ResetPasswordComponent,
+    LeaveRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

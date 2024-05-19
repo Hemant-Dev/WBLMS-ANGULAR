@@ -1,0 +1,20 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  .table-bordered-custom {
+    border: 1px solid #dee2e6; /* Default Bootstrap border color */
+  }
+  
+  .table-bordered-custom th,
+  .table-bordered-custom td {
+    border: 1px solid #dee2e6; /* Default Bootstrap border color */
+  }
+  

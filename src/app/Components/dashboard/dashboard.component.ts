@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
     //   console.log(`Unauthorized for current ${this.role}`);
     // }
     this.fetchSessionData();
-    // this.fetchEmployeeData()
+    this.fetchEmployeeData()
   }
   fetchEmployeeData() {
     this.employeeService

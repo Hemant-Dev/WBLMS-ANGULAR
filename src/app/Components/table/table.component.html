@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6">
-    <h2>Employee</h2>
-    <table class="table table-hover">
+    <h2 class="text-center">Employee</h2>
+    <table class="table table-bordered table-hover"> <!-- Added table-bordered class -->
       <thead>
         <tr>
           <th scope="col" *ngFor="let header of tableHeader">
@@ -23,9 +23,32 @@
     </table>
   </div>
 </div>
-
-<ul>
+<!-- <ul>
   <li *ngFor="let e of employeesList">
     {{ e.firstName }}
   </li>
-</ul>
+</ul> -->
+<!-- <div class="container mt-4">
+  <h2 class="text-center">Employee Leave Dashboard</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col" *ngFor="let header of tableHeaderLeave">
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employeesData">
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.employeeId }}</td>
+            <td>{{ employee.balance }}</td>
+            <td>{{ employee.totalLeaves }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->

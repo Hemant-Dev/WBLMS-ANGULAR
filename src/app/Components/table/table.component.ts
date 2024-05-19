@@ -24,5 +24,11 @@ export class TableComponent implements OnInit {
     "ManagerName"
   ];
 
+ tableHeaderLeave: string[] = ['Id', 'EmployeeId', 'Balance', 'TotalLeaves'];
+  employeesData: any[] = [
+    { id: 1, employeeId: 2, balance: 25.00, totalLeaves: 25.00 },
+    { id: 2, employeeId: 3, balance: 25.00, totalLeaves: 25.00 },
+    { id: 3, employeeId: 4, balance: 25.00, totalLeaves: 25.00 }
+  ];
 
 }
