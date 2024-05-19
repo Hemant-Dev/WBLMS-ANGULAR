@@ -10,6 +10,7 @@ import { EmployeeComponent } from './Components/employee/employee.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'table', component: TableComponent },
+      {
+        path: 'leaveRequests',
+        component: LeaveRequestsTableComponent,
+      },
     ],
     canActivate: [AuthGuard],
   },

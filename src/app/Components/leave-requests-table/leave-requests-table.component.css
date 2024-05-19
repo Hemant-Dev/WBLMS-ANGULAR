@@ -1,0 +1,39 @@
+/* .container {
+  background-color: #f5f6fa;
+  margin-top: 20px;
+}
+.table {
+  margin-top: 10px;
+}
+.table th,
+.table td {
+  text-align: center;
+  vertical-align: middle;
+}
+.badge-warning {
+  background-color: #ffc107;
+}
+.badge-success {
+  background-color: #28a745;
+}
+.badge-danger {
+  background-color: #dc3545;
+}
+.action-buttons {
+  display: flex;
+  justify-content: center;
+}
+.action-buttons button {
+  margin: 0 2px;
+} */
+
+:host ::ng-deep {
+  .p-progressbar {
+    height: 0.5rem;
+    background-color: #d8dadc;
+
+    .p-progressbar-value {
+      background-color: #607d8b;
+    }
+  }
+}

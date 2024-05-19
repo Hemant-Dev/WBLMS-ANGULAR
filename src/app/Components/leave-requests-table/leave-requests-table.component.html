@@ -1,110 +1,237 @@
-<table class="table align-middle mb-0 bg-white">
-  <thead class="bg-light">
-    <tr>
-      <th>Name</th>
-      <th>Title</th>
-      <th>Status</th>
-      <th>Position</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-            alt=""
-            style="width: 45px; height: 45px"
-            class="rounded-circle"
+<div class="card" *ngIf="role !== 'Admin'">
+  <p-table [value]="selfLeaveRequests" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-header>Created Leave Requests</p-header>
+
+        <!-- <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            (input)="dt2.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search keyword"
           />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">John Doe</p>
-            <p class="text-muted mb-0">john.doe@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Software engineer</p>
-        <p class="text-muted mb-0">IT department</p>
-      </td>
-      <td>
-        <span class="badge badge-success rounded-pill d-inline">Active</span>
-      </td>
-      <td>Senior</td>
-      <td>
-        <button type="button" class="btn btn-link btn-sm btn-rounded">
-          Edit
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/6.jpg"
-            class="rounded-circle"
-            alt=""
-            style="width: 45px; height: 45px"
+        </p-iconField> -->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Leave Type</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Number Of Days</th>
+        <th>Request Date</th>
+        <th>Approved Date</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-request>
+      <tr>
+        <td>{{ request.leaveType }}</td>
+        <td>{{ request.reason }}</td>
+        <td>{{ request.status }}</td>
+        <td>{{ request.startDate }}</td>
+        <td>{{ request.endDate }}</td>
+        <td>{{ request.numberOfLeaveDays }}</td>
+        <td>{{ request.requestDate }}</td>
+        <td>{{ request.approvedDate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div class="card my-4" *ngIf="role !== 'Employee'">
+  <p-table
+    #dt2
+    [value]="leaveRequests"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'name',
+      'country.name',
+      'representative.name',
+      'status'
+    ]"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-header>Team Leave Requests</p-header>
+
+        <!-- <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            (input)="dt2.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search keyword"
           />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">Alex Ray</p>
-            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Consultant</p>
-        <p class="text-muted mb-0">Finance</p>
-      </td>
-      <td>
-        <span class="badge badge-primary rounded-pill d-inline"
-          >Onboarding</span
-        >
-      </td>
-      <td>Junior</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-link btn-rounded btn-sm fw-bold"
-          data-mdb-ripple-color="dark"
-        >
-          Edit
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="d-flex align-items-center">
-          <img
-            src="https://mdbootstrap.com/img/new/avatars/7.jpg"
-            class="rounded-circle"
-            alt=""
-            style="width: 45px; height: 45px"
+        </p-iconField> -->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th style="width: 22%">Employee Id</th> -->
+        <th style="width: 15%">First Name</th>
+        <th style="width: 15%">Last Name</th>
+        <th style="width: 12%">Leave Type</th>
+        <th style="width: 18%">Reason</th>
+        <th style="width: 10%">Status</th>
+        <th style="width: 12%">Start Date</th>
+        <th style="width: 12%">End Date</th>
+        <th style="width: 12%">Number Of Days</th>
+        <th style="width: 12%">Actions</th>
+      </tr>
+      <tr>
+        <!-- <th>
+          <p-columnFilter
+            type="number"
+            field="employeeId"
+            placeholder="Search by EmployeeId"
+            ariaLabel="Filter Employee Id"
           />
-          <div class="ms-3">
-            <p class="fw-bold mb-1">Kate Hunington</p>
-            <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-          </div>
-        </div>
-      </td>
-      <td>
-        <p class="fw-normal mb-1">Designer</p>
-        <p class="text-muted mb-0">UI/UX</p>
-      </td>
-      <td>
-        <span class="badge badge-warning rounded-pill d-inline">Awaiting</span>
-      </td>
-      <td>Senior</td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-link btn-rounded btn-sm fw-bold"
-          data-mdb-ripple-color="dark"
-        >
-          Edit
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        </th> -->
+        <th>
+          <p-columnFilter
+            type="text"
+            field="firstName"
+            placeholder="Search by First Name"
+            ariaLabel="Filter First Name"
+          />
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="lastName"
+            placeholder="Search by Last Name"
+            ariaLabel="Filter Last Name"
+          />
+        </th>
+        <th>
+          <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                (onChange)="filter($event.value)"
+                placeholder="Select One"
+                [showClear]="true"
+              >
+                <ng-template let-option pTemplate="item">
+                  <p-tag [value]="option.value" />
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="reason"
+            placeholder="Search by Reason"
+            ariaLabel="Filter Reason"
+          />
+        </th>
+        <th>
+          <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filter="filterCallback"
+            >
+              <p-dropdown
+                (onChange)="filter($event.value)"
+                placeholder="Select One"
+                [showClear]="true"
+              >
+                <ng-template let-option pTemplate="item">
+                  <p-tag [value]="option.value" />
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="startDate"
+            placeholder="Search by Start Date"
+            ariaLabel="Filter Start Date"
+          />
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="endDate"
+            placeholder="Search by End Date"
+            ariaLabel="Filter End Date"
+          />
+        </th>
+        <th>
+          <!-- <p-columnFilter
+            type="number"
+            field="numberOfLeaveDays"
+            placeholder="Search by Leave Days"
+            ariaLabel="Filter Leave Days"
+          /> -->
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-request>
+      <tr>
+        <!-- <td>
+          {{ request.employeeId }}
+        </td> -->
+        <td>{{ request.firstName }}</td>
+        <td>
+          <!-- <img
+            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+              request.representative.image
+            }}"
+            width="32"
+            style="vertical-align: middle"
+          /> -->
+          {{ request.lastName }}
+        </td>
+        <td>{{ request.leaveType }}</td>
+        <td>
+          <!-- <i
+            class="pi"
+            [ngClass]="{
+              'text-green-500 pi-check-circle': request.verified,
+              'text-red-500 pi-times-circle': !request.verified
+            }"
+          ></i> -->
+          {{ request.reason }}
+        </td>
+        <td>
+          <p-tag [value]="request.status" />
+        </td>
+        <td>
+          {{ request.startDate }}
+        </td>
+        <td>
+          {{ request.endDate }}
+        </td>
+        <td>
+          {{ request.numberOfLeaveDays }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No customers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
