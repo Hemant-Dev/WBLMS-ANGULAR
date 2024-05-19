@@ -8,8 +8,8 @@ export interface LeaveRequestModel {
   leaveType?: string;
   reason: string;
   status?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
   numberOfLeaveDays: number;
   requestDate?: string;
   approvedDate?: string;

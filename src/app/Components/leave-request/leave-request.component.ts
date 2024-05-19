@@ -12,39 +12,41 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./leave-request.component.css']
 })
 export class LeaveRequestComponent implements OnInit {
+  updateLeaveDaysDebounced: any;
   ngOnInit(): void {
     this.getLeaveType();
     this.getDataFromUserStore()
-    console.log(this.initialLeaveRequestData)
-    console.log(this.userService.getFullNameFromStore.name)
   }
-
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
-    private userService : UserStoreService,
+    private userService: UserStoreService,
     private auth: AuthService
   ) { }
 
-    initialLeaveRequestData: LeaveRequestModel = {
+  //Todays date
+  today = this.formatDate(new Date());
+
+  initialLeaveRequestData: LeaveRequestModel = {
     id: 0,
     employeeId: 6,
-    managerId: 3,
     leaveTypeId: 0,
     reason: 'Attending a family function',
-    startDate: this.formatDate('0001-01-01'),
-    endDate: this.formatDate('0001-01-01'),
+    startDate: this.today, 
+    endDate: this.today, 
     numberOfLeaveDays: 1,
     isHalfDay: false,
   };
 
-  formatDate(dateString: string | number | Date) {
-    const date = new Date(dateString);
+  formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString().padStart(4, '0');
     return `${year}-${month}-${day}`;
   }
+
+  todayDate: any = new Date();
+
 
   leaveTypeData!: LeaveTypeModel[];
 
@@ -59,28 +61,33 @@ export class LeaveRequestComponent implements OnInit {
         }
       })
   }
+  
 
-  getDataFromUserStore(){
-    this.userService.getRoleFromStore().subscribe((val) => {
-      const roleFromToken = this.auth.getRoleFromToken();
-      const role = val || roleFromToken;
-      console.log(role)
-    });
+  calculateLeaveDays() {
+    let start = new Date(this.initialLeaveRequestData.startDate!);
+    let end = new Date(this.initialLeaveRequestData.endDate!);
+    let count = 0;
 
+    while (start <= end) {
+      const dayOfWeek = start.getDay();
+      console.log(dayOfWeek + " " + count)
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) { 
+        count++;
+      }
+      start.setDate(start.getDate() + 1);
+    }
+
+    this.initialLeaveRequestData.numberOfLeaveDays = count;
+  }
+
+
+  getDataFromUserStore() {
     this.userService.getEmployeeIdFromStore()
-    .subscribe((val) => {
-      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-      const employeeId = val || employeeIdFromToken;
-      this.initialLeaveRequestData.employeeId = employeeId;
-    })
-
-    this.userService.getManagerIdFromStore()
-    .subscribe((val) => {
-      const managerIdFromToken = this.auth.getManagerIdFromToken();
-      const managerId = val || managerIdFromToken;
-      this.initialLeaveRequestData.managerId = managerId;
-      
-    })
+      .subscribe((val) => {
+        const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+        const employeeId = val || employeeIdFromToken;
+        this.initialLeaveRequestData.employeeId = employeeId;
+      })
   }
 
   handleSubmit() {
@@ -95,7 +102,5 @@ export class LeaveRequestComponent implements OnInit {
     } catch (error) {
       console.log(error)
     }
-
   }
-
 }
