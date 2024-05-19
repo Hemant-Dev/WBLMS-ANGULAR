@@ -29,10 +29,10 @@ export class ResetPasswordComponent implements OnInit {
       {
         password: [null, Validators.required],
         oldPassword: [null, Validators.required],
-      },
-      {
-        validator: ConfirmPasswordValidator('password', 'confirmPassword'),
       }
+      // {
+      //   validator: ConfirmPasswordValidator('password', 'confirmPassword'),
+      // }
     );
 
     this.activatedRoute.queryParams.subscribe({
