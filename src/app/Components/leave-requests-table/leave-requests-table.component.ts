@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
+import { errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
+import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
@@ -35,12 +38,14 @@ export class LeaveRequestsTableComponent implements OnInit {
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
-    private userStore: UserStoreService
+    private userStore: UserStoreService,
+    private router: Router
   ) {}
   ngOnInit() {
     this.fetchSessionData();
     if (this.role !== 'Employee') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
+      this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
         .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
         .subscribe({
@@ -48,6 +53,7 @@ export class LeaveRequestsTableComponent implements OnInit {
             console.log(res);
             this.leaveRequests = res.data.dataArray;
             this.initialLeaveRequestObj.managerId = 0;
+            this.initialLeaveRequestObj.status = '';
             this.fetchSelfRequestData();
           },
           error: (err) => console.log(err),
@@ -93,5 +99,35 @@ export class LeaveRequestsTableComponent implements OnInit {
   clear(table: Table) {
     table.clear();
     this.searchValue = '';
+  }
+  handleRejectClick(Id: number) {
+    const updateLeaveRequestStatus: UpdateRequestStatus = {
+      id: Id,
+      statusId: 3,
+    };
+    this.leaveRequestService
+      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+      .subscribe({
+        next: (res) => {
+          successToast('Leave Request Rejected.');
+          this.fetchSelfRequestData();
+        },
+        error: (err) => errorToast('Error Occured while updating status'),
+      });
+  }
+  handleApproveClick(Id: number) {
+    const updateLeaveRequestStatus: UpdateRequestStatus = {
+      id: Id,
+      statusId: 2,
+    };
+    this.leaveRequestService
+      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+      .subscribe({
+        next: (res) => {
+          successToast('Leave Request Approved.');
+          this.fetchSelfRequestData();
+        },
+        error: (err) => errorToast('Error Occured while updating status'),
+      });
   }
 }

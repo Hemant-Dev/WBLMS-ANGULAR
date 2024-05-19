@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from '../ApiUrl';
 import { LeaveRequestModel } from '../Models/leave-requestsModel';
+import { UpdateRequestStatus } from '../Models/update-request-status';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +30,12 @@ export class LeaveRequestsService {
         `/paginated?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
       leaveReqObj
     );
+  }
+
+  updateLeaveRequestStatus(
+    id: number,
+    requestObj: UpdateRequestStatus
+  ): Observable<any> {
+    return this.http.put(this.leave_api_url + `/${id}`, requestObj);
   }
 }
