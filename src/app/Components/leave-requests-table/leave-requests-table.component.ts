@@ -43,6 +43,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
+
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -82,7 +83,7 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSessionData();
-    if (this.role !== 'Employee') {
+    if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
@@ -91,8 +92,10 @@ export class LeaveRequestsTableComponent implements OnInit {
           next: (res) => {
             console.log(res);
             this.leaveRequests = res.data.dataArray;
+            console.log(this.leaveRequests)
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
+            console.log("fetch self req data")
             this.fetchSelfRequestData();
           },
           error: (err) => console.log(err),
@@ -138,6 +141,7 @@ export class LeaveRequestsTableComponent implements OnInit {
       this.employeeId = val || employeeIdFromToken;
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
+
   }
   clear(table: Table) {
     table.clear();

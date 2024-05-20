@@ -3,6 +3,7 @@
     [userSessionObj]="initialUserSessionObj"
   ></app-leaves-remaining-dashboard>
 </div>
+
 <!-- Table 1 -->
 <div class="card mt-4" *ngIf="role !== 'Admin'">
   <p-table [value]="selfLeaveRequests" [tableStyle]="{ 'min-width': '50rem' }">
