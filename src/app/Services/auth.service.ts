@@ -78,6 +78,13 @@ export class AuthService {
     }
   }
 
+  getManagerIdFromToken() {
+    if (this.userPayload) {
+      console.log(this.userPayload.managerId)
+      return this.userPayload.managerId;
+    }
+  }
+
   renewToken(tokenApi: TokenApi) {
     return this._http.post<any>(this.baseURL + `/refresh`, tokenApi);
   }

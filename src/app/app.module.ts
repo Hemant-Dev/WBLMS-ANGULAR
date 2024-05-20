@@ -17,9 +17,17 @@ import { LeavesRemainingDashboardComponent } from './Components/leaves-remaining
 import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
-import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
+import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { FieldsetModule } from 'primeng/fieldset';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { CommonModule } from '@angular/common';
+import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,15 +43,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RegisterComponent,
     TableComponent,
     ResetPasswordComponent,
+    LeaveRequestsTableComponent,
     LeaveRequestComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
-    BrowserAnimationsModule
+    ButtonModule,
+    TableModule,
+    TagModule,
+    FieldsetModule,
+    InputTextModule,
+    MultiSelectModule,
+    DropdownModule,
+    CommonModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

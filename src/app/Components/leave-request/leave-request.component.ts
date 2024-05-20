@@ -1,111 +1,105 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { errorAlert } from 'src/app/Helpers/swal';
-import { LeaveRequest } from 'src/app/Models/LeaveRequest';
+import { Router } from '@angular/router';
+import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
+import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
+import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
+import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
+import { UserStoreService } from 'src/app/Services/user-store.service';
 
 @Component({
   selector: 'app-leave-request',
   templateUrl: './leave-request.component.html',
   styleUrls: ['./leave-request.component.css'],
-  animations: [
-    trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0
-      })),
-      transition('void <=> *', animate(300)),
-    ])
-  ]
 })
 export class LeaveRequestComponent implements OnInit {
-  leaveRequestForm!: FormGroup;
+  updateLeaveDaysDebounced: any;
+  ngOnInit(): void {
+    this.getLeaveType();
+    this.getDataFromUserStore();
+  }
 
   constructor(
-    private fb: FormBuilder,
-    private leaveRequestService: LeaveRequestsService
-  ) { }
+    private leaveRequestService: LeaveRequestsService,
+    private userService: UserStoreService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
-  leaveRequestData! : LeaveRequest[]
+  //Todays date
+  today = this.formatDate(new Date());
 
-  ngOnInit(): void {
-    this.fetchLeaveRequestData()
-  }
-  //       .createLeaveRequest(this.initialLeaveRequestData)
-  //       .subscribe({
-  //         next: (response: any) => {
-  //           console.log(response)
-  //         },
-  //         error: (errorAlert) => {
-  //           console.log(errorAlert)
-  //         }
-  //       })
-  fetchLeaveRequestData()  {
-    this.leaveRequestService.getLeaveRequest("firstName", "asc", 1, 5, this.initialLeaveRequestData)
-    .subscribe({
-      next : (response : any) => {
-        console.log(response)
-      },
-      error : (error : any) => {
-        console.log(error)
-      }
-    })
-  }
-
-  tableHeader =  [
-    "Employee Name",
-    "Leave Type",
-    "Reason",
-    "Status",
-    "Start Date",
-    "End Date",
-    "Total Days",
-    "Request Date",
-    "Approved Date"
-  ];
-
-  
-  initialLeaveRequestData: LeaveRequest = {
+  initialLeaveRequestData: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
-    firstName : "",
-    lastName : "", 
-    managerId: 0, 
     leaveTypeId: 0,
-    leaveType : "", 
-    reason: 'Attending a family function', 
-    status : "",
-    startDate: this.formatDate('0001-01-01'), 
-    endDate: this.formatDate('0001-01-01'), 
-    numberOfLeaveDays: 1, 
-    isHalfDay: false ,
-    requestDate : this.formatDate('0001-01-01'),
-    approvedDate : this.formatDate('0001-01-01')
+    reason: '',
+    startDate: '',
+    endDate: '',
+    numberOfLeaveDays: 0,
+    isHalfDay: false,
   };
 
-  formatDate(dateString: string | number | Date) {
-    const date = new Date(dateString);
+  formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString().padStart(4, '0');
     return `${year}-${month}-${day}`;
   }
 
-  // onSubmit(): void {
-  //   console.log(this.initialLeaveRequestData)
-  //   try {
-  //     this.leaveRequestService
-  //       .createLeaveRequest(this.initialLeaveRequestData)
-  //       .subscribe({
-  //         next: (response: any) => {
-  //           console.log(response)
-  //         },
-  //         error: (errorAlert) => {
-  //           console.log(errorAlert)
-  //         }
-  //       })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  todayDate: any = new Date();
+
+  leaveTypeData!: LeaveTypeModel[];
+
+  getLeaveType() {
+    this.leaveRequestService.getLeaveType().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.leaveTypeData = response.data;
+        console.log(this.leaveTypeData);
+      },
+    });
+  }
+
+  calculateLeaveDays() {
+    let start = new Date(this.initialLeaveRequestData.startDate!);
+    let end = new Date(this.initialLeaveRequestData.endDate!);
+    let count = 0;
+
+    while (start <= end) {
+      const dayOfWeek = start.getDay();
+      console.log(dayOfWeek + ' ' + count);
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        count++;
+      }
+      start.setDate(start.getDate() + 1);
+    }
+    if (start === end && this.initialLeaveRequestData.isHalfDay) {
+      count = 0.5;
+    }
+    console.log(this.initialLeaveRequestData);
+    this.initialLeaveRequestData.numberOfLeaveDays = count;
+  }
+
+  getDataFromUserStore() {
+    this.userService.getEmployeeIdFromStore().subscribe((val) => {
+      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+      const employeeId = val || employeeIdFromToken;
+      this.initialLeaveRequestData.employeeId = employeeId;
+    });
+  }
+
+  handleSubmit() {
+    this.leaveRequestService
+      .createLeaveRequest(this.initialLeaveRequestData)
+      .subscribe({
+        next: (res) => {
+          // console.log(res);
+          successToast('Leave request created successfully!');
+          this.router.navigate(['home/leaveRequests']);
+        },
+        error: (err) =>
+          errorToast('Something went wrong while creating Leave Requests!'),
+      });
+  }
 }

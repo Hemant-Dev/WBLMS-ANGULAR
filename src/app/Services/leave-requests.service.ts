@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from '../ApiUrl';
-import { LeaveRequest } from '../Models/LeaveRequest';
+import { LeaveRequestModel } from '../Models/leave-requestsModel';
+import { UpdateRequestStatus } from '../Models/update-request-status';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +11,42 @@ import { LeaveRequest } from '../Models/LeaveRequest';
 export class LeaveRequestsService {
   constructor(private http: HttpClient) {}
 
-  leave_api_url = API_URL + 'LeaveRequest/leavesBalance';
+  leave_api_url = API_URL + 'LeaveRequest';
 
-  leave_request_url = API_URL + "leaverequest";
+  leave_type_url = API_URL + 'leavetype';
+
   getLeavesBalances(employeeId: number): Observable<any> {
-    return this.http.get<any>(this.leave_api_url + `/${employeeId}`);
+    return this.http.get<any>(
+      this.leave_api_url + `/leavesBalance/${employeeId}`
+    );
   }
 
-  createLeaveRequest(data : LeaveRequest) : Observable<any> {
-    return this.http.post<any>(this.leave_request_url, data);
+  getLeaveRequests(
+    sortColumn: string,
+    sortOrder: string,
+    page: number,
+    pageSize: number,
+    leaveReqObj: LeaveRequestModel
+  ): Observable<any> {
+    return this.http.post<any>(
+      this.leave_api_url +
+        `/paginated?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
+      leaveReqObj
+    );
   }
 
-  getLeaveRequest(
-    sortColumn : string,
-    sortOrder : string,
-    page : number,
-    pageSize : number,
-    data : any
-  ) : Observable<any> {
-    return this.http.post<any>(this.leave_request_url + `/paginated?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,data)
+  updateLeaveRequestStatus(
+    id: number,
+    requestObj: UpdateRequestStatus
+  ): Observable<any> {
+    return this.http.put(this.leave_api_url + `/${id}`, requestObj);
+  }
+
+  createLeaveRequest(data: LeaveRequestModel): Observable<any> {
+    return this.http.post(this.leave_api_url, data);
+  }
+
+  getLeaveType(): Observable<any> {
+    return this.http.get(this.leave_api_url + '/leavetype');
   }
 }

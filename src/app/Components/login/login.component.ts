@@ -77,7 +77,9 @@ export class LoginComponent implements OnInit {
           this.userStore.setRoleToStore(tokenPayload.role);
           this.userStore.setEmailToStore(tokenPayload.email);
           this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
-          this.router.navigate(['home']);
+          this.router.navigate(['home/dashboard']);
+
+          console.log(this.userStore.getFullNameFromStore)
           // this.toast.success({
           //   detail: 'Success',
           //   summary: res.message,
