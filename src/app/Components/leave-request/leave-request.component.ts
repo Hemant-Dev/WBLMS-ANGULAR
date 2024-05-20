@@ -54,9 +54,9 @@ export class LeaveRequestComponent implements OnInit {
   getLeaveType() {
     this.leaveRequestService.getLeaveType().subscribe({
       next: (response: any) => {
-        console.log(response);
+        // console.log(response);
         this.leaveTypeData = response.data;
-        console.log(this.leaveTypeData);
+        // console.log(this.leaveTypeData);
       },
     });
   }
@@ -68,7 +68,7 @@ export class LeaveRequestComponent implements OnInit {
 
     while (start <= end) {
       const dayOfWeek = start.getDay();
-      console.log(dayOfWeek + ' ' + count);
+      // console.log(dayOfWeek + ' ' + count);
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         count++;
       }
@@ -77,7 +77,7 @@ export class LeaveRequestComponent implements OnInit {
     if (start === end && this.initialLeaveRequestData.isHalfDay) {
       count = 0.5;
     }
-    console.log(this.initialLeaveRequestData);
+    // console.log(this.initialLeaveRequestData);
     this.initialLeaveRequestData.numberOfLeaveDays = count;
   }
 

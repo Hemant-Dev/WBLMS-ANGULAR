@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { errorAlert } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -44,7 +45,10 @@ export class ProfileComponent implements OnInit {
         this.employeeData = res.data;
         // console.log(this.employeeData);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        // console.log(err);
+        errorAlert('Connection Error');
+      },
     });
   }
   fetchSessionData() {

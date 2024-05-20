@@ -46,95 +46,18 @@
         <td>{{ request.endDate }}</td>
         <td>{{ request.numberOfLeaveDays }}</td>
         <td>{{ request.requestDate }}</td>
-        <td>{{ request.approvedDate }}</td>
+        <td
+          *ngIf="request.approvedDate !== '0001-01-01'; else elseApprovedDate"
+        >
+          {{ request.approvedDate }}
+        </td>
+        <ng-template #elseApprovedDate>
+          <td>Not Approved</td>
+        </ng-template>
       </tr>
     </ng-template>
   </p-table>
 </div>
-<!-- Table 2 -->
-<!-- <div class="card my-4" *ngIf="role !== 'Employee'">
-  <p-table
-    #dt2
-    [value]="leaveRequests"
-    dataKey="id"
-    [rows]="10"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [paginator]="true"
-    [globalFilterFields]="[
-      'name',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
-    [tableStyle]="{ 'min-width': '70rem' }"
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex">
-        <p-header>Team Leave Requests</p-header>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Leave Type</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Number Of Days</th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-request>
-      <tr>
-        <td>{{ request.firstName }}</td>
-        <td>
-          {{ request.lastName }}
-        </td>
-        <td>{{ request.leaveType }}</td>
-        <td>
-          {{ request.reason }}
-        </td>
-        <td>
-          <p-tag [value]="request.status" />
-        </td>
-        <td>
-          {{ request.startDate }}
-        </td>
-        <td>
-          {{ request.endDate }}
-        </td>
-        <td class="text-end">
-          {{ request.numberOfLeaveDays }}
-        </td>
-        <td>
-          <div
-            class="button-group d-flex gap-2 justify-content-center align-items-center"
-          >
-            <button
-              class="btn btn-success"
-              (click)="handleApproveClick(request.id)"
-            >
-              <i class="fa fa-solid fa-check"></i>
-            </button>
-            <button
-              class="btn btn-danger"
-              (click)="handleRejectClick(request.id)"
-            >
-              <i class="fa fa-solid fa-xmark"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="12">No Leave Requests found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div> -->
 
 <!-- Modal -->
 <div

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
-import { errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -68,7 +68,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   // }
   submitLeaveRequest() {
     // Handle the form submission logic here
-    console.log(this.leaveRequest);
+    // console.log(this.leaveRequest);
 
     // You can reset the form and close the modal after submission
     this.leaveRequest = { name: '', phoneNumber: '' };
@@ -90,7 +90,7 @@ export class LeaveRequestsTableComponent implements OnInit {
         .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.leaveRequests = res.data.dataArray;
             console.log(this.leaveRequests)
             this.initialLeaveRequestObj.managerId = 0;
@@ -98,7 +98,7 @@ export class LeaveRequestsTableComponent implements OnInit {
             console.log("fetch self req data")
             this.fetchSelfRequestData();
           },
-          error: (err) => console.log(err),
+          error: (err) => errorAlert(err),
         });
     }
   }
@@ -115,7 +115,8 @@ export class LeaveRequestsTableComponent implements OnInit {
             this.initialLeaveRequestObj.employeeId = 0;
           },
           error: (err) => {
-            console.log(err);
+            // console.log(err);
+            errorAlert(err);
           },
         });
     }

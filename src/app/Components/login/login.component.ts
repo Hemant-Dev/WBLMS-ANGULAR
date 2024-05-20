@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
           this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
           this.router.navigate(['home/dashboard']);
 
-          console.log(this.userStore.getFullNameFromStore)
+          // console.log(this.userStore.getFullNameFromStore)
           // this.toast.success({
           //   detail: 'Success',
           //   summary: res.message,
@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
 
   confirmToSend() {
     if (this.checkValidEmail(this.resetPasswordEmail)) {
-      console.log(this.resetPasswordEmail);
+      // console.log(this.resetPasswordEmail);
 
       // API Call
       this.resetService
@@ -138,7 +138,8 @@ export class LoginComponent implements OnInit {
           },
         });
     } else {
-      console.log('Invalid Email');
+      // console.log('Invalid Email');
+      errorToast('Invalid Email');
     }
   }
   decodeToken(token: string) {
