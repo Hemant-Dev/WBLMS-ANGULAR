@@ -35,13 +35,13 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'table', component: TableComponent },
-      { path: 'test', component: LeaveRequestComponent },
+      // { path: 'test', component: LeaveRequestComponent },
       {
         path: 'leaveRequests',
         component: LeaveRequestsTableComponent,
       },
     ],
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

@@ -4,6 +4,7 @@ import { Table } from 'primeng/table';
 import { errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
+import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
@@ -32,6 +33,12 @@ export class LeaveRequestsTableComponent implements OnInit {
     status: '',
     numberOfLeaveDays: 0,
   };
+  initialUserSessionObj: UserSessionModel = {
+    employeeId: 0,
+    fullName: '',
+    email: '',
+    role: '',
+  };
   role!: string;
   fullName!: string;
   email!: string;
@@ -44,10 +51,10 @@ export class LeaveRequestsTableComponent implements OnInit {
   ) {}
   leaveRequest = {
     name: '',
-    phoneNumber: ''
+    phoneNumber: '',
   };
 
-  bootstrap : any;
+  bootstrap: any;
 
   // submitLeaveRequest() {
   //   // Handle the form submission logic here
@@ -114,18 +121,22 @@ export class LeaveRequestsTableComponent implements OnInit {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();
       this.fullName = val || fullNameFromToken;
+      this.initialUserSessionObj.fullName = this.fullName;
     });
     this.userStore.getRoleFromStore().subscribe((val) => {
       const roleFromToken = this.auth.getRoleFromToken();
       this.role = val || roleFromToken;
+      this.initialUserSessionObj.role = this.role;
     });
     this.userStore.getEmailFromStore().subscribe((val) => {
       const emailFromToken = this.auth.getEmailFromToken();
       this.email = val || emailFromToken;
+      this.initialUserSessionObj.email = this.email;
     });
     this.userStore.getEmployeeIdFromStore().subscribe((val) => {
       const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
       this.employeeId = val || employeeIdFromToken;
+      this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
   }
   clear(table: Table) {

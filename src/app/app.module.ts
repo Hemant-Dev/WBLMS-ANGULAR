@@ -28,6 +28,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
+import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { LeaveRequestComponent } from './Components/leave-request/leave-request.
     ResetPasswordComponent,
     LeaveRequestsTableComponent,
     LeaveRequestComponent,
+    TeamLeaveRequestsTableComponent,
   ],
   imports: [
     BrowserModule,

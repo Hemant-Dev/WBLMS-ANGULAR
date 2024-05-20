@@ -4,7 +4,6 @@
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;
-  /* height: 100vh; */
 }
 .border-white {
   border: 1px solid white;
@@ -21,6 +20,7 @@
   display: flex;
   align-items: center;
   height: 50px;
+  cursor: pointer;
 }
 
 .nav-list-open .nav-list-item:hover {
