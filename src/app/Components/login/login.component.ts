@@ -79,25 +79,11 @@ export class LoginComponent implements OnInit {
           this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
           this.router.navigate(['home/dashboard']);
 
-          // console.log(this.userStore.getFullNameFromStore)
-          // this.toast.success({
-          //   detail: 'Success',
-          //   summary: res.message,
-          //   duration: 3000,
-          // });
           successToast('Logged in successfully!');
         },
         error: (err) => errorToast(err),
-        // this.toast.error({
-        //   detail: 'Error',
-        //   summary: err,
-        //   duration: 3000,
-        // }),
       });
     } else {
-      // console.log('Form is invalid');
-      // errorAlert('Form is Invalid!');
-      // errorToast('Form is Invalid');
       ValidateForm.validateAllFormFields(this.loginForm);
     }
   }

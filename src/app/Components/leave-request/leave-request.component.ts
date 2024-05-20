@@ -97,6 +97,8 @@ export class LeaveRequestComponent implements OnInit {
           // console.log(res);
           successToast('Leave request created successfully!');
           this.router.navigate(['home/leaveRequests']);
+          const buttonRef = document.getElementById('closeBtn');
+          buttonRef?.click();
         },
         error: (err) =>
           errorToast('Something went wrong while creating Leave Requests!'),

@@ -3,55 +3,109 @@
     <h5 class="modal-title" id="addLeaveRequestModalLabel">
       Leave Request Form
     </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+    ></button>
   </div>
   <div class="modal-body">
     <div class="form-group">
       <div class="mb-3">
         <label for="leaveType" class="form-label">Leave Type</label>
-        <select class="form-select" id="leaveType" name="leaveTypeId" [(ngModel)]="initialLeaveRequestData.leaveTypeId">
+        <select
+          class="form-select"
+          id="leaveType"
+          name="leaveTypeId"
+          [(ngModel)]="initialLeaveRequestData.leaveTypeId"
+        >
           <option selected disabled [value]="0">Select Leave Type</option>
-          <option *ngFor="let leaveType of leaveTypeData" [value]="leaveType.id">
+          <option
+            *ngFor="let leaveType of leaveTypeData"
+            [value]="leaveType.id"
+          >
             {{ leaveType.leaveTypeName }}
           </option>
         </select>
       </div>
       <div class="mb-3">
         <label for="leaveReason" class="form-label">Reason</label>
-        <textarea  name="reson" [(ngModel)]="initialLeaveRequestData.reason" class="form-control max-height-scrollable" id="leaveReason"
-          rows="3" ></textarea>
+        <textarea
+          name="reson"
+          [(ngModel)]="initialLeaveRequestData.reason"
+          class="form-control max-height-scrollable"
+          id="leaveReason"
+          rows="3"
+        ></textarea>
       </div>
       <div class="row mb-3">
         <div class="col">
           <label for="endDate" class="form-label">Start Date</label>
-          <input [disabled]="initialLeaveRequestData.startDate === '0001-01-01'" type="date" name="startDate"
-            [(ngModel)]="initialLeaveRequestData.startDate" (change)="calculateLeaveDays()" class="form-control"
-            id="startDate" />
+          <input
+            [disabled]="initialLeaveRequestData.startDate === '0001-01-01'"
+            type="date"
+            name="startDate"
+            [(ngModel)]="initialLeaveRequestData.startDate"
+            (change)="calculateLeaveDays()"
+            class="form-control"
+            id="startDate"
+          />
         </div>
         <div class="col">
           <label for="endDate" class="form-label">End Date</label>
-          <input [disabled]="initialLeaveRequestData.startDate === '0001-01-01'" type="date" name="endDate"
-            [(ngModel)]="initialLeaveRequestData.endDate" (change)="calculateLeaveDays()" class="form-control"
-            id="endDate" />
+          <input
+            [disabled]="initialLeaveRequestData.startDate === '0001-01-01'"
+            type="date"
+            name="endDate"
+            [(ngModel)]="initialLeaveRequestData.endDate"
+            (change)="calculateLeaveDays()"
+            class="form-control"
+            id="endDate"
+          />
         </div>
-        <div class="form-check form-switch" style="margin-left: 20px; margin-top: 5px;" *ngIf="
+        <div
+          class="form-check form-switch"
+          style="margin-left: 20px; margin-top: 5px"
+          *ngIf="
             this.initialLeaveRequestData.startDate ===
             this.initialLeaveRequestData.endDate
-          ">
-          <input class="form-check-input" type="checkbox" name="isHalfDay"
-            [(ngModel)]="initialLeaveRequestData.isHalfDay" (change)="calculateLeaveDays()" value="" id="halfDay" />
+          "
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="isHalfDay"
+            [(ngModel)]="initialLeaveRequestData.isHalfDay"
+            (change)="calculateLeaveDays()"
+            value=""
+            id="halfDay"
+          />
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>
       </div>
       <div class="mb-3" *ngIf="!this.initialLeaveRequestData.isHalfDay">
-        <label for="numberOfLeaveDays" class="form-label">Number of Leave Days</label>
-        <input type="text" name="numberOfLeaveDays" [(ngModel)]="initialLeaveRequestData.numberOfLeaveDays"
-          class="form-control" id="numberOfLeaveDays" readonly />
+        <label for="numberOfLeaveDays" class="form-label"
+          >Number of Leave Days</label
+        >
+        <input
+          type="text"
+          name="numberOfLeaveDays"
+          [(ngModel)]="initialLeaveRequestData.numberOfLeaveDays"
+          class="form-control"
+          id="numberOfLeaveDays"
+          readonly
+        />
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+    <button
+      id="closeBtn"
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+    >
       Close
     </button>
     <button class="btn btn-primary" (click)="handleSubmit()">Submit</button>

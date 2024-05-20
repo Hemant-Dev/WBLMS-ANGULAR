@@ -57,19 +57,7 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   bootstrap: any;
 
-  // submitLeaveRequest() {
-  //   // Handle the form submission logic here
-  //   console.log(this.leaveRequest);
-  //   // You can reset the form and close the modal after submission
-  //   this.leaveRequest = { name: '', phoneNumber: '' };
-  // //   const modalElement = document.getElementById('addLeaveRequestModal');
-  // //   const modalInstance = this.bootstrap.Modal.getInstance(modalElement);
-  // //  // modalInstance.hide();
-  // }
   submitLeaveRequest() {
-    // Handle the form submission logic here
-    // console.log(this.leaveRequest);
-
     // You can reset the form and close the modal after submission
     this.leaveRequest = { name: '', phoneNumber: '' };
 
@@ -87,15 +75,15 @@ export class LeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
-            console.log(this.leaveRequests)
+            console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
-            console.log("fetch self req data")
+            console.log('fetch self req data');
             this.fetchSelfRequestData();
           },
           error: (err) => errorAlert(err),
@@ -108,7 +96,7 @@ export class LeaveRequestsTableComponent implements OnInit {
     if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             this.selfLeaveRequests = res.data.dataArray;
@@ -142,7 +130,6 @@ export class LeaveRequestsTableComponent implements OnInit {
       this.employeeId = val || employeeIdFromToken;
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
-
   }
   clear(table: Table) {
     table.clear();
