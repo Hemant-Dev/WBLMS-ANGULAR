@@ -73,6 +73,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       .subscribe({
         next: (res) => {
           successToast('Leave Request Rejected.');
+          this.ngOnInit();
         },
         error: (err) => errorToast('Error Occured while updating status'),
       });
@@ -87,6 +88,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       .subscribe({
         next: (res) => {
           successToast('Leave Request Approved.');
+          this.ngOnInit();
         },
         error: (err) => errorToast('Error Occured while updating status'),
       });
