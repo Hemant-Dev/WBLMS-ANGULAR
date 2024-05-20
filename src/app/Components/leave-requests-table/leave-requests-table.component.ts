@@ -74,7 +74,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   ngOnInit() {
     this.fetchSessionData();
     if (this.role !== 'Admin') {
-      this.initialLeaveRequestObj.managerId = Number(this.employeeId);
+      this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
         .getLeaveRequests('', '', 1, this.pageSize, this.initialLeaveRequestObj)

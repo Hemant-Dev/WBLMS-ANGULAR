@@ -35,6 +35,17 @@ export class LeaveRequestsService {
     );
   }
 
+  searchLeaveRequests(
+    page : number,
+    pageSize : number,
+    search : string,
+    employeeId : number
+  ) : Observable<any> {
+    return this.http.get<any>(
+      this.leave_api_url + `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}`
+    )
+  }
+
   updateLeaveRequestStatus(
     id: number,
     requestObj: UpdateRequestStatus
