@@ -1,5 +1,6 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -9,32 +10,33 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
 @Component({
   selector: 'app-leave-request',
   templateUrl: './leave-request.component.html',
-  styleUrls: ['./leave-request.component.css']
+  styleUrls: ['./leave-request.component.css'],
 })
 export class LeaveRequestComponent implements OnInit {
   updateLeaveDaysDebounced: any;
   ngOnInit(): void {
     this.getLeaveType();
-    this.getDataFromUserStore()
+    this.getDataFromUserStore();
   }
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private userService: UserStoreService,
-    private auth: AuthService
-  ) { }
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   //Todays date
   today = this.formatDate(new Date());
 
   initialLeaveRequestData: LeaveRequestModel = {
     id: 0,
-    employeeId: 6,
+    employeeId: 0,
     leaveTypeId: 0,
-    reason: 'Attending a family function',
-    startDate: this.today, 
-    endDate: this.today, 
-    numberOfLeaveDays: 1,
+    reason: '',
+    startDate: '',
+    endDate: '',
+    numberOfLeaveDays: 0,
     isHalfDay: false,
   };
 
@@ -47,21 +49,17 @@ export class LeaveRequestComponent implements OnInit {
 
   todayDate: any = new Date();
 
-
   leaveTypeData!: LeaveTypeModel[];
 
   getLeaveType() {
-    this.leaveRequestService
-      .getLeaveType()
-      .subscribe({
-        next: (response: any) => {
-          console.log(response)
-          this.leaveTypeData = response.data;
-          console.log(this.leaveTypeData)
-        }
-      })
+    this.leaveRequestService.getLeaveType().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.leaveTypeData = response.data;
+        console.log(this.leaveTypeData);
+      },
+    });
   }
-  
 
   calculateLeaveDays() {
     let start = new Date(this.initialLeaveRequestData.startDate!);
@@ -70,37 +68,38 @@ export class LeaveRequestComponent implements OnInit {
 
     while (start <= end) {
       const dayOfWeek = start.getDay();
-      console.log(dayOfWeek + " " + count)
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) { 
+      console.log(dayOfWeek + ' ' + count);
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         count++;
       }
       start.setDate(start.getDate() + 1);
     }
-
+    if (start === end && this.initialLeaveRequestData.isHalfDay) {
+      count = 0.5;
+    }
+    console.log(this.initialLeaveRequestData);
     this.initialLeaveRequestData.numberOfLeaveDays = count;
   }
 
-
   getDataFromUserStore() {
-    this.userService.getEmployeeIdFromStore()
-      .subscribe((val) => {
-        const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-        const employeeId = val || employeeIdFromToken;
-        this.initialLeaveRequestData.employeeId = employeeId;
-      })
+    this.userService.getEmployeeIdFromStore().subscribe((val) => {
+      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+      const employeeId = val || employeeIdFromToken;
+      this.initialLeaveRequestData.employeeId = employeeId;
+    });
   }
 
   handleSubmit() {
-    try {
-      console.log(this.initialLeaveRequestData)
-      this.leaveRequestService.createLeaveRequest(this.initialLeaveRequestData)
-        .subscribe({
-          next: (response: any) => {
-            console.log(response)
-          }
-        });
-    } catch (error) {
-      console.log(error)
-    }
+    this.leaveRequestService
+      .createLeaveRequest(this.initialLeaveRequestData)
+      .subscribe({
+        next: (res) => {
+          // console.log(res);
+          successToast('Leave request created successfully!');
+          this.router.navigate(['home/leaveRequests']);
+        },
+        error: (err) =>
+          errorToast('Something went wrong while creating Leave Requests!'),
+      });
   }
 }
