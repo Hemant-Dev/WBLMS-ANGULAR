@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { successToast, errorToast } from 'src/app/Helpers/swal';
+import { successToast, errorToast, errorAlert } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -42,6 +42,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.fetchSessionData();
+    // Fetching Employee requests data
     if (this.role !== 'Employee') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
@@ -49,12 +50,15 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.leaveRequests = res.data.dataArray;
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
           },
-          error: (err) => console.log(err),
+          error: (err) => {
+            // console.log(err);
+            errorAlert(err.data.errorMessage);
+          },
         });
     }
   }
