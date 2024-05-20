@@ -15,6 +15,7 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./leave-requests-table.component.css'],
 })
 export class LeaveRequestsTableComponent implements OnInit {
+  submitStatus: boolean = false;
   leaveRequests!: LeaveRequestModel[];
   selfLeaveRequests!: LeaveRequestModel[];
   loading: boolean = true;
@@ -89,7 +90,10 @@ export class LeaveRequestsTableComponent implements OnInit {
         });
     }
   }
-
+  fetchSessionAndSelfRequestData() {
+    this.fetchSessionData();
+    this.fetchSelfRequestData();
+  }
   fetchSelfRequestData() {
     // temp set then reset the id
     if (this.role !== 'Admin') {

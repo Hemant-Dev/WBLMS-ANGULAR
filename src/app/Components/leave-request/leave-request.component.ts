@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
@@ -15,6 +15,10 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
 })
 export class LeaveRequestComponent implements OnInit {
   updateLeaveDaysDebounced: any;
+  @Output() submitLeaveRequestClicked: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+  submitStatus: boolean = false;
+
   ngOnInit(): void {
     this.getLeaveType();
     this.getDataFromUserStore();
@@ -26,7 +30,10 @@ export class LeaveRequestComponent implements OnInit {
     private auth: AuthService,
     private router: Router
   ) {}
-
+  submitButtonClicked() {
+    this.submitStatus = !this.submitStatus;
+    this.submitLeaveRequestClicked.emit(this.submitStatus);
+  }
   //Todays date
   today = this.formatDate(new Date());
 
@@ -96,9 +103,10 @@ export class LeaveRequestComponent implements OnInit {
         next: (res) => {
           // console.log(res);
           successToast('Leave request created successfully!');
-          this.router.navigate(['home/leaveRequests']);
           const buttonRef = document.getElementById('closeBtn');
           buttonRef?.click();
+          this.submitStatus = true;
+          this.submitButtonClicked();
           this.initialLeaveRequestData = {
             id: 0,
             employeeId: 0,
@@ -109,6 +117,10 @@ export class LeaveRequestComponent implements OnInit {
             numberOfLeaveDays: 0,
             isHalfDay: false,
           };
+          this.ngOnInit();
+
+          // this.router.navigate(['home/leaveRequests']);
+          // this.router.navigate([this.router.url]);
         },
         error: (err) =>
           errorToast('Something went wrong while creating Leave Requests!'),
