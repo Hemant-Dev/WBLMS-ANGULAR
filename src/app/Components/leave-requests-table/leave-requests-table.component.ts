@@ -44,6 +44,8 @@ export class LeaveRequestsTableComponent implements OnInit {
   email!: string;
   employeeId!: string;
 
+  pageSize : number = 2;
+
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -75,7 +77,7 @@ export class LeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, this.pageSize, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             // console.log(res);
