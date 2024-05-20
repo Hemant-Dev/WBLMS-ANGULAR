@@ -22,7 +22,6 @@ export class LeaveRequestsTableComponent implements OnInit {
   activityValues: number[] = [0, 100];
 
   searchValue: string | undefined;
-
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,

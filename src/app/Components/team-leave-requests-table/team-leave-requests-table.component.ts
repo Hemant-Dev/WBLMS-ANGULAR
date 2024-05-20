@@ -47,7 +47,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 4, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             // console.log(res);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Table } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
@@ -39,7 +40,6 @@ export class LeaveRequestComponent implements OnInit {
     numberOfLeaveDays: 0,
     isHalfDay: false,
   };
-
   formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -99,6 +99,16 @@ export class LeaveRequestComponent implements OnInit {
           this.router.navigate(['home/leaveRequests']);
           const buttonRef = document.getElementById('closeBtn');
           buttonRef?.click();
+          this.initialLeaveRequestData = {
+            id: 0,
+            employeeId: 0,
+            leaveTypeId: 0,
+            reason: '',
+            startDate: '',
+            endDate: '',
+            numberOfLeaveDays: 0,
+            isHalfDay: false,
+          };
         },
         error: (err) =>
           errorToast('Something went wrong while creating Leave Requests!'),

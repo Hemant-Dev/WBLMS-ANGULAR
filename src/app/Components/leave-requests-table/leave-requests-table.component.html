@@ -5,8 +5,27 @@
 </div>
 
 <!-- Table 1 -->
-<div class="card mt-4" *ngIf="role !== 'Admin'">
-  <p-table [value]="selfLeaveRequests" [tableStyle]="{ 'min-width': '50rem' }">
+<div class="card my-4" *ngIf="role !== 'Admin'">
+  <p-table
+    #dt2
+    [value]="selfLeaveRequests"
+    dataKey="id"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'name',
+      'country.name',
+      'representative.name',
+      'status'
+    ]"
+    [tableStyle]="{ 'min-width': '70rem' }"
+  >
+    <!-- <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-header>Team Leave Requests</p-header>
+      </div>
+    </ng-template> -->
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <p-header>Created Leave Requests</p-header>
@@ -42,7 +61,9 @@
       <tr>
         <td>{{ request.leaveType }}</td>
         <td>{{ request.reason }}</td>
-        <td>{{ request.status }}</td>
+        <td>
+          <!-- {{ request.status }} -->
+        </td>
         <td>{{ request.startDate }}</td>
         <td>{{ request.endDate }}</td>
         <td>{{ request.numberOfLeaveDays }}</td>
@@ -55,6 +76,11 @@
         <ng-template #elseApprovedDate>
           <td>Not Approved</td>
         </ng-template>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="12">No Leave Requests found.</td>
       </tr>
     </ng-template>
   </p-table>

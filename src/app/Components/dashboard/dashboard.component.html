@@ -1,19 +1,6 @@
-<!-- <ul *ngIf="this.role === 'Admin' || this.role === 'HR'">
-  <li *ngFor="let emp of employees">
-    {{ emp.firstName }}
-  </li>
-</ul> -->
-<div class="col-sm-12 row">
-  <!-- <app-leaves-remaining-dashboard
-    [userSessionObj]="initialUserSessionObj"
-  ></app-leaves-remaining-dashboard> -->
+<div class="col-sm-12 row" *ngIf="role !== 'Employee'">
   <app-team-leave-requests-table></app-team-leave-requests-table>
 </div>
-<div class="row">
-  <!-- <div class="col-sm-12">
-    <app-leave-requests-table></app-leave-requests-table>
-  </div> -->
-  <!-- <div class="col-sm-6">
-    <app-table [employeesList]="employees"> </app-table>
-  </div> -->
-</div>
+
+<!-- Still need to decide what to show -->
+<div class="row"></div>
