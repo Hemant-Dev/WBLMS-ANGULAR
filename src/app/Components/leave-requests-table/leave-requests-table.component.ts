@@ -43,7 +43,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
-  seachKeyword: string = '';
+  searchKeyword: string = '';
 
   pageSize: number = 2;
 
@@ -172,9 +172,9 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   handleSearch() {
     console.log('search');
-    console.log(this.seachKeyword);
+    console.log(this.searchKeyword);
     this.leaveRequestService
-    .searchLeaveRequests(1, 100, this.seachKeyword, Number(this.employeeId),0)
+    .searchLeaveRequests(1, 100, this.searchKeyword, Number(this.employeeId),0)
     .subscribe({
       next : (res) => {
         this.selfLeaveRequests = res.data.dataArray;

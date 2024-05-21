@@ -23,6 +23,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
+    managerId : 0,
     firstName: '',
     lastName: '',
     leaveType: '',
@@ -35,6 +36,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   email!: string;
   employeeId!: string;
   pageSize : number = 3;
+  searchKeyword : string = "";
+
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -53,6 +56,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
+            console.log(this.leaveRequests)
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
           },
@@ -113,4 +117,43 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       this.employeeId = val || employeeIdFromToken;
     });
   }
+
+  fetchAllRequestData() {
+    if (this.role !== 'Employee') {
+      this.leaveRequestService
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .subscribe({
+          next: (res) => {
+            this.leaveRequests = res.data.dataArray;
+            console.log(res);
+          },
+          error: (err) => console.log(err),
+        });
+    }
+  }
+
+  handleSearch(){
+    this.leaveRequestService
+    .searchLeaveRequests(1,100,this.searchKeyword, 0, Number(this.employeeId))
+    .subscribe(
+      {
+        next : (res) => {
+          this.leaveRequests = res.data.dataArray;
+          console.log(this.leaveRequests)
+        }
+      }
+    )
+  }
+  // handleSearch() {
+  //   console.log('search');
+  //   console.log(this.searchKeyword);
+  //   this.leaveRequestService
+  //   .searchLeaveRequests(1, 100, this.searchKeyword, Number(this.employeeId),0)
+  //   .subscribe({
+  //     next : (res) => {
+  //       this.selfLeaveRequests = res.data.dataArray;
+  //       console.log(this.selfLeaveRequests)
+  //     }
+  //   })
+  // }
 }

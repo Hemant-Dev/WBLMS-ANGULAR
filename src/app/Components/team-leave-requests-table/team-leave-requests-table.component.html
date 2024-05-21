@@ -15,8 +15,21 @@
     [tableStyle]="{ 'min-width': '70rem' }"
   >
     <ng-template pTemplate="caption">
-      <div class="flex">
+      <div class="d-flex justify-content-between align-items-center mb-2">
         <p-header>Team Leave Requests</p-header>
+        <div class="input-group w-50">
+          <input
+            type="text"
+            name="searchKeyword"
+            [(ngModel)]="searchKeyword"
+            (ngModelChange)="handleSearch()"
+            class="form-control mr-2"
+            placeholder="Search"
+          />
+          <button class="btn btn-primary mx-3">
+            <i class="fa fa-search"></i>
+          </button>
+          </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">

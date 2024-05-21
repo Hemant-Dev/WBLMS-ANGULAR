@@ -36,6 +36,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchSessionData();
+    console.log(this.role)
+    console.log(this.fullName)
+    console.log(this.email)
+    console.log(this.employeeId)
     this.getEmployeeData();
     this.setGenderId()
   }
