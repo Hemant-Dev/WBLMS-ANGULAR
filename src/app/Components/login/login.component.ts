@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
       });
     } else {
       ValidateForm.validateAllFormFields(this.loginForm);
+      errorToast('Login Form is invalid!');
     }
   }
 

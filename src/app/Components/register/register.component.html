@@ -1,159 +1,152 @@
-<div>
-  <div class="container">
-    <div class="row">
-      <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4">
-        <div class="panel border bg-white">
-          <div class="panel-heading">
-            <img src="../../../assets/img/WBLMS-logo.jfif" alt="WBLMS-logo" />
-            <h3 class="pt-3 font-weight-bold">WBLMS - Register</h3>
-          </div>
-          <div class="panel-body p-3">
-            <form (ngSubmit)="handleSubmit()">
-              <div class="row">
-                <div class="col-sm">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <span class="fa fa-user p-2"></span>
-                      <input
-                        type="text"
-                        name="firstName"
-                        placeholder="First Name"
-                        [(ngModel)]="initialEmployeeData.firstName"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-s m">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <span class="fa fa-user p-2"></span>
-                      <input
-                        type="text"
-                        name="lastName"
-                        placeholder="Last Name"
-                        [(ngModel)]="initialEmployeeData.lastName"
-                      />
-                    </div>
+<div class="container">
+  <div class="row">
+    <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4">
+      <div class="panel border bg-white">
+        <div class="panel-heading">
+          <img src="../../../assets/img/WBLMS-logo.jfif" alt="WBLMS-logo" />
+          <h3 class="pt-2 font-weight-bold">WBLMS - Register</h3>
+        </div>
+        <div class="panel-body p-3">
+          <form (ngSubmit)="handleSubmit()">
+            <div class="row">
+              <div class="col-sm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <span class="fa fa-user p-2"></span>
+                    <input
+                      type="text"
+                      name="firstName"
+                      placeholder="First Name"
+                      [(ngModel)]="initialEmployeeData.firstName"
+                      required
+                    />
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <span class="fa fa-user p-2"></span>
-                      <input
-                        type="text"
-                        name="contactNumber"
-                        [(ngModel)]="initialEmployeeData.contactNumber"
-                        placeholder="Contact Number"
-                      />
-                    </div>
+              <div class="col-s m">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <span class="fa fa-user p-2"></span>
+                    <input
+                      type="text"
+                      name="lastName"
+                      placeholder="Last Name"
+                      [(ngModel)]="initialEmployeeData.lastName"
+                    />
                   </div>
                 </div>
-                <div class="col-sm">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <select
-                        class="form-select"
-                        name="genderId"
-                        aria-label="Gender"
-                        [(ngModel)]="initialEmployeeData.genderId"
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <span class="fa fa-user p-2"></span>
+                    <input
+                      type="text"
+                      name="contactNumber"
+                      [(ngModel)]="initialEmployeeData.contactNumber"
+                      placeholder="Contact Number"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <select
+                      class="form-select"
+                      name="genderId"
+                      aria-label="Gender"
+                      [(ngModel)]="initialEmployeeData.genderId"
+                    >
+                      <option selected disabled [value]="0">
+                        Select Gender
+                      </option>
+                      <option
+                        *ngFor="let gender of gendersData"
+                        [value]="gender.id"
                       >
-                        <option selected disabled [value]="0">
-                          Select Gender
-                        </option>
-                        <option
-                          *ngFor="let gender of gendersData"
-                          [value]="gender.id"
-                        >
-                          {{ gender.genderName }}
-                        </option>
-                      </select>
-                    </div>
+                        {{ gender.genderName }}
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <select
-                        class="form-select"
-                        name="roleId"
-                        aria-label="Role"
-                        [(ngModel)]="initialEmployeeData.roleId"
-                        (change)="onChangeRole()"
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <select
+                      class="form-select"
+                      name="roleId"
+                      aria-label="Role"
+                      [(ngModel)]="initialEmployeeData.roleId"
+                      (change)="onChangeRole()"
+                    >
+                      <option selected disabled [value]="0">Select Role</option>
+                      <option *ngFor="let role of roleData" [value]="role.id">
+                        {{ role.roleName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <select
+                      [disabled]="initialEmployeeData.roleId == 0"
+                      class="form-select"
+                      name="managerId"
+                      aria-label="Manager Name"
+                      [(ngModel)]="initialEmployeeData.managerId"
+                    >
+                      <option selected disabled [value]="0">
+                        Select Manager
+                      </option>
+                      <option
+                        *ngFor="let manager of managerData"
+                        [value]="manager.id || initialEmployeeData.managerId"
                       >
-                        <option selected disabled [value]="0">
-                          Select Role
-                        </option>
-                        <option *ngFor="let role of roleData" [value]="role.id">
-                          {{ role.roleName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm">
-                  <div class="form-group pt-3">
-                    <div class="input-field">
-                      <select
-                        [disabled]="initialEmployeeData.roleId == 0"
-                        class="form-select"
-                        name="managerId"
-                        aria-label="Manager Name"
-                        [(ngModel)]="initialEmployeeData.managerId"
-                      >
-                        <option selected disabled [value]="0">
-                          Select Manager
-                        </option>
-                        <option
-                          *ngFor="let manager of managerData"
-                          [value]="manager.id || initialEmployeeData.managerId"
-                        >
-                          {{ manager.managerName }}
-                        </option>
-                      </select>
-                    </div>
+                        {{ manager.managerName }}
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <span class="fa fa-user p-2"></span>
-                  <input
-                    type="text"
-                    name="emailAddress"
-                    [(ngModel)]="initialEmployeeData.emailAddress"
-                    placeholder="Email"
-                  />
-                </div>
+            </div>
+            <div class="form-group pt-3">
+              <div class="input-field">
+                <span class="fa fa-user p-2"></span>
+                <input
+                  type="text"
+                  name="emailAddress"
+                  [(ngModel)]="initialEmployeeData.emailAddress"
+                  placeholder="Email"
+                />
               </div>
-              <div class="form-group pt-3" *ngIf="!initialEmployeeData.id">
-                <div class="input-field">
-                  <span class="fa fa-lock p-2"></span>
-                  <input
-                    [type]="type"
-                    name="password"
-                    [(ngModel)]="initialEmployeeData.password"
-                    placeholder="Password"
-                  />
-                  <span
-                    (click)="hideShowPassword()"
-                    class="fa {{ eyeIcon }}"
-                  ></span>
-                </div>
+            </div>
+            <div class="form-group pt-3" *ngIf="!initialEmployeeData.id">
+              <div class="input-field">
+                <span class="fa fa-lock p-2"></span>
+                <input
+                  [type]="type"
+                  name="password"
+                  [(ngModel)]="initialEmployeeData.password"
+                  placeholder="Password"
+                />
+                <span
+                  (click)="hideShowPassword()"
+                  class="fa {{ eyeIcon }}"
+                ></span>
               </div>
-              <button
-                type="submit"
-                class="btn btn-primary btn-block mt-4 w-100"
-              >
-                {{ initialEmployeeData.id == 0 ? "Register" : "Update" }}
-              </button>
-            </form>
-          </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
+              {{ initialEmployeeData.id == 0 ? "Register" : "Update" }}
+            </button>
+          </form>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <div class="side-nav-content">
   <ul class="nav-list" [class.nav-list-open]="sideNavStatus">
     <li
-      *ngFor="let item of list"
+      *ngFor="let item of filteredList"
       class="nav-list-item"
       [routerLink]="[item.route]"
     >

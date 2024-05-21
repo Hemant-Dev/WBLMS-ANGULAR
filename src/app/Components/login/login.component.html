@@ -13,9 +13,9 @@
                 <div
                   class="input-field"
                   [class.error]="
-                    (loginForm.controls['email'].touched &&
-                      loginForm.hasError('required', 'email')) ||
-                    loginForm.hasError('email', 'email')
+                    loginForm.controls['email'].touched &&
+                    (loginForm.hasError('required', 'email') ||
+                      loginForm.hasError('email', 'email'))
                   "
                 >
                   <span class="fa fa-user p-2"></span>
@@ -47,7 +47,9 @@
                   class="input-field"
                   [class.error]="
                     loginForm.controls['password'].touched &&
-                    loginForm.hasError('required', 'password')
+                    (loginForm.hasError('required', 'password') ||
+                      loginForm.hasError('minLength', 'password') ||
+                      loginForm.hasError('maxLength', 'password'))
                   "
                 >
                   <span class="fa fa-lock p-2"></span>
@@ -68,6 +70,22 @@
                   "
                   class="text-danger"
                   >*Password is required</small
+                >
+                <small
+                  *ngIf="
+                    loginForm.controls['password'].touched &&
+                    loginForm.hasError('minLength', 'password')
+                  "
+                  class="text-danger"
+                  >*Password should be of min length 6</small
+                >
+                <small
+                  *ngIf="
+                    loginForm.controls['password'].touched &&
+                    loginForm.hasError('maxLength', 'password')
+                  "
+                  class="text-danger"
+                  >*Password cannot exceed length 25</small
                 >
               </div>
               <div
