@@ -21,8 +21,11 @@ export class LeaveRequestComponent implements OnInit {
   submitStatus: boolean = false;
 
   ngOnInit(): void {
+    console.log("fetch data")
     this.getLeaveType();
     this.getDataFromUserStore();
+    this.fetchHolidayData()
+
   }
 
   constructor(
@@ -67,6 +70,16 @@ export class LeaveRequestComponent implements OnInit {
         // console.log(this.leaveTypeData);
       },
     });
+  }
+
+  fetchHolidayData() {
+    this.leaveRequestService
+    .getWonderbizholidays()
+    .subscribe({
+      next : (response : any) => {
+        console.log(response)
+      }
+    })
   }
 
   calculateLeaveDays() {
