@@ -13,8 +13,9 @@
                 <div
                   class="input-field"
                   [class.error]="
-                    loginForm.controls['email'].touched &&
-                    loginForm.hasError('required', 'email')
+                    (loginForm.controls['email'].touched &&
+                      loginForm.hasError('required', 'email')) ||
+                    loginForm.hasError('email', 'email')
                   "
                 >
                   <span class="fa fa-user p-2"></span>
@@ -32,7 +33,14 @@
                   class="text-danger"
                   >*Email is required</small
                 >
-                <small *ngIf="" class="text-danger">*Email is Invalid*</small>
+                <small
+                  *ngIf="
+                    loginForm.controls['email'].touched &&
+                    loginForm.hasError('email', 'email')
+                  "
+                  class="text-danger"
+                  >*Email is Invalid*</small
+                >
               </div>
               <div class="form-group pt-3">
                 <div
@@ -85,22 +93,22 @@
               </div> -->
             </form>
           </div>
-          <div class="mx-3 my-2 py-2 bordert">
+          <!-- <div class="mx-3 my-2 py-2 bordert">
             <div
               class="text-center py-3 d-flex flex-column align-items-center"
               id="oauth"
             >
-              <!-- <a href="https://www.facebook.com" target="_blank" class="px-2"
+              <a href="https://www.facebook.com" target="_blank" class="px-2"
                 ><span class="fa-brands fa-facebook-f"></span
-              ></a> -->
+              ></a>
               <a id="google" target="_blank" class="px-2"
                 ><span class="fa-brands fa-google"></span
               ></a>
-              <!-- <a href="https://github.com" target="_blank" class="px-2"
+              <a href="https://github.com" target="_blank" class="px-2"
                 ><span class="fa-brands fa-github"></span
-              ></a> -->
+              ></a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
