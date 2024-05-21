@@ -33,28 +33,18 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group(
       {
-        email: ['', Validators.required],
-        password: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(25),
+          ],
+        ],
       },
       []
     );
-
-    // google.accounts.id.initialize({
-    //   client_id:
-    //     '305979783667-3cq7k7pbggp74drkgdku7m93a83nqv9d.apps.googleusercontent.com',
-    //   callback: (resp: any) => {
-    //     // console.log(resp);
-    //     this.handleGoogleLogin(resp);
-    //   },
-    //   auto_select: false,
-    //   cancel_on_tap_outside: true,
-    // });
-    // google.accounts.id.renderButton(document.getElementById('google'), {
-    //   theme: 'filled_blue',
-    //   size: 'large',
-    //   shape: 'rectangle',
-    //   width: '100',
-    // });
   }
   hideShowPassword() {
     this.isText = !this.isText;
@@ -66,7 +56,6 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     if (this.loginForm.valid) {
-      // console.log(this.loginForm.value);
       this.auth.login(this.loginForm.value).subscribe({
         next: (res: any) => {
           this.loginForm.reset();
@@ -104,27 +93,16 @@ export class LoginComponent implements OnInit {
         .sendResetPasswordLink(this.resetPasswordEmail)
         .subscribe({
           next: (res) => {
-            // this.toast.success({
-            //   detail: 'Success',
-            //   summary: 'Reset Link sent Successfully!',
-            //   duration: 3000,
-            // });
             successToast('Reset Link sent Successfully!');
             this.resetPasswordEmail = '';
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
           },
           error: (err) => {
-            // this.toast.error({
-            //   detail: 'Error',
-            //   summary: 'Something went wrong: ' + err.error,
-            //   duration: 3000,
-            // });
             errorToast('Something went wrong');
           },
         });
     } else {
-      // console.log('Invalid Email');
       errorToast('Invalid Email');
     }
   }
@@ -134,7 +112,6 @@ export class LoginComponent implements OnInit {
   handleGoogleLogin(response: any) {
     if (response) {
       //decode
-      // console.log(response);
       localStorage.clear();
       localStorage.setItem('token', response.credential);
       this.auth.googleLogin(response.credential).subscribe({
@@ -146,22 +123,9 @@ export class LoginComponent implements OnInit {
           this.userStore.setFullNameToStore(tokenPayload.name);
           this.userStore.setRoleToStore(tokenPayload.role);
           this.ngZone.run(() => this.router.navigate(['dashboard']));
-          // this.toast.success({
-          //   detail: 'Success',
-          //   summary: 'Google Login Successfull.',
-          //   duration: 3000,
-          // });
         },
         error: (err) => console.log(err),
-        // this.toast.error({
-        //   detail: 'Error',
-        //   summary: err,
-        //   duration: 3000,
-        // }),
       });
-      //navigate to dashboard
-      // Verify the user
-      // this.ngZone.run(() => this.router.navigate(['dashboard']));
     }
   }
 }
