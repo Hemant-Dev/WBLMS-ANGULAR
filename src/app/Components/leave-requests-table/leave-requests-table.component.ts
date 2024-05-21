@@ -181,17 +181,5 @@ export class LeaveRequestsTableComponent implements OnInit {
         console.log(this.selfLeaveRequests)
       }
     })
-      .searchLeaveRequests(
-        1,
-        this.pageSize,
-        this.seachKeyword,
-        Number(this.employeeId)
-      )
-      .subscribe({
-        next: (res) => {
-          this.selfLeaveRequests = res.data.dataArray;
-          console.log(this.selfLeaveRequests);
-        },
-      });
   }
 }
