@@ -174,12 +174,18 @@ export class LeaveRequestsTableComponent implements OnInit {
     console.log('search');
     console.log(this.searchKeyword);
     this.leaveRequestService
-    .searchLeaveRequests(1, 100, this.searchKeyword, Number(this.employeeId),0)
-    .subscribe({
-      next : (res) => {
-        this.selfLeaveRequests = res.data.dataArray;
-        console.log(this.selfLeaveRequests)
-      }
-    })
+      .searchLeaveRequests(
+        1,
+        100,
+        this.searchKeyword,
+        Number(this.employeeId),
+        0
+      )
+      .subscribe({
+        next: (res) => {
+          this.selfLeaveRequests = res.data.dataArray;
+          console.log(this.selfLeaveRequests);
+        },
+      });
   }
 }
