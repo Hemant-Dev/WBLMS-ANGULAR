@@ -30,13 +30,6 @@ export class SideNavComponent implements OnInit {
     },
     {
       number: '3',
-      name: 'Leave Requests',
-      icon: 'fa-solid fa-calendar',
-      route: 'leaveRequests',
-      role: ['Employee', 'HR', 'Team Lead'],
-    },
-    {
-      number: '4',
       name: 'Register Employee',
       icon: 'fa-solid fa-user-plus',
       route: 'register',

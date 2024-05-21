@@ -1,11 +1,11 @@
-<div class="col-sm-12">
+<!-- <div class="col-sm-12">
   <app-leaves-remaining-dashboard
     [userSessionObj]="initialUserSessionObj"
   ></app-leaves-remaining-dashboard>
-</div>
+</div> -->
 
 <!-- Table 1 -->
-<div class="card my-4" *ngIf="role !== 'Admin'">
+<div class="card my-4">
   <p-table
     #dt2
     [value]="selfLeaveRequests"
@@ -23,18 +23,18 @@
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <p-header>Created Leave Requests</p-header>
-        <!-- <div class="input-group w-50">
-          <button class="btn btn-primary" type="button">
-            <i class="fa fa-search"></i>
-          </button>
-          <input type="text" class="form-control mr-2" placeholder="Search" />
-          <div class="input-group-append">
-          </div>
-        </div> -->
+        <p-header *ngIf="role !== 'Admin'">Created Leave Requests</p-header>
+        <p-header *ngIf="role === 'Admin'">Employee Leave Requests</p-header>
 
         <div class="input-group w-50">
-          <input type="text"    [(ngModel)]="seachKeyword" (ngModelChange) ="handleSearch()" name="searchKeyword"  class="form-control mr-2" placeholder="Search" />
+          <input
+            type="text"
+            [(ngModel)]="seachKeyword"
+            (ngModelChange)="handleSearch()"
+            name="searchKeyword"
+            class="form-control mr-2"
+            placeholder="Search"
+          />
           <button class="btn btn-primary mx-3">
             <i class="fa fa-search"></i>
           </button>
@@ -51,6 +51,8 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th *ngIf="role === 'Admin'">First Name</th>
+        <th *ngIf="role === 'Admin'">Last Name</th>
         <th>Leaves Type</th>
         <th>Reason</th>
         <th>Status</th>
@@ -63,11 +65,16 @@
     </ng-template>
     <ng-template pTemplate="body" let-request>
       <tr>
+        <td *ngIf="role === 'Admin'">{{ request.firstName }}</td>
+        <td *ngIf="role === 'Admin'">{{ request.lastName }}</td>
         <td>{{ request.leaveType }}</td>
         <td>{{ request.reason }}</td>
         <td>
           <!-- {{ request.status }} -->
-          <p-tag [value]="request.status" />
+          <p-tag
+            [severity]="request.status === 'Approved' ? 'success' : 'primary'"
+            [value]="request.status"
+          />
         </td>
         <td>{{ request.startDate }}</td>
         <td>{{ request.endDate }}</td>

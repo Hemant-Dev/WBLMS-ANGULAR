@@ -1,13 +1,18 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { errorAlert } from 'src/app/Helpers/swal';
 import { TokenInterceptor } from 'src/app/Interceptors/token.interceptor';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { PaginatedModel } from 'src/app/Models/PaginatedModel';
+import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { GetEmployeeAsync } from 'src/app/Services/employee.service';
+import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
+
+type NewType = LeaveRequestModel;
 
 @Component({
   selector: 'app-dashboard',
@@ -25,12 +30,67 @@ export class DashboardComponent implements OnInit {
     email: '',
     role: '',
   };
+  seachKeyword: string = '';
+  pageSize: number = 2;
+  submitStatus: boolean = false;
+  leaveRequests!: LeaveRequestModel[];
+  selfLeaveRequests!: NewType[];
+  loading: boolean = true;
 
-  constructor(private auth: AuthService, private userStore: UserStoreService) {}
+  activityValues: number[] = [0, 100];
+
+  searchValue: string | undefined;
+  initialLeaveRequestObj: LeaveRequestModel = {
+    id: 0,
+    employeeId: 0,
+    firstName: '',
+    lastName: '',
+    leaveType: '',
+    reason: '',
+    status: '',
+    numberOfLeaveDays: 0,
+  };
+  constructor(
+    private auth: AuthService,
+    private userStore: UserStoreService,
+    private leaveRequestService: LeaveRequestsService
+  ) {}
   ngOnInit(): void {
     this.fetchSessionData();
+    this.fetchSelfRequestData();
+    this.fetchAllRequestData();
   }
-
+  fetchSelfRequestData() {
+    // temp set then reset the id
+    if (this.role !== 'Admin') {
+      this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
+      this.leaveRequestService
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .subscribe({
+          next: (res) => {
+            this.selfLeaveRequests = res.data.dataArray;
+            this.initialLeaveRequestObj.employeeId = 0;
+          },
+          error: (err) => {
+            // console.log(err);
+            errorAlert(err);
+          },
+        });
+    }
+  }
+  fetchAllRequestData() {
+    if (this.role === 'Admin') {
+      this.leaveRequestService
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .subscribe({
+          next: (res) => {
+            this.selfLeaveRequests = res.data.dataArray;
+            console.log(res);
+          },
+          error: (err) => console.log(err),
+        });
+    }
+  }
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();
@@ -52,5 +112,22 @@ export class DashboardComponent implements OnInit {
       this.employeeId = val || employeeIdFromToken;
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
+  }
+  handleSearch() {
+    console.log('search');
+    console.log(this.seachKeyword);
+    this.leaveRequestService
+      .searchLeaveRequests(
+        1,
+        this.pageSize,
+        this.seachKeyword,
+        Number(this.employeeId)
+      )
+      .subscribe({
+        next: (res) => {
+          this.selfLeaveRequests = res.data.dataArray;
+          console.log(this.selfLeaveRequests);
+        },
+      });
   }
 }
