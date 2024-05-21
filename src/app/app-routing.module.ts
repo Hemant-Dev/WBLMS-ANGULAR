@@ -12,6 +12,7 @@ import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
+import { AdminGuard } from './Guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -29,7 +30,11 @@ const routes: Routes = [
     component: HeaderSidenavComponent,
     title: 'WBLMS',
     children: [
-      { path: 'register', component: RegisterComponent },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [AdminGuard],
+      },
       { path: 'register/:id', component: RegisterComponent },
       { path: 'profile', component: ProfileComponent },
       {
