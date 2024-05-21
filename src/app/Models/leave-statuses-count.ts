@@ -1,5 +1,5 @@
 export interface LeaveStatusesCount {
-  approvedLeaves: number;
-  rejectedLeaves: number;
-  pendingLeaves: number;
+  approvedLeavesCount: number;
+  pendingLeavesCount: number;
+  rejectedLeavesCount: number;
 }

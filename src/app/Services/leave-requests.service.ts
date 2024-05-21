@@ -35,10 +35,8 @@ export class LeaveRequestsService {
     );
   }
 
-  getWonderbizholidays() : Observable<any> {
-    return this.http.get<any>(
-      this.leave_api_url + '/wbHolidays'
-    );
+  getWonderbizholidays(): Observable<any> {
+    return this.http.get<any>(this.leave_api_url + '/wbHolidays');
   }
 
   searchLeaveRequests(

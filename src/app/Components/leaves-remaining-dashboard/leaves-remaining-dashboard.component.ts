@@ -16,7 +16,11 @@ export class LeavesRemainingDashboardComponent implements OnInit {
     balance: 0,
     totalLeaves: 0,
   };
-  leaveStatusesCount!: LeaveStatusesCount;
+  leaveStatusesCount: LeaveStatusesCount = {
+    approvedLeavesCount: 0,
+    pendingLeavesCount: 0,
+    rejectedLeavesCount: 0,
+  };
   @Input() userSessionObj!: UserSessionModel;
 
   ngOnInit(): void {
@@ -39,8 +43,9 @@ export class LeavesRemainingDashboardComponent implements OnInit {
   }
   getLeaveStatusesData(employeeId: number) {
     this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
-      next: (data) => {
-        console.log(data), (this.leaveStatusesCount = data.data);
+      next: (res) => {
+        // console.log(res.data);\
+        this.leaveStatusesCount = res.data;
       },
       error: (err) => console.log(err),
     });

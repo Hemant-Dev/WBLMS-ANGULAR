@@ -36,12 +36,11 @@ export class UserStoreService {
   public setEmployeeIdToStore(employeeId: string) {
     this.employeeId$.next(employeeId);
   }
-  public getManagerIdFromStore(){
+  public getManagerIdFromStore() {
     return this.managerId$.asObservable();
   }
 
-  public setManagerIdFromStore(managerId : string) {
+  public setManagerIdFromStore(managerId: string) {
     return this.managerId$.next(managerId);
   }
-
 }
