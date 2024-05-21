@@ -35,6 +35,12 @@ export class LeaveRequestsService {
     );
   }
 
+  getWonderbizholidays() : Observable<any> {
+    return this.http.get<any>(
+      this.leave_api_url + '/wbHolidays'
+    );
+  }
+
   searchLeaveRequests(
     page : number,
     pageSize : number,
