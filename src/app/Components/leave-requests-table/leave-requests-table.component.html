@@ -54,11 +54,11 @@
         <th *ngIf="role === 'Admin'">First Name</th>
         <th *ngIf="role === 'Admin'">Last Name</th>
         <th>Leaves Type</th>
-        <th>Reason</th>
+        <th style="width: 30%">Reason</th>
         <th>Status</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th>Number Of Days</th>
+        <th style="width: 10%">Number Of Days</th>
         <th>Request Date</th>
         <th>Approved Date</th>
       </tr>
@@ -72,7 +72,18 @@
         <td>
           <!-- {{ request.status }} -->
           <p-tag
-            [severity]="request.status === 'Approved' ? 'success' : 'primary'"
+            *ngIf="request.status === 'Approved'"
+            severity="success"
+            [value]="request.status"
+          />
+          <p-tag
+            *ngIf="request.status === 'Rejected'"
+            severity="danger"
+            [value]="request.status"
+          />
+          <p-tag
+            *ngIf="request.status === 'Pending'"
+            severity="primary"
             [value]="request.status"
           />
         </td>

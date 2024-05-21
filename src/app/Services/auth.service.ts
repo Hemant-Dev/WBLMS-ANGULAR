@@ -80,7 +80,7 @@ export class AuthService {
 
   getManagerIdFromToken() {
     if (this.userPayload) {
-      console.log(this.userPayload.managerId)
+      // console.log(this.userPayload.managerId)
       return this.userPayload.managerId;
     }
   }

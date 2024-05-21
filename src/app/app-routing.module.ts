@@ -11,7 +11,6 @@ import { RegisterComponent } from './Components/register/register.component';
 import { TableComponent } from './Components/table/table.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
-import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 
 const routes: Routes = [
@@ -49,7 +48,6 @@ const routes: Routes = [
       },
       { path: 'employee', component: EmployeeComponent },
       { path: 'table', component: TableComponent },
-      // { path: 'test', component: LeaveRequestComponent },
     ],
     canActivate: [AuthGuard],
   },
