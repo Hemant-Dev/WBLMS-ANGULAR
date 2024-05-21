@@ -6,7 +6,7 @@
       [routerLink]="[item.route]"
     >
       <span>
-        <i [class]="item.icon"></i>
+        <i [class]="item.icon" data-toggle="tooltip" data-placement="right" title="{{item.name}}"></i>
         {{ item.name }}
       </span>
     </li>

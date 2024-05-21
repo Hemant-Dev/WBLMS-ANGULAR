@@ -34,16 +34,17 @@ export class ProfileComponent implements OnInit {
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService,
     private auth: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchSessionData();
     // console.log('fetched session data');
     this.getEmployeeData();
-    this.setGenderId();
   }
 
   setGenderId() {
+    console.log(this.genderPicId)
+    console.log(this.employeeData.genderName)
     if (this.employeeData.genderName?.toLowerCase() === 'female') {
       this.genderPicId = 2;
     }
@@ -54,7 +55,9 @@ export class ProfileComponent implements OnInit {
       next: (res) => {
         // console.log(res);
         this.employeeData = res.data;
-        // console.log(this.employeeData);
+        console.log(this.employeeData);
+        this.setGenderId();
+
       },
       error: (err) => {
         // console.log(err);
