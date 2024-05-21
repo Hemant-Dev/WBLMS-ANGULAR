@@ -14,6 +14,7 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./leave-request.component.css'],
 })
 export class LeaveRequestComponent implements OnInit {
+
   updateLeaveDaysDebounced: any;
   @Output() submitLeaveRequestClicked: EventEmitter<boolean> =
     new EventEmitter<boolean>();
@@ -29,7 +30,7 @@ export class LeaveRequestComponent implements OnInit {
     private userService: UserStoreService,
     private auth: AuthService,
     private router: Router
-  ) {}
+  ) { }
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
     this.submitLeaveRequestClicked.emit(this.submitStatus);
@@ -86,6 +87,14 @@ export class LeaveRequestComponent implements OnInit {
     }
     // console.log(this.initialLeaveRequestData);
     this.initialLeaveRequestData.numberOfLeaveDays = count;
+  }
+
+  halfDay() {
+    if(this.initialLeaveRequestData.isHalfDay)
+      this.initialLeaveRequestData.numberOfLeaveDays = 0.5
+    else{
+      this.calculateLeaveDays()
+    }
   }
 
   getDataFromUserStore() {

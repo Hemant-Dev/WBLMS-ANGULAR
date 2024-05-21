@@ -69,7 +69,7 @@
           style="margin-left: 20px; margin-top: 5px"
           *ngIf="
             this.initialLeaveRequestData.startDate ===
-            this.initialLeaveRequestData.endDate
+            this.initialLeaveRequestData.endDate 
           "
         >
           <input
@@ -77,18 +77,23 @@
             type="checkbox"
             name="isHalfDay"
             [(ngModel)]="initialLeaveRequestData.isHalfDay"
-            (change)="calculateLeaveDays()"
+            (change)="halfDay()"
             value=""
             id="halfDay"
+            [disabled]="
+              initialLeaveRequestData.startDate === '' &&
+              initialLeaveRequestData.endDate === ''
+            "
           />
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>
       </div>
-      <div class="mb-3" *ngIf="!this.initialLeaveRequestData.isHalfDay">
+      <div class="mb-3" >
         <label for="numberOfLeaveDays" class="form-label"
           >Number of Leave Days</label
         >
         <input
+          disabled
           type="text"
           name="numberOfLeaveDays"
           [(ngModel)]="initialLeaveRequestData.numberOfLeaveDays"
