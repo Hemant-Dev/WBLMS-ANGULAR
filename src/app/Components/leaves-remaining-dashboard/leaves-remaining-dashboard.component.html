@@ -1,16 +1,27 @@
 <div class="row" *ngIf="this.userSessionObj.role !== 'Admin'">
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <div class="card bg-info">
       <div class="card-body">
-        <h5 class="card-title">Employee Id</h5>
+        <h5 class="card-title">Leaves Taken</h5>
         <p class="card-text">
-          {{ leaveBalance.employeeId }}
+          {{ leaveStatusesCount.approvedLeaves }}
         </p>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-4">
+  <div class="col-sm-3">
+    <div class="card bg-warning">
+      <div class="card-body">
+        <h5 class="card-title">Leaves Not Approved</h5>
+        <p class="card-text">
+          {{ leaveStatusesCount.pendingLeaves }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
     <div class="card bg-danger">
       <div class="card-body">
         <h5 class="card-title">Leaves Remaining</h5>
@@ -21,7 +32,7 @@
     </div>
   </div>
 
-  <div class="col-sm-4">
+  <div class="col-sm-3">
     <div class="card bg-success">
       <div class="card-body">
         <h5 class="card-title">Total Leaves</h5>

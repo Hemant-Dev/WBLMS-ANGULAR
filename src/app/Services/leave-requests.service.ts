@@ -36,15 +36,16 @@ export class LeaveRequestsService {
   }
 
   searchLeaveRequests(
-    page : number,
-    pageSize : number,
-    search : string,
-    employeeId : number,
-    managerId : number
-  ) : Observable<any> {
+    page: number,
+    pageSize: number,
+    search: string,
+    employeeId: number,
+    managerId: number
+  ): Observable<any> {
     return this.http.get<any>(
-      this.leave_api_url + `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}&managerId=${managerId}`
-    )
+      this.leave_api_url +
+        `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}&managerId=${managerId}`
+    );
   }
 
   updateLeaveRequestStatus(
@@ -60,5 +61,11 @@ export class LeaveRequestsService {
 
   getLeaveType(): Observable<any> {
     return this.http.get(this.leave_api_url + '/leavetype');
+  }
+
+  getLeaveStatusesCount(employeeId: number): Observable<any> {
+    return this.http.get<any>(
+      this.leave_api_url + `/leavesStatusesData/${employeeId}`
+    );
   }
 }
