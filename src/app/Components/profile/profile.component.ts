@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: number;
+  genderPicId : number = 3;
   constructor(
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService,
@@ -36,6 +37,13 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchSessionData();
     this.getEmployeeData();
+    this.setGenderId()
+  }
+
+  setGenderId(){
+    if(this.employeeData.genderName?.toLowerCase() === "female"){
+      this.genderPicId = 2;
+    }
   }
 
   getEmployeeData() {

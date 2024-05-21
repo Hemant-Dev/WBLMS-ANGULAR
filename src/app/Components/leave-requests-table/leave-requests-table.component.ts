@@ -153,6 +153,7 @@ export class LeaveRequestsTableComponent implements OnInit {
         error: (err) => errorToast('Error Occured while updating status'),
       });
   }
+  
   handleApproveClick(Id: number) {
     const updateLeaveRequestStatus: UpdateRequestStatus = {
       id: Id,
