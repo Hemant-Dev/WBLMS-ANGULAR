@@ -43,6 +43,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
+  seachKeyword : string = "";
 
   pageSize : number = 2;
 
@@ -169,5 +170,18 @@ export class LeaveRequestsTableComponent implements OnInit {
         },
         error: (err) => errorToast('Error Occured while updating status'),
       });
+  }
+
+  handleSearch() {
+    console.log("search")
+    console.log(this.seachKeyword)
+    this.leaveRequestService
+    .searchLeaveRequests(1, this.pageSize, this.seachKeyword, Number(this.employeeId))
+    .subscribe({
+      next : (res) => {
+        this.selfLeaveRequests = res.data.dataArray;
+        console.log(this.selfLeaveRequests)
+      }
+    })
   }
 }
