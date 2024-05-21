@@ -43,9 +43,9 @@ export class LeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
-  seachKeyword : string = "";
+  seachKeyword: string = '';
 
-  pageSize : number = 2;
+  pageSize: number = 2;
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
@@ -74,22 +74,19 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSessionData();
-    if (this.role !== 'Admin') {
-      this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
-      this.initialLeaveRequestObj.status = 'Pending';
+    this.fetchAllRequestData();
+    this.fetchSelfRequestData();
+  }
+  fetchAllRequestData() {
+    if (this.role === 'Admin') {
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, this.pageSize, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
-            // console.log(res);
-            this.leaveRequests = res.data.dataArray;
-            console.log(this.leaveRequests);
-            this.initialLeaveRequestObj.managerId = 0;
-            this.initialLeaveRequestObj.status = '';
-            console.log('fetch self req data');
-            this.fetchSelfRequestData();
+            this.selfLeaveRequests = res.data.dataArray;
+            console.log(res);
           },
-          error: (err) => errorAlert(err),
+          error: (err) => console.log(err),
         });
     }
   }
@@ -174,8 +171,8 @@ export class LeaveRequestsTableComponent implements OnInit {
   }
 
   handleSearch() {
-    console.log("search")
-    console.log(this.seachKeyword)
+    console.log('search');
+    console.log(this.seachKeyword);
     this.leaveRequestService
     .searchLeaveRequests(1, 100, this.seachKeyword, Number(this.employeeId),0)
     .subscribe({
@@ -184,5 +181,17 @@ export class LeaveRequestsTableComponent implements OnInit {
         console.log(this.selfLeaveRequests)
       }
     })
+      .searchLeaveRequests(
+        1,
+        this.pageSize,
+        this.seachKeyword,
+        Number(this.employeeId)
+      )
+      .subscribe({
+        next: (res) => {
+          this.selfLeaveRequests = res.data.dataArray;
+          console.log(this.selfLeaveRequests);
+        },
+      });
   }
 }
