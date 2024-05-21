@@ -1,4 +1,4 @@
-<div class="col-sm-12 row" *ngIf="role !== 'Employee'">
+<div class="col-sm-12 row" *ngIf="role !== 'Admin'">
   <!-- <app-team-leave-requests-table></app-team-leave-requests-table> -->
   <app-leaves-remaining-dashboard
     [userSessionObj]="initialUserSessionObj"
@@ -9,21 +9,20 @@
 <div class="row mt-4">
   <ul class="nav nav-tabs">
     <li *ngIf="role !== 'Admin'" class="nav-item">
-      <a [routerLink]="['leaveRequests']" class="nav-link" aria-current="page"
+      <a
+        [routerLink]="['leaveRequests']"
+        routerLinkActive="active"
+        class="nav-link"
+        aria-current="page"
         >Self Leave Requests</a
       >
     </li>
     <li *ngIf="role !== 'Employee'" class="nav-item">
-      <a [routerLink]="['teamLeaveRequests']" class="nav-link"
+      <a
+        [routerLink]="['teamLeaveRequests']"
+        routerLinkActive="active"
+        class="nav-link"
         >Team Leave Requests</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
-        >Disabled</a
       >
     </li>
   </ul>
