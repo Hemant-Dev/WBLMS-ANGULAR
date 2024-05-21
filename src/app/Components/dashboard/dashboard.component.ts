@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { errorAlert } from 'src/app/Helpers/swal';
 import { TokenInterceptor } from 'src/app/Interceptors/token.interceptor';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
@@ -53,12 +54,18 @@ export class DashboardComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private userStore: UserStoreService,
-    private leaveRequestService: LeaveRequestsService
+    private leaveRequestService: LeaveRequestsService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.fetchSessionData();
     this.fetchSelfRequestData();
     this.fetchAllRequestData();
+    if (this.role === 'Admin') {
+      this.router.navigate(['home/dashboard/teamLeaveRequests']);
+    } else {
+      this.router.navigate(['home/dashboard/leaveRequests']);
+    }
   }
   fetchSelfRequestData() {
     // temp set then reset the id
@@ -85,7 +92,7 @@ export class DashboardComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.selfLeaveRequests = res.data.dataArray;
-            console.log(res);
+            // console.log(res);
           },
           error: (err) => console.log(err),
         });
