@@ -17,7 +17,7 @@ export class LeavesRemainingDashboardComponent implements OnInit {
   };
 
   @Input() userSessionObj!: UserSessionModel;
-ok: any;
+  ok: any;
 
   ngOnInit(): void {
     if (
