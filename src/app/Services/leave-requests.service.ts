@@ -39,10 +39,11 @@ export class LeaveRequestsService {
     page : number,
     pageSize : number,
     search : string,
-    employeeId : number
+    employeeId : number,
+    managerId : number
   ) : Observable<any> {
     return this.http.get<any>(
-      this.leave_api_url + `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}`
+      this.leave_api_url + `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}&managerId=${managerId}`
     )
   }
 

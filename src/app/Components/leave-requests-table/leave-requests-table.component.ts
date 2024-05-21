@@ -156,7 +156,7 @@ export class LeaveRequestsTableComponent implements OnInit {
         error: (err) => errorToast('Error Occured while updating status'),
       });
   }
-  
+
   handleApproveClick(Id: number) {
     const updateLeaveRequestStatus: UpdateRequestStatus = {
       id: Id,
@@ -177,7 +177,7 @@ export class LeaveRequestsTableComponent implements OnInit {
     console.log("search")
     console.log(this.seachKeyword)
     this.leaveRequestService
-    .searchLeaveRequests(1, 100, this.seachKeyword, Number(this.employeeId))
+    .searchLeaveRequests(1, 100, this.seachKeyword, Number(this.employeeId),0)
     .subscribe({
       next : (res) => {
         this.selfLeaveRequests = res.data.dataArray;
