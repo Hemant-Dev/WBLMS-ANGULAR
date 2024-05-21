@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
@@ -53,11 +53,12 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeRxjsService,
-    // private fb: FormBuilder,
+    private fb: FormBuilder,
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
+  registerForm!: FormGroup;
 
   ngOnInit() {
     // await this.getAllEmployee();
@@ -66,43 +67,19 @@ export class RegisterComponent implements OnInit {
     );
     // console.log(this.initialEmployeeData)
     this.fetchData();
+
+    this.signupForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      contactNumber: ['', Validators.required],
+      genderId: ['', Validators.required],
+      roleId: ['', Validators.required],
+      managerId: ['', Validators.required],
+      emailAddress: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
 
-  // async getAllEmployee() {
-  //   try {
-  //     const result = await GetEmployeeAsync(this.initialEmployeeData, "firstname", "asc", 1, 5);
-  //     console.log(result)
-  //     this.employees = result.dataArray;
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  validations(data: EmployeeModel) {
-    const contactNumberIsValid =
-      /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    if (data.firstName == '') {
-      this.errorModel.push({
-        fieldName: 'firstName',
-        errorMessage: 'First Name is not valid',
-        isValid: false,
-      });
-    }
-    if (data.lastName == '') {
-      this.errorModel.push({
-        fieldName: 'lastName',
-        errorMessage: 'Last Name is not valid',
-        isValid: false,
-      });
-    }
-    if (data.contactNumber.match(contactNumberIsValid)) {
-      this.errorModel.push({
-        fieldName: 'lastName',
-        errorMessage: 'Last Name is not valid',
-        isValid: false,
-      });
-    }
-  }
   async handleSubmit() {
     console.log(this.initialEmployeeData);
     if (this.initialEmployeeData.id) {
