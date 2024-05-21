@@ -78,7 +78,13 @@
         </td>
         <td>{{ request.startDate }}</td>
         <td>{{ request.endDate }}</td>
-        <td>{{ request.numberOfLeaveDays }}</td>
+        <td>
+          {{
+            request.numberOfLeaveDays < 1
+              ? "Half Day"
+              : request.numberOfLeaveDays
+          }}
+        </td>
         <td>{{ request.requestDate }}</td>
         <td
           *ngIf="request.approvedDate !== '0001-01-01'; else elseApprovedDate"

@@ -66,7 +66,11 @@
           {{ request.endDate }}
         </td>
         <td class="text-end">
-          {{ request.numberOfLeaveDays }}
+          {{
+            request.numberOfLeaveDays < 1
+              ? "Half Day"
+              : request.numberOfLeaveDays
+          }}
         </td>
         <td>
           <div
