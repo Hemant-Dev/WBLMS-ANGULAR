@@ -34,7 +34,7 @@
         </div> -->
 
         <div class="input-group w-50">
-          <input type="text" class="form-control mr-2" placeholder="Search" />
+          <input type="text"    [(ngModel)]="seachKeyword" (ngModelChange) ="handleSearch()" name="searchKeyword"  class="form-control mr-2" placeholder="Search" />
           <button class="btn btn-primary mx-3">
             <i class="fa fa-search"></i>
           </button>
