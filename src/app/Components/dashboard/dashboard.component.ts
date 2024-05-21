@@ -113,21 +113,4 @@ export class DashboardComponent implements OnInit {
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
   }
-  handleSearch() {
-    console.log('search');
-    console.log(this.seachKeyword);
-    this.leaveRequestService
-      .searchLeaveRequests(
-        1,
-        this.pageSize,
-        this.seachKeyword,
-        Number(this.employeeId)
-      )
-      .subscribe({
-        next: (res) => {
-          this.selfLeaveRequests = res.data.dataArray;
-          console.log(this.selfLeaveRequests);
-        },
-      });
-  }
 }
