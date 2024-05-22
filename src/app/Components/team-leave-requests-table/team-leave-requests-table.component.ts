@@ -23,7 +23,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
-    managerId : 0,
+    managerId: 0,
     firstName: '',
     lastName: '',
     leaveType: '',
@@ -35,8 +35,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
-  pageSize : number = 3;
-  searchKeyword : string = "";
+  pageSize: number = 3;
+  searchKeyword: string = '';
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
@@ -51,12 +51,12 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, this.pageSize, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
-            console.log(this.leaveRequests)
+            console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
           },
@@ -66,7 +66,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           },
         });
     }
-  }
+  } 
 
   handleRejectClick(Id: number) {
     const updateLeaveRequestStatus: UpdateRequestStatus = {
@@ -132,17 +132,21 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     }
   }
 
-  handleSearch(){
+  handleSearch() {
     this.leaveRequestService
-    .searchLeaveRequests(1,100,this.searchKeyword, 0, Number(this.employeeId))
-    .subscribe(
-      {
-        next : (res) => {
+      .searchLeaveRequests(
+        1,
+        100,
+        this.searchKeyword,
+        0,
+        Number(this.employeeId)
+      )
+      .subscribe({
+        next: (res) => {
           this.leaveRequests = res.data.dataArray;
-          console.log(this.leaveRequests)
-        }
-      }
-    )
+          console.log(this.leaveRequests);
+        },
+      });
   }
   // handleSearch() {
   //   console.log('search');
