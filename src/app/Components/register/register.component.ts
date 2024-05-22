@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
@@ -21,6 +21,7 @@ import {
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  
   initialEmployeeData: EmployeeModel = {
     id: 0,
     firstName: '',
@@ -57,7 +58,7 @@ export class RegisterComponent implements OnInit {
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   registerForm!: FormGroup;
 
   ngOnInit() {
@@ -68,49 +69,60 @@ export class RegisterComponent implements OnInit {
     // console.log(this.initialEmployeeData)
     this.fetchData();
 
-    this.signupForm = this.fb.group({
+    this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      contactNumber: ['', Validators.required],
-      genderId: ['', Validators.required],
-      roleId: ['', Validators.required],
-      managerId: ['', Validators.required],
+      contactNumber: ['', [Validators.required, Validators.pattern('/^(\+\d{1,3}[- ]?)?\d{10}$/')]],
+      genderId: [0, Validators.required],
+      roleId: [0, Validators.required],
+      managerId: new FormControl({ value: 0, disabled: true }, Validators.required),
+      // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, ]],
     });
+
+    this.onChangeRole();
+    //  const role = this.registerForm.get('roleId');
   }
 
   async handleSubmit() {
-    console.log(this.initialEmployeeData);
-    if (this.initialEmployeeData.id) {
-      try {
-        this.employeeService
-          .updateEmployeesById(this.initialEmployeeData)
-          .subscribe({
-            next: (response: any) => {
-              console.log(response);
-            },
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        this.employeeService
-          .createEmployees(this.initialEmployeeData)
-          .subscribe({
-            next: (response: any) => {
-              console.log(response);
-              this.initialEmployeeData = response.data;
-              successToast('Employee Added Successfully');
-              this.router.navigate(['home/dashboard']);
-              console.log(this.initialEmployeeData);
-            },
-          });
-      } catch (error) {
-        console.log(error);
-      }
+    console.log(this.registerForm.value)
+    if (this.registerForm.valid) {
+      console.log("submit")
     }
+    else {
+      console.log("invalid")
+      ValidateForm.validateAllFormFields(this.registerForm);
+    }
+    // if (this.initialEmployeeData.id) {
+    //   try {
+    //     this.employeeService
+    //       .updateEmployeesById(this.initialEmployeeData)
+    //       .subscribe({
+    //         next: (response: any) => {
+    //           console.log(response);
+    //         },
+    //       });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // } else {
+    //   try {
+    //     this.employeeService
+    //       .createEmployees(this.initialEmployeeData)
+    //       .subscribe({
+    //         next: (response: any) => {
+    //           console.log(response);
+    //           this.initialEmployeeData = response.data;
+    //           successToast('Employee Added Successfully');
+    //           this.router.navigate(['home/dashboard']);
+    //           console.log(this.initialEmployeeData);
+    //         },
+    //       });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   }
   type: string = 'password';
   isText: boolean = false;
@@ -131,8 +143,18 @@ export class RegisterComponent implements OnInit {
     this.isText ? (this.type = 'text') : (this.type = 'password');
   }
 
+  managerFieldDisable: boolean = true;
+
   onChangeRole() {
-    this.fetchManagers();
+    console.log(this.registerForm.value)
+    var roleId = this.registerForm.get('roleId')?.value;
+    console.log("roleId => ", roleId)
+    if (!roleId) {
+      this.registerForm.get('managerId')?.disable();
+    } else {
+      this.registerForm.get('managerId')?.enable();
+      this.fetchManagers();
+    }
   }
 
   fetchGenders() {
@@ -167,9 +189,9 @@ export class RegisterComponent implements OnInit {
       });
   }
   fetchManagers() {
-    console.log(this.initialEmployeeData.roleId);
+    var roleId = this.registerForm.get('roleId')?.value;
     this.employeeService
-      .getManagers(this.initialEmployeeData.roleId)
+      .getManagers(roleId)
       .subscribe({
         next: (response: any) => {
           console.log(response);

@@ -7,59 +7,107 @@
           <h3 class="pt-2 font-weight-bold">WBLMS - Register</h3>
         </div>
         <div class="panel-body p-3">
-          <form (ngSubmit)="handleSubmit()">
+          <form [formGroup]="registerForm" (ngSubmit)="handleSubmit()">
             <div class="row">
               <div class="col-sm">
                 <div class="form-group pt-3">
-                  <div class="input-field">
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['firstName'].touched &&
+                      registerForm.hasError('required', 'firstName')
+                    "
+                  >
                     <span class="fa fa-user p-2"></span>
                     <input
                       type="text"
-                      name="firstName"
+                      formControlName="firstName"
                       placeholder="First Name"
-                      [(ngModel)]="initialEmployeeData.firstName"
-                      required
                     />
-                    
                   </div>
+                  <small
+                    *ngIf="
+                      registerForm.controls['firstName'].touched &&
+                      registerForm.hasError('required', 'firstName')
+                    "
+                    class="text-danger"
+                  >
+                    First Name is required
+                  </small>
                 </div>
               </div>
               <div class="col-s m">
                 <div class="form-group pt-3">
-                  <div class="input-field">
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['lastName'].touched &&
+                      registerForm.hasError('required', 'lastName')
+                    "
+                  >
                     <span class="fa fa-user p-2"></span>
                     <input
                       type="text"
-                      name="lastName"
+                      formControlName="lastName"
                       placeholder="Last Name"
-                      [(ngModel)]="initialEmployeeData.lastName"
                     />
                   </div>
+                  <small
+                    *ngIf="
+                      registerForm.controls['lastName'].touched &&
+                      registerForm.hasError('required', 'lastName')
+                    "
+                    class="text-danger"
+                  >
+                    Last Name is required
+                  </small>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm">
                 <div class="form-group pt-3">
-                  <div class="input-field">
-                    <span class="fa fa-phone p-2"></span>
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['contactNumber'].touched &&
+                      registerForm.hasError('required', 'contactNumber')
+                    "
+                  >
+                    <i class="fa fa-phone p-2"></i>
+                    <!-- <label for="">+91</label> -->
+                    +91
                     <input
-                    type="text"
-                    name="contactNumber"
-                    [(ngModel)]="initialEmployeeData.contactNumber"
-                    placeholder="Contact Number"
+                      style="margin-left: 2px"
+                      type="number"
+                      formControlName="contactNumber"
+                      placeholder="Contact Number"
                     />
                   </div>
+                  <small
+                    *ngIf="
+                      registerForm.controls['contactNumber'].touched &&
+                      registerForm.hasError('required', 'contactNumber')
+                    "
+                    class="text-danger"
+                  >
+                    *Contact Number is required
+                  </small>
                 </div>
               </div>
               <div class="col-sm">
                 <div class="form-group pt-3">
-                  <div class="input-field">
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['genderId'].touched &&
+                      registerForm.get('genderId')?.value == '0'
+                    "
+                  >
                     <select
                       class="form-select"
-                      name="genderId"
+                      formControlName="genderId"
                       aria-label="Gender"
-                      [(ngModel)]="initialEmployeeData.genderId"
                     >
                       <option selected disabled [value]="0">
                         Select Gender
@@ -73,17 +121,31 @@
                     </select>
                   </div>
                 </div>
+                <small
+                  *ngIf="
+                    registerForm.controls['genderId'].touched &&
+                    registerForm.get('genderId')?.value == '0'
+                  "
+                  class="text-danger"
+                >
+                  *Gender is required
+                </small>
               </div>
             </div>
             <div class="row">
               <div class="col-sm">
                 <div class="form-group pt-3">
-                  <div class="input-field">
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['roleId'].touched &&
+                      registerForm.get('roleId')?.value == '0'
+                    "
+                  >
                     <select
                       class="form-select"
-                      name="roleId"
+                      formControlName="roleId"
                       aria-label="Role"
-                      [(ngModel)]="initialEmployeeData.roleId"
                       (change)="onChangeRole()"
                     >
                       <option selected disabled [value]="0">Select Role</option>
@@ -93,16 +155,38 @@
                     </select>
                   </div>
                 </div>
+                <!-- <small
+                  *ngIf="
+                    registerForm.controls['roleId'].touched &&
+                    registerForm.hasError('required', 'roleId')
+                  "
+                  class="text-danger"
+                >
+                  *Role is required
+                </small> -->
+                <small
+                  *ngIf="
+                    registerForm.controls['roleId'].touched &&
+                    registerForm.get('roleId')?.value == '0'
+                  "
+                  class="text-danger"
+                >
+                  *Role is required
+                </small>
               </div>
               <div class="col-sm">
                 <div class="form-group pt-3">
-                  <div class="input-field">
+                  <div
+                    class="input-field"
+                    [class.error]="
+                      registerForm.controls['managerId'].touched &&
+                      registerForm.get('managerId')?.value == '0'
+                    "
+                  >
                     <select
-                      [disabled]="initialEmployeeData.roleId == 0"
                       class="form-select"
-                      name="managerId"
+                      formControlName="managerId"
                       aria-label="Manager Name"
-                      [(ngModel)]="initialEmployeeData.managerId"
                     >
                       <option selected disabled [value]="0">
                         Select Manager
@@ -116,26 +200,63 @@
                     </select>
                   </div>
                 </div>
+                <small
+                  *ngIf="
+                    registerForm.controls['managerId'].touched &&
+                    registerForm.get('managerId')?.value == '0'
+                  "
+                  class="text-danger"
+                >
+                  *Manager is required
+                </small>
               </div>
             </div>
+
             <div class="form-group pt-3">
-              <div class="input-field">
+              <div
+                class="input-field"
+                [class.error]="
+                  registerForm.controls['emailAddress'].touched &&
+                  (registerForm.hasError('required', 'emailAddress') ||
+                    registerForm.hasError('email', 'emailAddress'))
+                "
+              >
                 <span class="fa fa-envelope p-2"></span>
                 <input
                   type="text"
-                  name="emailAddress"
-                  [(ngModel)]="initialEmployeeData.emailAddress"
+                  formControlName="emailAddress"
                   placeholder="Email"
                 />
               </div>
+              <small
+                *ngIf="
+                  registerForm.controls['emailAddress'].touched &&
+                  registerForm.hasError('required', 'emailAddress')
+                "
+                class="text-danger"
+                >*Email Address is required</small
+              >
+              <small
+                *ngIf="
+                  registerForm.controls['emailAddress'].touched &&
+                  registerForm.hasError('email', 'emailAddress')
+                "
+                class="text-danger"
+                >*Email Address is invalid</small
+              >
             </div>
             <div class="form-group pt-3" *ngIf="!initialEmployeeData.id">
-              <div class="input-field">
+              <div
+                class="input-field"
+                [class.error]="
+                  registerForm.controls['password'].touched &&
+                  registerForm.hasError('required', 'password')
+                "
+              >
                 <span class="fa fa-lock p-2"></span>
                 <input
                   [type]="type"
-                  name="password"
-                  [(ngModel)]="initialEmployeeData.password"
+                  formControlName="password"
                   placeholder="Password"
                 />
                 <span
@@ -143,6 +264,22 @@
                   class="fa {{ eyeIcon }}"
                 ></span>
               </div>
+              <small
+                class="text-danger"
+                *ngIf="
+                  registerForm.controls['password'].touched &&
+                  registerForm.hasError('required', 'password')
+                "
+                >*Password is required
+              </small>
+              <small
+                class="text-danger"
+                *ngIf="
+                  registerForm.controls['password'].touched &&
+                  registerForm.hasError('pattern', 'password')
+                "
+                >*Password must include number and alphabets
+              </small>
             </div>
             <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
               {{ initialEmployeeData.id == 0 ? "Register" : "Update" }}
