@@ -5,7 +5,17 @@
   max-height: 150px;
   overflow-y: auto;
 }
-/* .input-field.error {
+ /* .input-field.error {
   border: 1px solid red;
   color: red;
-} */
+}  */
+
+.input-field.error .form-select,
+.input-field.error .form-control,
+.input-field.error .form-check-input {
+  border: 1px solid red;
+  color: red;
+}
+.text-danger {
+  color: red;
+}
