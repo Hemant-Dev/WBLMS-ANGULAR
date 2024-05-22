@@ -6,6 +6,7 @@ import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
+import { SharedServiceService } from 'src/app/Services/shared-service.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
 
 @Component({
@@ -14,26 +15,25 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./leave-request.component.css'],
 })
 export class LeaveRequestComponent implements OnInit {
-
   updateLeaveDaysDebounced: any;
   @Output() submitLeaveRequestClicked: EventEmitter<boolean> =
     new EventEmitter<boolean>();
   submitStatus: boolean = false;
 
   ngOnInit(): void {
-    console.log("fetch data")
+    console.log('fetch data');
     this.getLeaveType();
     this.getDataFromUserStore();
-    this.fetchHolidayData()
-
+    // this.fetchHolidayData();
   }
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private userService: UserStoreService,
     private auth: AuthService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private service: SharedServiceService
+  ) {}
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
     this.submitLeaveRequestClicked.emit(this.submitStatus);
@@ -73,13 +73,11 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   fetchHolidayData() {
-    this.leaveRequestService
-    .getWonderbizholidays()
-    .subscribe({
-      next : (response : any) => {
-        console.log(response)
-      }
-    })
+    this.leaveRequestService.getWonderbizholidays().subscribe({
+      next: (response: any) => {
+        console.log(response);
+      },
+    });
   }
 
   calculateLeaveDays() {
@@ -103,10 +101,10 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   halfDay() {
-    if(this.initialLeaveRequestData.isHalfDay)
-      this.initialLeaveRequestData.numberOfLeaveDays = 0.5
-    else{
-      this.calculateLeaveDays()
+    if (this.initialLeaveRequestData.isHalfDay)
+      this.initialLeaveRequestData.numberOfLeaveDays = 0.5;
+    else {
+      this.calculateLeaveDays();
     }
   }
 
@@ -129,6 +127,7 @@ export class LeaveRequestComponent implements OnInit {
           buttonRef?.click();
           this.submitStatus = true;
           this.submitButtonClicked();
+          this.service.changeData(true);
           this.initialLeaveRequestData = {
             id: 0,
             employeeId: 0,
