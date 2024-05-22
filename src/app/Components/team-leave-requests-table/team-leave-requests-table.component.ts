@@ -6,6 +6,7 @@ import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-team-leave-requests-table',
@@ -66,37 +67,63 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           },
         });
     }
-  } 
+  }
 
   handleRejectClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 3,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Rejected.');
-          this.ngOnInit();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
+    Swal.fire({
+      title: 'Do you want to reject the leave?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const updateLeaveRequestStatus: UpdateRequestStatus = {
+          id: Id,
+          statusId: 3,
+        };
+        this.leaveRequestService
+          .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+          .subscribe({
+            next: (res) => {
+              errorToast('Leave Request Rejected.');
+              this.ngOnInit();
+            },
+            error: (err) => errorToast('Error Occured while updating status'),
+          });
+      } else if (result.isDenied) {
+        // Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
   }
   handleApproveClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 2,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Approved.');
-          this.ngOnInit();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
+    Swal.fire({
+      title: 'Do you want to approve the leave?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const updateLeaveRequestStatus: UpdateRequestStatus = {
+          id: Id,
+          statusId: 2,
+        };
+        this.leaveRequestService
+          .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+          .subscribe({
+            next: (res) => {
+              successToast('Leave Request Approved.');
+              this.ngOnInit();
+            },
+            error: (err) => errorToast('Error Occured while updating status'),
+          });
+      } else if (result.isDenied) {
+        // Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
   }
 
   fetchSessionData() {
