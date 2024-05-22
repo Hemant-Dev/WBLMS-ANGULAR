@@ -71,7 +71,8 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.hasError('required', 'contactNumber')
+                      (registerForm.hasError('required', 'contactNumber') ||
+                      registerForm.hasError('minlength', 'contactNumber') )
                     "
                   >
                     <i class="fa fa-phone p-2"></i>
@@ -92,6 +93,15 @@
                     class="text-danger"
                   >
                     *Contact Number is required
+                  </small>
+                  <small
+                    *ngIf="
+                      registerForm.controls['contactNumber'].touched &&
+                      registerForm.hasError('minlength', 'contactNumber')
+                    "
+                    class="text-danger"
+                  >
+                    *Contact Number start with 6+ and 10digits are needed
                   </small>
                 </div>
               </div>

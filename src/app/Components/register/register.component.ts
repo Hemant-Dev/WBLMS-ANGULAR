@@ -72,7 +72,12 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      contactNumber: ['', [Validators.required, Validators.pattern('/^(\+\d{1,3}[- ]?)?\d{10}$/')]],
+      contactNumber: [
+        '', 
+        [
+          Validators.required, 
+          Validators.minLength(12)
+        ]],
       genderId: [0, Validators.required],
       roleId: [0, Validators.required],
       managerId: new FormControl({ value: 0, disabled: true }, Validators.required),
