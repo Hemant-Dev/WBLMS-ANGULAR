@@ -1,0 +1,9 @@
+.card-deck {
+  min-height: 15vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.card {
+  min-height: 100%;
+}
