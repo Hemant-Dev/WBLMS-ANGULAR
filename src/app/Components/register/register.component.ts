@@ -10,10 +10,6 @@ import { ManagerModel } from 'src/app/Models/ManagerModel';
 import { RolesModel } from 'src/app/Models/RolesModels';
 import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
-import {
-  GetEmployeeAsync,
-  CreateEmployeeAsync,
-} from 'src/app/Services/employee.service';
 
 @Component({
   selector: 'app-register',

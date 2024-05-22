@@ -11,78 +11,137 @@
     ></button>
   </div>
   <div class="modal-body">
-    <div class="form-group">
+    <form
+      [formGroup]="leaveRequestForm"
+      (ngSubmit)="handleSubmit()"
+      class="form-group"
+    >
       <div class="mb-3">
-        <label for="leaveType" class="form-label">Leave Type</label>
-        <select
-          class="form-select"
-          id="leaveType"
-          name="leaveTypeId"
-          [(ngModel)]="initialLeaveRequestData.leaveTypeId"
+        <div
+          class="input-field"
+          [class.error]="
+            leaveRequestForm.controls['leaveTypeId'].touched &&
+            leaveRequestForm.hasError('required', 'leaveTypeId')
+          "
         >
-          <option selected disabled [value]="0">Select Leave Type</option>
-          <option
-            *ngFor="let leaveType of leaveTypeData"
-            [value]="leaveType.id"
+          <label for="leaveType" class="form-label">Leave Type</label>
+          <select
+            class="form-select"
+            id="leaveType"
+            formControlName="leaveTypeId"
           >
-            {{ leaveType.leaveTypeName }}
-          </option>
-        </select>
+            <option selected disabled [value]="0">Select Leave Type</option>
+            <option
+              *ngFor="let leaveType of leaveTypeData"
+              [value]="leaveType.id"
+            >
+              {{ leaveType.leaveTypeName }}
+            </option>
+          </select>
+        </div>
+        <small
+          *ngIf="
+            leaveRequestForm.controls['leaveTypeId'].touched &&
+            leaveRequestForm.get('leaveTypeId')?.value == '0'
+          "
+          class="text-danger"
+        >
+          *Leave Type is required
+        </small>
       </div>
       <div class="mb-3">
-        <label for="leaveReason" class="form-label">Reason</label>
-        <textarea
-          name="reson"
-          [(ngModel)]="initialLeaveRequestData.reason"
-          class="form-control max-height-scrollable"
-          id="leaveReason"
-          rows="3"
-        ></textarea>
+        <div
+          class="input-field"
+          [class.error]="
+            leaveRequestForm.controls['reason'].touched &&
+            leaveRequestForm.hasError('required', 'reason')
+          "
+        >
+          <label for="reason" class="form-label">Reason</label>
+          <textarea
+            formControlName="reason"
+            class="form-control max-height-scrollable"
+            id="reason"
+            rows="3"
+          ></textarea>
+        </div>
+        <small
+          *ngIf="
+            leaveRequestForm.controls['reason'].touched &&
+            leaveRequestForm.hasError('required', 'reason')
+          "
+          class="text-danger"
+          >*Leave reason is required</small
+        >
       </div>
       <div class="row mb-3">
-        <div class="col">
-          <label for="endDate" class="form-label">Start Date</label>
+        <div
+          class="col input-field"
+          [class.error]="
+            leaveRequestForm.controls['startDate'].touched &&
+            leaveRequestForm.hasError('required', 'startDate')
+          "
+        >
+          <label for="startDate" class="form-label">Start Date</label>
           <input
-            [disabled]="initialLeaveRequestData.startDate === '0001-01-01'"
             type="date"
-            name="startDate"
-            [(ngModel)]="initialLeaveRequestData.startDate"
+            formControlName="startDate"
             (change)="calculateLeaveDays()"
             class="form-control"
             id="startDate"
           />
+          <small
+            *ngIf="
+              leaveRequestForm.controls['startDate'].touched &&
+              leaveRequestForm.hasError('required', 'startDate')
+            "
+            class="text-danger"
+          >
+            *Start date is required
+          </small>
         </div>
-        <div class="col">
+
+        <div
+          class="col input-field"
+          [class.error]="
+            leaveRequestForm.controls['endDate'].touched &&
+            leaveRequestForm.hasError('required', 'endDate')
+          "
+        >
           <label for="endDate" class="form-label">End Date</label>
           <input
-            [disabled]="initialLeaveRequestData.startDate === '0001-01-01'"
+            [disabled]="getValue('startDate') === '0001-01-01'"
             type="date"
-            name="endDate"
-            [(ngModel)]="initialLeaveRequestData.endDate"
+            formControlName="endDate"
             (change)="calculateLeaveDays()"
             class="form-control"
             id="endDate"
           />
+          <small
+            *ngIf="
+              leaveRequestForm.controls['endDate'].touched &&
+              leaveRequestForm.hasError('required', 'endDate')
+            "
+            class="text-danger"
+          >
+            End Date is required
+          </small>
         </div>
+
         <div
           class="form-check form-switch"
           style="margin-left: 20px; margin-top: 5px"
-          *ngIf="
-            this.initialLeaveRequestData.startDate ===
-            this.initialLeaveRequestData.endDate
-          "
+          *ngIf="getValue('endDate') === getValue('startDate')"
         >
           <input
             class="form-check-input"
             type="checkbox"
-            name="isHalfDay"
-            [(ngModel)]="initialLeaveRequestData.isHalfDay"
+            formControlName="isHalfDay"
             (change)="halfDay()"
             value=""
             id="halfDay"
             [disabled]="
-              initialLeaveRequestData.startDate === '' &&
-              initialLeaveRequestData.endDate === ''
+              getValue('endDate') === '' && '' === getValue('startDate')
             "
           />
           <label class="form-check-label" for="halfDay">Half Day</label>
@@ -93,16 +152,14 @@
           >Number of Leave Days</label
         >
         <input
-          disabled
           type="text"
-          name="numberOfLeaveDays"
-          [(ngModel)]="initialLeaveRequestData.numberOfLeaveDays"
+          formControlName="numberOfLeaveDays"
           class="form-control"
           id="numberOfLeaveDays"
           readonly
         />
       </div>
-    </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button
@@ -113,6 +170,8 @@
     >
       Close
     </button>
-    <button class="btn btn-primary" (click)="handleSubmit()">Submit</button>
+    <button class="btn btn-primary" type="submit" (click)="handleSubmit()">
+      Submit
+    </button>
   </div>
 </div>
