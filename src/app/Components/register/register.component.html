@@ -72,7 +72,7 @@
                     [class.error]="
                       registerForm.controls['contactNumber'].touched &&
                       (registerForm.hasError('required', 'contactNumber') ||
-                      registerForm.hasError('minlength', 'contactNumber') )
+                        registerForm.hasError('pattern', 'contactNumber') )
                     "
                   >
                     <i class="fa fa-phone p-2"></i>
@@ -80,7 +80,7 @@
                     +91
                     <input
                       style="margin-left: 2px"
-                      type="number"
+                      type="text"
                       formControlName="contactNumber"
                       placeholder="Contact Number"
                     />
@@ -97,12 +97,13 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.hasError('minlength', 'contactNumber')
+                      registerForm.hasError('pattern', 'contactNumber')
                     "
                     class="text-danger"
                   >
                     *Contact Number start with 6+ and 10digits are needed
                   </small>
+                  
                 </div>
               </div>
               <div class="col-sm">
@@ -260,7 +261,9 @@
                 class="input-field"
                 [class.error]="
                   registerForm.controls['password'].touched &&
-                  registerForm.hasError('required', 'password')
+                  (registerForm.hasError('required', 'password') ||
+                    registerForm.hasError('pattern','password')
+                )
                 "
               >
                 <span class="fa fa-lock p-2"></span>
@@ -290,6 +293,7 @@
                 "
                 >*Password must include number and alphabets
               </small>
+              
             </div>
             <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
               {{ initialEmployeeData.id == 0 ? "Register" : "Update" }}

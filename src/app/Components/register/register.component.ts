@@ -21,7 +21,7 @@ import {
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  
+
   initialEmployeeData: EmployeeModel = {
     id: 0,
     firstName: '',
@@ -69,21 +69,22 @@ export class RegisterComponent implements OnInit {
     // console.log(this.initialEmployeeData)
     this.fetchData();
 
+    const regex = '/^[6-9]\d{9}'
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       contactNumber: [
-        '', 
+        '',
         [
-          Validators.required, 
-          Validators.minLength(12)
+          Validators.required,
+          Validators.pattern(/^[6-9]\d{9}$/)
         ]],
       genderId: [0, Validators.required],
       roleId: [0, Validators.required],
       managerId: new FormControl({ value: 0, disabled: true }, Validators.required),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, ]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
     });
 
     this.onChangeRole();
@@ -93,41 +94,41 @@ export class RegisterComponent implements OnInit {
   async handleSubmit() {
     console.log(this.registerForm.value)
     if (this.registerForm.valid) {
+      if (this.initialEmployeeData.id) {
+        try {
+          this.employeeService
+            .updateEmployeesById(this.initialEmployeeData)
+            .subscribe({
+              next: (response: any) => {
+                console.log(response);
+              },
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          this.employeeService
+            .createEmployees(this.registerForm.value)
+            .subscribe({
+              next: (response: any) => {
+                console.log(response);
+                this.initialEmployeeData = response.data;
+                successToast('Employee Added Successfully');
+                this.router.navigate(['home/dashboard']);
+              },
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }
       console.log("submit")
     }
     else {
       console.log("invalid")
       ValidateForm.validateAllFormFields(this.registerForm);
     }
-    // if (this.initialEmployeeData.id) {
-    //   try {
-    //     this.employeeService
-    //       .updateEmployeesById(this.initialEmployeeData)
-    //       .subscribe({
-    //         next: (response: any) => {
-    //           console.log(response);
-    //         },
-    //       });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // } else {
-    //   try {
-    //     this.employeeService
-    //       .createEmployees(this.initialEmployeeData)
-    //       .subscribe({
-    //         next: (response: any) => {
-    //           console.log(response);
-    //           this.initialEmployeeData = response.data;
-    //           successToast('Employee Added Successfully');
-    //           this.router.navigate(['home/dashboard']);
-    //           console.log(this.initialEmployeeData);
-    //         },
-    //       });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
+
   }
   type: string = 'password';
   isText: boolean = false;
