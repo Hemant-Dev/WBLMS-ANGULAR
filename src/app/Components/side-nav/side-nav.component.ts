@@ -18,7 +18,10 @@ export class SideNavComponent implements OnInit {
       number: '1',
       name: 'Dashboard',
       icon: 'fa-solid fa-chart-pie',
-      route: 'dashboard',
+      route:
+        this.role === 'Admin'
+          ? 'dashboard/teamLeaveRequests'
+          : 'dashboard/leaveRequests',
       role: ['Employee', 'Admin', 'HR', 'Team Lead'],
     },
     {
