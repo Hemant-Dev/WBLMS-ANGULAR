@@ -40,7 +40,8 @@ export class LeaveRequestsService {
     sortOrder: string,
     page: number,
     pageSize: number,
-    leaveReqObj: LeaveRequestModel
+    leaveReqObj: LeaveRequestModel,
+    searchKeyword?: string
   ): Observable<any> {
     return this.http.post<any>(
       this.leave_api_url +

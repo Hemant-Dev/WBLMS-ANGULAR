@@ -35,9 +35,10 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.byRolesService.data$.subscribe((val) => {
-      this.initialLeaveRequestObj.roleName = val;
-      // console.log(this.initialLeaveRequestObj.roleName);
+      const getRoleFromService = this.byRolesService.role;
+      this.initialLeaveRequestObj.roleName = val || getRoleFromService;
     });
+    // console.log(this.initialLeaveRequestObj.roleName);
     this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
       .getLeaveRequestsByRoles('', '', 1, 100, this.initialLeaveRequestObj)
@@ -109,19 +110,35 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
     });
   }
   handleSearch() {
+    // console.log(this.initialLeaveRequestObj.roleName);
+    // this.leaveRequestService
+    //   .searchLeaveRequests(
+    //     1,
+    //     100,
+    //     this.searchKeyword,
+    //     0,
+    //     Number(this.initialLeaveRequestObj.employeeId)
+    //   )
+    //   .subscribe({
+    //     next: (res) => {
+    //       this.leaveRequests = res.data.dataArray;
+    //     },
+    //   });
     this.leaveRequestService
-      .searchLeaveRequests(
+      .getLeaveRequestsByRoles(
+        '',
+        '',
         1,
         100,
-        this.searchKeyword,
-        0,
-        Number(this.initialLeaveRequestObj.employeeId)
+        this.initialLeaveRequestObj,
+        this.searchKeyword
       )
       .subscribe({
         next: (res) => {
+          // console.log(res);
           this.leaveRequests = res.data.dataArray;
-          // console.log(this.leaveRequests);
         },
+        error: (err) => console.log(err),
       });
   }
 }

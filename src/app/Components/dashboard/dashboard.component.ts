@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.router.navigate(['home/dashboard/leaveRequests']);
     }
+    this.byRolesService.changeData('HR');
   }
   fetchSelfRequestData() {
     // temp set then reset the id
@@ -124,11 +125,14 @@ export class DashboardComponent implements OnInit {
   }
   handleHRLeaveRequestClick() {
     this.byRolesService.changeData('HR');
+    this.byRolesService.saveData('HR');
   }
   handleTeamLeadLeaveRequestClick() {
     this.byRolesService.changeData('Team Lead');
+    this.byRolesService.saveData('Team Lead');
   }
   handleEmployeeLeaveRequestClick() {
     this.byRolesService.changeData('Employee');
+    this.byRolesService.saveData('Employee');
   }
 }

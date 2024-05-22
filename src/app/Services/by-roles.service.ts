@@ -7,8 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 export class ByRolesService {
   data = new BehaviorSubject('');
   data$ = this.data.asObservable();
-
+  role: string = '';
   changeData(data: string) {
     this.data.next(data);
+  }
+  saveData(role: string) {
+    this.role = role;
   }
 }
