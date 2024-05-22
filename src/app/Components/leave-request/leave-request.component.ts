@@ -25,7 +25,6 @@ export class LeaveRequestComponent implements OnInit {
     this.getLeaveType();
     this.getDataFromUserStore();
     this.fetchHolidayData()
-
   }
 
   constructor(
