@@ -6,6 +6,7 @@ import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-team-leave-requests-table',
@@ -23,7 +24,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
-    managerId : 0,
+    managerId: 0,
     firstName: '',
     lastName: '',
     leaveType: '',
@@ -35,8 +36,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
-  pageSize : number = 3;
-  searchKeyword : string = "";
+  pageSize: number = 3;
+  searchKeyword: string = '';
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
@@ -51,12 +52,12 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, this.pageSize, this.initialLeaveRequestObj)
+        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
         .subscribe({
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
-            console.log(this.leaveRequests)
+            console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
           },
@@ -69,34 +70,60 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   }
 
   handleRejectClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 3,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Rejected.');
-          this.ngOnInit();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
+    Swal.fire({
+      title: 'Do you want to reject the leave?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const updateLeaveRequestStatus: UpdateRequestStatus = {
+          id: Id,
+          statusId: 3,
+        };
+        this.leaveRequestService
+          .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+          .subscribe({
+            next: (res) => {
+              errorToast('Leave Request Rejected.');
+              this.ngOnInit();
+            },
+            error: (err) => errorToast('Error Occured while updating status'),
+          });
+      } else if (result.isDenied) {
+        // Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
   }
   handleApproveClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 2,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Approved.');
-          this.ngOnInit();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
+    Swal.fire({
+      title: 'Do you want to approve the leave?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const updateLeaveRequestStatus: UpdateRequestStatus = {
+          id: Id,
+          statusId: 2,
+        };
+        this.leaveRequestService
+          .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
+          .subscribe({
+            next: (res) => {
+              successToast('Leave Request Approved.');
+              this.ngOnInit();
+            },
+            error: (err) => errorToast('Error Occured while updating status'),
+          });
+      } else if (result.isDenied) {
+        // Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
   }
 
   fetchSessionData() {
@@ -132,17 +159,21 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     }
   }
 
-  handleSearch(){
+  handleSearch() {
     this.leaveRequestService
-    .searchLeaveRequests(1,100,this.searchKeyword, 0, Number(this.employeeId))
-    .subscribe(
-      {
-        next : (res) => {
+      .searchLeaveRequests(
+        1,
+        100,
+        this.searchKeyword,
+        0,
+        Number(this.employeeId)
+      )
+      .subscribe({
+        next: (res) => {
           this.leaveRequests = res.data.dataArray;
-          console.log(this.leaveRequests)
-        }
-      }
-    )
+          console.log(this.leaveRequests);
+        },
+      });
   }
   // handleSearch() {
   //   console.log('search');

@@ -59,7 +59,6 @@ export class LeaveRequestsTableComponent implements OnInit {
   };
 
   bootstrap: any;
-
   submitLeaveRequest() {
     // You can reset the form and close the modal after submission
     this.leaveRequest = { name: '', phoneNumber: '' };
