@@ -1,0 +1,124 @@
+<div class="card my-4">
+  <p-table
+    #dt2
+    [value]="leaveRequests"
+    dataKey="id"
+    [rows]="pageSize"
+    [rowsPerPageOptions]="[3, 6, 10]"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'name',
+      'country.name',
+      'representative.name',
+      'status'
+    ]"
+    [tableStyle]="{ 'min-width': '70rem' }"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <p-header> Leave Requests</p-header>
+        <div class="input-group w-50">
+          <input
+            type="text"
+            name="searchKeyword"
+            [(ngModel)]="searchKeyword"
+            (ngModelChange)="handleSearch()"
+            class="form-control mr-2"
+            placeholder="Search"
+          />
+          <button class="btn btn-primary mx-3">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th style="width: 22%">Employee Id</th> -->
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Leave Type</th>
+        <th style="width: 30%">Reason</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th style="width: 10%">Number Of Days</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-request>
+      <tr>
+        <td>{{ request.firstName }}</td>
+        <td>
+          {{ request.lastName }}
+        </td>
+        <td>{{ request.leaveType }}</td>
+        <td>
+          {{ request.reason }}
+        </td>
+        <td>
+          <p-tag
+            *ngIf="request.status === 'Approved'"
+            severity="success"
+            [value]="request.status"
+          />
+          <p-tag
+            *ngIf="request.status === 'Rejected'"
+            severity="danger"
+            [value]="request.status"
+          />
+          <p-tag
+            *ngIf="request.status === 'Pending'"
+            severity="primary"
+            [value]="request.status"
+          />
+        </td>
+        <td>
+          {{ request.startDate }}
+        </td>
+        <td>
+          {{ request.endDate }}
+        </td>
+        <td class="text-end">
+          {{
+            request.numberOfLeaveDays < 1
+              ? "Half Day"
+              : request.numberOfLeaveDays
+          }}
+        </td>
+        <td>
+          <div
+            class="button-group d-flex gap-2 justify-content-center align-items-center"
+          >
+            <button
+              class="btn btn-success"
+              (click)="handleApproveClick(request.id)"
+            >
+              <i class="fa fa-solid fa-check"></i>
+            </button>
+            <button
+              class="btn btn-danger"
+              (click)="handleRejectClick(request.id)"
+            >
+              <i class="fa fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="12" class="text-center">
+          <img
+            src="../../../assets/img/search_7067177.png"
+            alt="empty search"
+            width="50"
+            height="50"
+          />
+          <br />
+          No Leave Requests found.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -57,7 +57,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
-            console.log(this.leaveRequests);
+            // console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
           },
@@ -171,7 +171,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.leaveRequests = res.data.dataArray;
-          console.log(this.leaveRequests);
+          // console.log(this.leaveRequests);
         },
       });
   }

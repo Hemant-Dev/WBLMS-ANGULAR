@@ -13,6 +13,7 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
 import { LeaveRequestsTableComponent } from './Components/leave-requests-table/leave-requests-table.component';
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 import { AdminGuard } from './Guards/admin.guard';
+import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,21 @@ const routes: Routes = [
           {
             path: 'teamLeaveRequests',
             component: TeamLeaveRequestsTableComponent,
+          },
+          {
+            path: 'hr',
+            component: ByTeamLeaveRequestsComponent,
+            canActivate: [AdminGuard],
+          },
+          {
+            path: 'teamLead',
+            component: ByTeamLeaveRequestsComponent,
+            canActivate: [AdminGuard],
+          },
+          {
+            path: 'employee',
+            component: ByTeamLeaveRequestsComponent,
+            canActivate: [AdminGuard],
           },
         ],
       },

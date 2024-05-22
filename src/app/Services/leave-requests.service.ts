@@ -35,6 +35,21 @@ export class LeaveRequestsService {
     );
   }
 
+  getLeaveRequestsByRoles(
+    sortColumn: string,
+    sortOrder: string,
+    page: number,
+    pageSize: number,
+    leaveReqObj: LeaveRequestModel,
+    searchKeyword?: string
+  ): Observable<any> {
+    return this.http.post<any>(
+      this.leave_api_url +
+        `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
+      leaveReqObj
+    );
+  }
+
   getWonderbizholidays(): Observable<any> {
     return this.http.get<any>(this.leave_api_url + '/wbHolidays');
   }

@@ -4,7 +4,7 @@ export interface LeaveRequestModel {
   managerId?: number;
   firstName?: string;
   lastName?: string;
-  leaveTypeId? : number,
+  leaveTypeId?: number;
   leaveType?: string;
   reason: string;
   status?: string;
@@ -13,5 +13,6 @@ export interface LeaveRequestModel {
   numberOfLeaveDays: number;
   requestDate?: string;
   approvedDate?: string;
-  isHalfDay? : false
+  isHalfDay?: false;
+  roleName?: string;
 }
