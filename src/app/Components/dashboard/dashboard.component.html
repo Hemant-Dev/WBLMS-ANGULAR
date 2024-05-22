@@ -17,12 +17,39 @@
         >Self Leave Requests</a
       >
     </li>
-    <li *ngIf="role !== 'Employee'" class="nav-item">
+    <li *ngIf="role !== 'Employee' && role !== 'Admin'" class="nav-item">
       <a
         [routerLink]="['teamLeaveRequests']"
         routerLinkActive="active"
         class="nav-link"
         >Team Leave Requests</a
+      >
+    </li>
+    <li *ngIf="role === 'Admin'" class="nav-item">
+      <a
+        (click)="handleHRLeaveRequestClick()"
+        [routerLink]="['hr']"
+        routerLinkActive="active"
+        class="nav-link"
+        >HR Leave Requests</a
+      >
+    </li>
+    <li *ngIf="role === 'Admin'" class="nav-item">
+      <a
+        (click)="handleTeamLeadLeaveRequestClick()"
+        [routerLink]="['teamLead']"
+        routerLinkActive="active"
+        class="nav-link"
+        >Team Lead Leave Requests</a
+      >
+    </li>
+    <li *ngIf="role === 'Admin'" class="nav-item">
+      <a
+        (click)="handleEmployeeLeaveRequestClick()"
+        [routerLink]="['employee']"
+        routerLinkActive="active"
+        class="nav-link"
+        >Employee Leave Requests</a
       >
     </li>
   </ul>

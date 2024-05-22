@@ -29,6 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
+import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +48,7 @@ import { TeamLeaveRequestsTableComponent } from './Components/team-leave-request
     LeaveRequestsTableComponent,
     LeaveRequestComponent,
     TeamLeaveRequestsTableComponent,
+    ByTeamLeaveRequestsComponent,
   ],
   imports: [
     BrowserModule,

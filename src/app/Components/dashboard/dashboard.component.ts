@@ -8,6 +8,7 @@ import { PaginatedModel } from 'src/app/Models/PaginatedModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
+import { ByRolesService } from 'src/app/Services/by-roles.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { GetEmployeeAsync } from 'src/app/Services/employee.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
@@ -55,14 +56,15 @@ export class DashboardComponent implements OnInit {
     private auth: AuthService,
     private userStore: UserStoreService,
     private leaveRequestService: LeaveRequestsService,
-    private router: Router
+    private router: Router,
+    private byRolesService: ByRolesService
   ) {}
   ngOnInit(): void {
     this.fetchSessionData();
     this.fetchSelfRequestData();
     this.fetchAllRequestData();
     if (this.role === 'Admin') {
-      this.router.navigate(['home/dashboard/teamLeaveRequests']);
+      this.router.navigate(['home/dashboard/hr']);
     } else {
       this.router.navigate(['home/dashboard/leaveRequests']);
     }
@@ -119,5 +121,14 @@ export class DashboardComponent implements OnInit {
       this.employeeId = val || employeeIdFromToken;
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
+  }
+  handleHRLeaveRequestClick() {
+    this.byRolesService.changeData('HR');
+  }
+  handleTeamLeadLeaveRequestClick() {
+    this.byRolesService.changeData('Team Lead');
+  }
+  handleEmployeeLeaveRequestClick() {
+    this.byRolesService.changeData('Employee');
   }
 }
