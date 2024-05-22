@@ -21,7 +21,7 @@ export class LeaveRequestComponent implements OnInit {
   submitStatus: boolean = false;
 
   ngOnInit(): void {
-    console.log('fetch data');
+    // console.log('fetch data');
     this.getLeaveType();
     this.getDataFromUserStore();
     // this.fetchHolidayData();
