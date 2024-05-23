@@ -56,7 +56,7 @@
         <th *ngIf="role === 'Admin'">First Name</th>
         <th *ngIf="role === 'Admin'">Last Name</th>
         <th>Leaves Type</th>
-        <th style="width: 30%">Reason</th>
+        <th style="width: 10%">Reason</th>
         <th>Status</th>
         <th>Start Date</th>
         <th>End Date</th>
@@ -70,7 +70,7 @@
         <td *ngIf="role === 'Admin'">{{ request.firstName }}</td>
         <td *ngIf="role === 'Admin'">{{ request.lastName }}</td>
         <td>{{ request.leaveType }}</td>
-        <td>{{ request.reason }}</td>
+        <td style="cursor: pointer;" class="reason" data-bs-toggle="tooltip" data-placement="right" title="Click to see Reason" (click)="getReason(request.reason)">{{ request.reason.slice(0,10) }}...</td>
         <td>
           <!-- {{ request.status }} -->
           <p-tag

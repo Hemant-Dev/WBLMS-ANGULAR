@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
-import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, showReason, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -113,6 +113,9 @@ export class LeaveRequestsTableComponent implements OnInit {
           },
         });
     }
+  }
+  getReason(reason : string){
+    showReason(reason)
   }
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
