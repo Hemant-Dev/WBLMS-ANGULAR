@@ -64,7 +64,7 @@ export class LeaveRequestsService {
     return this.http.get<any>(
       this.leave_api_url +
         `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}&managerId=${managerId}`
-    );
+    );  
   }
 
   updateLeaveRequestStatus(

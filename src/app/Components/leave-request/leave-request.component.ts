@@ -35,13 +35,12 @@ export class LeaveRequestComponent implements OnInit {
   leaveBalance!: LeaveBalance;
   leaveStatusesCount!: LeaveStatusesCount;
 
-
   ngOnInit(): void {
     // console.log('fetch data');
     this.getLeaveType();
     this.getDataFromUserStore();
 
-    this.fetchHolidayData()
+    this.fetchHolidayData();
     this.leaveRequestForm = this.fb.group({
       id: 0,
       employeeId: [0, Validators.required],
@@ -54,13 +53,12 @@ export class LeaveRequestComponent implements OnInit {
         Validators.required
       ),
       isHalfDay: [false, Validators.required],
-    })
+    });
     this.leaveRequestForm.patchValue({
       employeeId: Number(this.employeeId),
     });
-    console.log(this.leaveRequestForm.value)
-    this.getLeaveStatusesData(this.employeeId)
-
+    // console.log(this.leaveRequestForm.value)
+    this.getLeaveStatusesData(this.employeeId);
   }
 
   constructor(
@@ -82,7 +80,7 @@ export class LeaveRequestComponent implements OnInit {
     const year = date.getFullYear().toString().padStart(4, '0');
     return `${year}-${month}-${day}`;
   }
-  
+
   employeeId!: number;
   todayDate: any = new Date();
   leaveTypeData!: LeaveTypeModel[];
@@ -108,7 +106,7 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestService.getLeavesBalances(employeeId).subscribe({
       next: (data: any) => {
         this.leaveBalance = data.data;
-        console.log(this.leaveBalance)
+        console.log(this.leaveBalance);
       },
       error: (err) => console.log(err),
     });
@@ -118,8 +116,11 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
       next: (res) => {
         this.leaveStatusesCount = res.data;
-        this.leaveStatusesCount.leavesRemaining = 25 - (this.leaveStatusesCount.approvedLeavesCount + this.leaveStatusesCount.pendingLeavesCount);
-        console.log(this.leaveStatusesCount)
+        this.leaveStatusesCount.leavesRemaining =
+          25 -
+          (this.leaveStatusesCount.approvedLeavesCount +
+            this.leaveStatusesCount.pendingLeavesCount);
+        // console.log(this.leaveStatusesCount);
       },
       error: (err) => console.log(err),
     });
@@ -138,7 +139,13 @@ export class LeaveRequestComponent implements OnInit {
     let end = new Date(this.getValue('endDate'));
     let count = 0;
 
-    if (!this.resetEndDate("Start date should not be greater than end date", startDate, endDate,)) {
+    if (
+      !this.resetEndDate(
+        'Start date should not be greater than end date',
+        startDate,
+        endDate
+      )
+    ) {
       this.halfDayIsDisable(startDate, endDate);
       while (start <= end) {
         const dayOfWeek = start.getDay();
@@ -146,23 +153,22 @@ export class LeaveRequestComponent implements OnInit {
         if (dayOfWeek !== 0 && dayOfWeek !== 6) {
           var date = this.formatDate(start);
           var isHoliday: boolean = false;
-          this.wonderbizHolidays.map(
-            holiday => {
-              // console.log(`${holiday.date} === ${date}`)
-              if (holiday.date == date) {
-                isHoliday = true
-                var newHoliday: WonderbizHolidaysModel = {
-                  date: holiday.date,
-                  event: holiday.event
-                };
-                showHolidays.push(newHoliday);
-              }
-            });
+          this.wonderbizHolidays.map((holiday) => {
+            // console.log(`${holiday.date} === ${date}`)
+            if (holiday.date == date) {
+              isHoliday = true;
+              var newHoliday: WonderbizHolidaysModel = {
+                date: holiday.date,
+                event: holiday.event,
+              };
+              showHolidays.push(newHoliday);
+            }
+          });
           if (!isHoliday) {
             count++;
-            console.log(this.leaveStatusesCount.leavesRemaining)
+            console.log(this.leaveStatusesCount.leavesRemaining);
             if (count > this.leaveStatusesCount.leavesRemaining!) {
-              this.resetEndDate('You dont have this much leave remaining')
+              this.resetEndDate('You dont have this much leave remaining');
               return;
             }
           }
@@ -173,43 +179,37 @@ export class LeaveRequestComponent implements OnInit {
         count = 0.5;
       }
       this.leaveRequestForm.patchValue({
-        numberOfLeaveDays: count
+        numberOfLeaveDays: count,
       });
     }
-    console.log(showHolidays)
-    var showHolidaysDisplayString = "We have holiday on \n";
+    console.log(showHolidays);
+    var showHolidaysDisplayString = 'We have holiday on \n';
 
-    if(showHolidays.length){
+    if (showHolidays.length) {
       this.showholidaysToast(showHolidays);
     }
-    
   }
 
-  showholidaysToast(showHolidays: WonderbizHolidaysModel[]){
-    var showHolidaysDisplayString = "We have holiday on \n";
+  showholidaysToast(showHolidays: WonderbizHolidaysModel[]) {
+    var showHolidaysDisplayString = 'We have holiday on \n';
 
-    showHolidays.map(
-      holiday => {
-        showHolidaysDisplayString += 'Date = ' + holiday.date + '\nEvent = ' + holiday.event 
-      }
-    )
-    successToast(showHolidaysDisplayString)
+    showHolidays.map((holiday) => {
+      showHolidaysDisplayString +=
+        'Date = ' + holiday.date + '\nEvent = ' + holiday.event;
+    });
+    successToast(showHolidaysDisplayString);
   }
 
-  resetEndDate(
-    toastMsg: string,
-    start?: string,
-    end?: string,
-  ): boolean {
-    console.log('You dont have this much leave remaining----------')
-    console.log(start ,'  => '  ,end)
+  resetEndDate(toastMsg: string, start?: string, end?: string): boolean {
+    console.log('You dont have this much leave remaining----------');
+    console.log(start, '  => ', end);
     if ((start === undefined && end === undefined) || start! > end!) {
       this.leaveRequestForm.patchValue({
         endDate: '',
         numberOfLeaveDays: 0,
-      })
-      console.log(toastMsg)
-      errorToast(toastMsg)
+      });
+      console.log(toastMsg);
+      errorToast(toastMsg);
       return true;
     }
     return false;
@@ -267,6 +267,5 @@ export class LeaveRequestComponent implements OnInit {
       // console.log(this.leaveRequestForm.value)
       ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
-
   }
 }

@@ -24,7 +24,6 @@ export class LeaveRequestsTableComponent implements OnInit {
   totalCount!: number;
   activityValues: number[] = [0, 100];
 
-  searchValue: string | undefined;
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
@@ -46,13 +45,6 @@ export class LeaveRequestsTableComponent implements OnInit {
   email!: string;
   employeeId!: string;
   searchKeyword: string = '';
-
-  constructor(
-    private leaveRequestService: LeaveRequestsService,
-    private auth: AuthService,
-    private userStore: UserStoreService,
-    private router: Router
-  ) {}
   leaveRequest = {
     name: '',
     phoneNumber: '',
@@ -61,6 +53,13 @@ export class LeaveRequestsTableComponent implements OnInit {
     first: 0,
     rows: this.pageSize,
   };
+
+  constructor(
+    private leaveRequestService: LeaveRequestsService,
+    private auth: AuthService,
+    private userStore: UserStoreService,
+    private router: Router
+  ) {}
 
   bootstrap: any;
   submitLeaveRequest() {
@@ -119,9 +118,9 @@ export class LeaveRequestsTableComponent implements OnInit {
             this.initialLeaveRequestObj.employeeId = 0;
           },
           error: (err) => {
-            console.log(err);
+            // console.log(err);
             // errorAlert(err);
-            // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
           },
         });
     }
@@ -148,10 +147,7 @@ export class LeaveRequestsTableComponent implements OnInit {
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
   }
-  clear(table: Table) {
-    table.clear();
-    this.searchValue = '';
-  }
+
   handleRejectClick(Id: number) {
     const updateLeaveRequestStatus: UpdateRequestStatus = {
       id: Id,
@@ -189,8 +185,8 @@ export class LeaveRequestsTableComponent implements OnInit {
     // console.log(this.searchKeyword);
     this.leaveRequestService
       .searchLeaveRequests(
-        1,
-        100,
+        this.pageNumber,
+        this.pageSize,
         this.searchKeyword,
         Number(this.employeeId),
         0
@@ -206,9 +202,10 @@ export class LeaveRequestsTableComponent implements OnInit {
       });
   }
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
-    console.log($event);
+    // console.log($event);
     this.lazyRequest.first = $event.first || 0;
-    this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows + 1;
+    this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
+    this.pageNumber++;
     this.lazyRequest.rows = $event.rows || 5;
     this.pageSize = this.lazyRequest.rows;
     this.fetchSelfRequestData();
