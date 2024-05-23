@@ -42,6 +42,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     rows: 0,
     sortField: '',
     sortOrder: 1,
+    filter: {
+      firstName: '',
+    },
   };
 
   constructor(
@@ -163,6 +166,13 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;
+    this.fetchByRoleLeaveRequestData();
+  }
+
+  filterData() {
+    this.lazyRequest = {
+      ...this.lazyRequest,
+    };
     this.fetchByRoleLeaveRequestData();
   }
 }

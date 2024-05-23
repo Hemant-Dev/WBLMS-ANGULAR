@@ -31,15 +31,17 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
+  loading: boolean = true;
+  activityValues: number[] = [0, 100];
   pageNumber!: number;
   pageSize: number = 5;
   totalCount!: number;
   searchKeyword: string = '';
-  loading: boolean = true;
-  activityValues: number[] = [0, 100];
   lazyRequest = {
     first: 0,
-    rows: this.pageSize,
+    rows: 0,
+    sortField: '',
+    sortOrder: 1,
   };
   constructor(
     private leaveRequestService: LeaveRequestsService,
@@ -58,8 +60,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
         .getLeaveRequests(
-          '',
-          '',
+          this.lazyRequest.sortField,
+          this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
           this.pageNumber,
           this.pageSize,
           this.initialLeaveRequestObj
@@ -180,6 +182,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     // console.log($event);
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
+    this.lazyRequest.sortField = $event.sortField?.toString() || '';
+    this.lazyRequest.sortOrder = $event.sortOrder || 1;
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;

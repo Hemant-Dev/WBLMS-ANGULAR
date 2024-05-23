@@ -31,6 +31,7 @@ import { CommonModule } from '@angular/common';
 import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,6 +67,8 @@ import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-request
     MultiSelectModule,
     DropdownModule,
     CommonModule,
+    InputTextModule,
+    InputNumberModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

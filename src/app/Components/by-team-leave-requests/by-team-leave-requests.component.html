@@ -40,12 +40,23 @@
         </div>
       </div>
     </ng-template>
+
     <ng-template pTemplate="header">
       <tr>
         <!-- <th style="width: 22%">Employee Id</th> -->
-        <th pSortableColumn="firstName">
-          First Name <p-sortIcon field="firstName"></p-sortIcon>
-        </th>
+        <div class="d-flex flex-column align-items-center">
+          <input
+            pInputText
+            type="text"
+            (input)="filterData()"
+            placeholder="Search First Name"
+            [(ngModel)]="initialLeaveRequestObj.firstName"
+            style="margin: auto"
+          />
+          <th pSortableColumn="firstName">
+            First Name <p-sortIcon field="firstName"></p-sortIcon>
+          </th>
+        </div>
         <th pSortableColumn="lastName">
           Last Name <p-sortIcon field="lastName"></p-sortIcon>
         </th>
