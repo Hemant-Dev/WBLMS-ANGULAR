@@ -6,6 +6,7 @@ import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
+import { WonderbizHolidaysModel } from 'src/app/Models/WonderbizHolidays';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { SharedServiceService } from 'src/app/Services/shared-service.service';
@@ -23,6 +24,7 @@ export class LeaveRequestComponent implements OnInit {
   submitStatus: boolean = false;
 
   leaveRequestForm!: FormGroup;
+  wonderbizHolidays!: WonderbizHolidaysModel[];
 
   ngOnInit(): void {
     // console.log('fetch data');
@@ -33,7 +35,7 @@ export class LeaveRequestComponent implements OnInit {
       id: 0,
       employeeId: [0, Validators.required],
       leaveTypeId: [0, Validators.required],
-      reason: ['', Validators.required, Validators.maxLength(50)],
+      reason: ['', [Validators.required, Validators.maxLength(100)]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       numberOfLeaveDays: new FormControl({ value: 0, disabled: true }, Validators.required),
@@ -45,6 +47,8 @@ export class LeaveRequestComponent implements OnInit {
     });
 
     console.log(this.leaveRequestForm.value)
+
+    this.fetchHolidayData()
   }
 
   constructor(
@@ -55,24 +59,11 @@ export class LeaveRequestComponent implements OnInit {
     private service: SharedServiceService,
     private fb: FormBuilder
   ) { }
+
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
     this.submitLeaveRequestClicked.emit(this.submitStatus);
   }
-  //Todays date
-  today = this.formatDate(new Date());
-
-  // initialLeaveRequestData: LeaveRequestModel = {
-  //   id: 0,
-  //   employeeId: 0,
-  //   leaveTypeId: 0,
-  //   reason: '',
-  //   startDate: '',
-  //   endDate: '',
-  //   numberOfLeaveDays: 0,
-  //   isHalfDay: false,
-  // };
-
   formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -95,7 +86,8 @@ export class LeaveRequestComponent implements OnInit {
   fetchHolidayData() {
     this.leaveRequestService.getWonderbizholidays().subscribe({
       next: (response: any) => {
-        console.log(response);
+        this.wonderbizHolidays = response.data;
+        console.log(this.wonderbizHolidays)
       },
     });
   }
@@ -105,36 +97,42 @@ export class LeaveRequestComponent implements OnInit {
     var endDate = this.getValue('endDate');
     let start = new Date(this.getValue('startDate'));
     let end = new Date(this.getValue('endDate'));
-    // let end = new Date(this.initialLeaveRequestData.endDate!);
     let count = 0;
-    console.log(startDate)
-    console.log(endDate)
 
-    if(startDate.match(endDate)){
+    if (startDate.match(endDate)) {
       this.leaveRequestForm.get('isHalfDay')?.enable();
       console.log("isHalfDay")
-    }else{
+    } else {
       this.leaveRequestForm.get('isHalfDay')?.disable();
     }
+    var event;
     while (start <= end) {
       const dayOfWeek = start.getDay();
-      // console.log(dayOfWeek + ' ' + count);
+      console.log("start => ", start)
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        count++;
+        var date = this.formatDate(start);
+        var isHoliday: boolean = false;
+        this.wonderbizHolidays.map(
+          holiday => {
+            console.log(`${holiday.date} === ${date}`)
+            if (holiday.date == date) {
+              event = holiday.event;
+              isHoliday = true
+            }
+          });
+        if (isHoliday) {
+          successToast(`We have holiday on ${date} => ${event}`)
+          console.log("isHoliday => ", isHoliday)
+        }
+        else {
+          count++;
+        }
       }
       start.setDate(start.getDate() + 1);
     }
     if (start === end && this.getValue('isHalfDay')) {
       count = 0.5;
     }
-    // console.log(this.initialLeaveRequestData);
-    // this.initialLeaveRequestData.numberOfLeaveDays = count;
-
-    // this.leaveRequestForm.patchValue({
-    //   numberOfLeaveDays: count
-    // });
-
-    // this.setValue('numberOfLeaveDays',count);
     this.leaveRequestForm.patchValue({
       numberOfLeaveDays: count
     });
@@ -142,12 +140,6 @@ export class LeaveRequestComponent implements OnInit {
 
   getValue(name: string): any {
     return this.leaveRequestForm.get(name)?.value;
-  }
-
-  setValue(name: string, val: any) {
-    this.leaveRequestForm.patchValue({
-      name: val
-    });
   }
 
   halfDay() {
@@ -165,49 +157,36 @@ export class LeaveRequestComponent implements OnInit {
     this.userService.getEmployeeIdFromStore().subscribe((val) => {
       const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
       this.employeeId = val || employeeIdFromToken;
-      //  this.initialLeaveRequestData.employeeId = this.employeeId;
-
-
-      // this.leaveRequest.controls['employeeId'].setValue(Number(0));
     });
   }
 
   handleSubmit() {
     if (this.leaveRequestForm.valid) {
-
       console.log(this.leaveRequestForm.value)
+      this.leaveRequestService
+      .createLeaveRequest(this.leaveRequestForm.value)
+      .subscribe({
+        next: (res) => {
+          // console.log(res);
+          successToast('Leave request created successfully!');
+          const buttonRef = document.getElementById('closeBtn');
+          buttonRef?.click();
+          this.submitStatus = true;
+          this.submitButtonClicked();
+          this.service.changeData(true);
+          this.leaveRequestForm.reset();
+          this.ngOnInit();
+
+          // this.router.navigate(['home/leaveRequests']);
+          // this.router.navigate([this.router.url]);
+        },
+        error: (err) =>
+          errorToast('Something went wrong while creating Leave Requests!'),
+      });
     } else {
       console.log(this.leaveRequestForm.value)
       ValidateForm.validateAllFormFields(this.leaveRequestForm)
     }
-    // this.leaveRequestService
-    //   .createLeaveRequest(this.initialLeaveRequestData)
-    //   .subscribe({
-    //     next: (res) => {
-    //       // console.log(res);
-    //       successToast('Leave request created successfully!');
-    //       const buttonRef = document.getElementById('closeBtn');
-    //       buttonRef?.click();
-    //       this.submitStatus = true;
-    //       this.submitButtonClicked();
-    //       this.service.changeData(true);
-    //       this.initialLeaveRequestData = {
-    //         id: 0,
-    //         employeeId: 0,
-    //         leaveTypeId: 0,
-    //         reason: '',
-    //         startDate: '',
-    //         endDate: '',
-    //         numberOfLeaveDays: 0,
-    //         isHalfDay: false,
-    //       };
-    //       this.ngOnInit();
-
-    //       // this.router.navigate(['home/leaveRequests']);
-    //       // this.router.navigate([this.router.url]);
-    //     },
-    //     error: (err) =>
-    //       errorToast('Something went wrong while creating Leave Requests!'),
-    //   });
+    
   }
 }

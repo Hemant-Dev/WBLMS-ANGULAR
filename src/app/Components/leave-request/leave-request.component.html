@@ -21,7 +21,7 @@
           class="input-field"
           [class.error]="
             leaveRequestForm.controls['leaveTypeId'].touched &&
-            leaveRequestForm.hasError('required', 'leaveTypeId')
+            leaveRequestForm.get('leaveTypeId')?.value === 0
           "
         >
           <label for="leaveType" class="form-label">Leave Type</label>
@@ -54,7 +54,8 @@
           class="input-field"
           [class.error]="
             leaveRequestForm.controls['reason'].touched &&
-            leaveRequestForm.hasError('required', 'reason')
+            (leaveRequestForm.hasError('required', 'reason') ||
+              leaveRequestForm.hasError('maxlength', 'reason'))
           "
         >
           <label for="reason" class="form-label">Reason</label>
@@ -72,6 +73,14 @@
           "
           class="text-danger"
           >*Leave reason is required</small
+        >
+        <small
+          *ngIf="
+            leaveRequestForm.controls['reason'].touched &&
+            leaveRequestForm.hasError('maxlength', 'reason')
+          "
+          class="text-danger"
+          >*Leave reason exceed max length</small
         >
       </div>
       <div class="row mb-3">
@@ -110,7 +119,6 @@
         >
           <label for="endDate" class="form-label">End Date</label>
           <input
-            [disabled]="getValue('startDate') === '0001-01-01'"
             type="date"
             formControlName="endDate"
             (change)="calculateLeaveDays()"
@@ -140,9 +148,6 @@
             (change)="halfDay()"
             value=""
             id="halfDay"
-            [disabled]="
-              getValue('endDate') === '' && '' === getValue('startDate')
-            "
           />
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>
