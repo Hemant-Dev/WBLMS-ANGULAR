@@ -1,6 +1,6 @@
 export interface WonderbizHolidaysModel {
-    id : number,
+    id? : number,
     date : string,
-    day : string,
+    day? : string,
     event : string
 }
