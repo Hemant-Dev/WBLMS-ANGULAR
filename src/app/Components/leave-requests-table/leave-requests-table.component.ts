@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
-import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, showReason, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -23,8 +23,8 @@ export class LeaveRequestsTableComponent implements OnInit {
   pageSize: number = 5;
   totalCount!: number;
   activityValues: number[] = [0, 100];
-
   searchValue: string | undefined;
+  
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
@@ -52,7 +52,7 @@ export class LeaveRequestsTableComponent implements OnInit {
     private auth: AuthService,
     private userStore: UserStoreService,
     private router: Router
-  ) {}
+  ) { }
   leaveRequest = {
     name: '',
     phoneNumber: '',
@@ -126,7 +126,7 @@ export class LeaveRequestsTableComponent implements OnInit {
         });
     }
   }
-  getReason(reason : string){
+  getReason(reason: string) {
     showReason(reason)
   }
   fetchSessionData() {
