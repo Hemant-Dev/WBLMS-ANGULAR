@@ -2,10 +2,18 @@
   <p-table
     #dt2
     [value]="leaveRequests"
+    [scrollable]="true"
+    scrollHeight="60vh"
     dataKey="id"
-    [rows]="pageSize"
-    [rowsPerPageOptions]="[3, 6, 10]"
     [paginator]="true"
+    [rows]="lazyRequest.rows"
+    [first]="lazyRequest.first"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadSelfRequestsData($event)"
+    [totalRecords]="totalCount"
+    [customSort]="true"
+    (sortFunction)="lazyLoadSelfRequestsData($event)"
     [globalFilterFields]="[
       'name',
       'country.name',
@@ -35,14 +43,30 @@
     <ng-template pTemplate="header">
       <tr>
         <!-- <th style="width: 22%">Employee Id</th> -->
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Leave Type</th>
-        <th style="width: 30%">Reason</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th style="width: 10%">Number Of Days</th>
+        <th pSortableColumn="firstName">
+          First Name <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName">
+          Last Name <p-sortIcon field="lastName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="leaveType">
+          Leave Type <p-sortIcon field="leaveType"></p-sortIcon>
+        </th>
+        <th style="width: 30%" pSortableColumn="reason">
+          Reason <p-sortIcon field="reason"></p-sortIcon>
+        </th>
+        <th pSortableColumn="status">
+          Status <p-sortIcon field="status"></p-sortIcon>
+        </th>
+        <th pSortableColumn="startDate">
+          Start Date <p-sortIcon field="startDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="endDate">
+          End Date <p-sortIcon field="endDate"></p-sortIcon>
+        </th>
+        <th style="width: 10%" pSortableColumn="numberOfLeaveDays">
+          Number Of Days <p-sortIcon field="numberOfLeaveDays"></p-sortIcon>
+        </th>
         <th>Actions</th>
       </tr>
     </ng-template>

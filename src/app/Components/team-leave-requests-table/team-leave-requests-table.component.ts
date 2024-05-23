@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { successToast, errorToast, errorAlert, showReason } from 'src/app/Helpers/swal';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { successToast, errorToast, errorAlert } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -15,12 +16,6 @@ import Swal from 'sweetalert2';
 })
 export class TeamLeaveRequestsTableComponent implements OnInit {
   leaveRequests!: LeaveRequestModel[];
-  loading: boolean = true;
-
-  activityValues: number[] = [0, 100];
-
-  searchValue: string | undefined;
-
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
@@ -36,9 +31,16 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   fullName!: string;
   email!: string;
   employeeId!: string;
-  pageSize: number = 3;
+  pageNumber!: number;
+  pageSize: number = 5;
+  totalCount!: number;
   searchKeyword: string = '';
-
+  loading: boolean = true;
+  activityValues: number[] = [0, 100];
+  lazyRequest = {
+    first: 0,
+    rows: this.pageSize,
+  };
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -47,16 +49,26 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.fetchSessionData();
-    // Fetching Employee requests data
+    // Fetching Team Leave requests data
+    // this.fetchTeamLeaveRequests();
+  }
+  fetchTeamLeaveRequests() {
     if (this.role !== 'Employee') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.status = 'Pending';
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .getLeaveRequests(
+          '',
+          '',
+          this.pageNumber,
+          this.pageSize,
+          this.initialLeaveRequestObj
+        )
         .subscribe({
           next: (res) => {
             // console.log(res);
             this.leaveRequests = res.data.dataArray;
+            this.totalCount = res.data.totalCount;
             // console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
@@ -69,7 +81,6 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         });
     }
   }
-
   handleRejectClick(Id: number) {
     Swal.fire({
       title: 'Do you want to reject the leave?',
@@ -97,6 +108,9 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         // Swal.fire('Changes are not saved', '', 'info');
       }
     });
+  }
+  getReason(reason : string){
+    
   }
   handleApproveClick(Id: number) {
     Swal.fire({
@@ -146,25 +160,11 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     });
   }
 
-  fetchAllRequestData() {
-    if (this.role !== 'Employee') {
-      this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
-        .subscribe({
-          next: (res) => {
-            this.leaveRequests = res.data.dataArray;
-            console.log(res);
-          },
-          error: (err) => console.log(err),
-        });
-    }
-  }
-
   handleSearch() {
     this.leaveRequestService
       .searchLeaveRequests(
-        1,
-        100,
+        this.pageNumber,
+        this.pageSize,
         this.searchKeyword,
         0,
         Number(this.employeeId)
@@ -179,19 +179,13 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         },
       });
   }
-  getReason(reason: string) {
-    showReason(reason)
+  lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
+    // console.log($event);
+    this.lazyRequest.first = $event.first || 0;
+    this.lazyRequest.rows = $event.rows || 5;
+    this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
+    this.pageNumber++;
+    this.pageSize = this.lazyRequest.rows;
+    this.fetchTeamLeaveRequests();
   }
-  // handleSearch() {
-  //   console.log('search');
-  //   console.log(this.searchKeyword);
-  //   this.leaveRequestService
-  //   .searchLeaveRequests(1, 100, this.searchKeyword, Number(this.employeeId),0)
-  //   .subscribe({
-  //     next : (res) => {
-  //       this.selfLeaveRequests = res.data.dataArray;
-  //       console.log(this.selfLeaveRequests)
-  //     }
-  //   })
-  // }
 }
