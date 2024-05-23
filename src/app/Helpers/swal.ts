@@ -11,6 +11,18 @@ export function successAlert(msg: string) {
     heightAuto: true,
   });
 }
+
+export function showReason(msg: string) {
+  Swal.fire({
+    position: 'center',
+    // icon: 'info',
+    title: msg,
+    showConfirmButton: false,
+    timer: 1500,
+    width: 400,
+    heightAuto: true,
+  });
+}
 export function errorAlert(msg: string) {
   Swal.fire({
     position: 'top-end',
@@ -34,6 +46,7 @@ export const Toast = Swal.mixin({
     toast.onmouseleave = Swal.resumeTimer;
   },
 });
+
 export function successToast(msg: string) {
   Toast.fire({
     icon: 'success',
