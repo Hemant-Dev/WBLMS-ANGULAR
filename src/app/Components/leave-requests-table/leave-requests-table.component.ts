@@ -83,7 +83,7 @@ export class LeaveRequestsTableComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.selfLeaveRequests = res.data.dataArray;
-            console.log(res);
+            // console.log(res);
           },
           error: (err) => console.log(err),
         });
@@ -170,8 +170,8 @@ export class LeaveRequestsTableComponent implements OnInit {
   }
 
   handleSearch() {
-    console.log('search');
-    console.log(this.searchKeyword);
+    // console.log('search');
+    // console.log(this.searchKeyword);
     this.leaveRequestService
       .searchLeaveRequests(
         1,
@@ -183,7 +183,7 @@ export class LeaveRequestsTableComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.selfLeaveRequests = res.data.dataArray;
-          console.log(this.selfLeaveRequests);
+          // console.log(this.selfLeaveRequests);
         },
       });
   }
