@@ -1,5 +1,11 @@
 declare var google: any;
-import { Component, NgZone, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { errorToast, successToast } from 'src/app/Helpers/swal';
@@ -25,7 +31,6 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    // private toast: NgToastService,
     private userStore: UserStoreService,
     private resetService: ResetService,
     private ngZone: NgZone
@@ -46,6 +51,7 @@ export class LoginComponent implements OnInit {
       []
     );
   }
+
   hideShowPassword() {
     this.isText = !this.isText;
     this.isText
@@ -77,7 +83,7 @@ export class LoginComponent implements OnInit {
       });
     } else {
       ValidateForm.validateAllFormFields(this.loginForm);
-      errorToast('Login Form is invalid!');
+      // errorToast('Login Form is invalid!');
     }
   }
 

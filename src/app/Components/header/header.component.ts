@@ -25,17 +25,17 @@ export class HeaderComponent implements OnInit {
     private userStore: UserStoreService
   ) {}
   ngOnInit(): void {
-    // this.fetchSessionData();
+    this.fetchSessionData();
   }
 
   SideNavToggled() {
     this.menuStatus = !this.menuStatus;
     this.sideNavToggled.emit(this.menuStatus);
   }
-  // role!: string;
-  // fullName!: string;
-  // email!: string;
-  // employeeId!: string;
+  role!: string;
+  fullName!: string;
+  email!: string;
+  employeeId!: string;
   handleLogout() {
     Swal.fire({
       title: 'Do you want to log out?',
@@ -54,22 +54,22 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-  // fetchSessionData() {
-  //   this.userStore.getFullNameFromStore().subscribe((val) => {
-  //     const fullNameFromToken = this.auth.getFullNameFromToken();
-  //     this.fullName = val || fullNameFromToken;
-  //   });
-  //   this.userStore.getRoleFromStore().subscribe((val) => {
-  //     const roleFromToken = this.auth.getRoleFromToken();
-  //     this.role = val || roleFromToken;
-  //   });
-  //   this.userStore.getEmailFromStore().subscribe((val) => {
-  //     const emailFromToken = this.auth.getEmailFromToken();
-  //     this.email = val || emailFromToken;
-  //   });
-  //   this.userStore.getEmployeeIdFromStore().subscribe((val) => {
-  //     const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-  //     this.employeeId = val || employeeIdFromToken;
-  //   });
-  // }
+  fetchSessionData() {
+    this.userStore.getFullNameFromStore().subscribe((val) => {
+      const fullNameFromToken = this.auth.getFullNameFromToken();
+      this.fullName = val || fullNameFromToken;
+    });
+    this.userStore.getRoleFromStore().subscribe((val) => {
+      const roleFromToken = this.auth.getRoleFromToken();
+      this.role = val || roleFromToken;
+    });
+    this.userStore.getEmailFromStore().subscribe((val) => {
+      const emailFromToken = this.auth.getEmailFromToken();
+      this.email = val || emailFromToken;
+    });
+    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
+      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+      this.employeeId = val || employeeIdFromToken;
+    });
+  }
 }

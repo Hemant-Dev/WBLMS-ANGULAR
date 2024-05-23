@@ -54,6 +54,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.byRolesService.data$.subscribe((val) => {
       const getRoleFromService = this.byRolesService.role;
       this.initialLeaveRequestObj.roleName = val || getRoleFromService;
@@ -79,6 +80,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         next: (res) => {
           this.leaveRequests = res.data.dataArray;
           this.totalCount = res.data.totalCount;
+          this.loading = false;
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -86,8 +88,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         },
       });
   }
-  showReason(reason : string) {
-    this.showReason(reason)
+  showReason(reason: string) {
+    this.showReason(reason);
   }
 
   handleRejectClick(Id: number) {
@@ -143,10 +145,27 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   handleSearch() {
+    this.leaveRequestService;
+    // .getLeaveRequestsByRoles(
+    //   this.lazyRequest.sortField,
+    //   this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
+    //   this.pageNumber,
+    //   this.pageSize,
+    //   this.initialLeaveRequestObj,
+    //   this.searchKeyword
+    // )
+    // .subscribe({
+    //   next: (res) => {
+    //     this.leaveRequests = res.data.dataArray;
+    //     this.totalCount = res.data.totalCount;
+    //   },
+    //   error: (err) => console.log(err),
+    // });
+    this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
       .getLeaveRequestsByRoles(
-        '',
-        '',
+        this.lazyRequest.sortField,
+        this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
         this.pageNumber,
         this.pageSize,
         this.initialLeaveRequestObj,
@@ -155,13 +174,19 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
       .subscribe({
         next: (res) => {
           this.leaveRequests = res.data.dataArray;
+          this.totalCount = res.data.totalCount;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
-        error: (err) => console.log(err),
+        error: (err) => {
+          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+        },
       });
   }
 
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
+    this.loading = true;
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
     this.lazyRequest.sortField = $event.sortField?.toString() || '';
@@ -169,13 +194,15 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;
-    this.fetchByRoleLeaveRequestData();
+    setTimeout(() => {
+      this.fetchByRoleLeaveRequestData();
+    }, 1000);
   }
 
   filterData() {
-    this.lazyRequest = {
-      ...this.lazyRequest,
-    };
+    if (typeof this.initialLeaveRequestObj.numberOfLeaveDays !== 'number') {
+      this.initialLeaveRequestObj.numberOfLeaveDays = 0;
+    }
     this.fetchByRoleLeaveRequestData();
   }
 }
