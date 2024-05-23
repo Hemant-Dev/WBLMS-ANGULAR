@@ -135,7 +135,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          // console.log(res);
+          console.log(res);
           this.leaveRequests = res.data.dataArray;
         },
         error: (err) => console.log(err),

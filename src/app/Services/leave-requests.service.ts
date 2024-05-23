@@ -45,7 +45,7 @@ export class LeaveRequestsService {
   ): Observable<any> {
     return this.http.post<any>(
       this.leave_api_url +
-        `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`,
+        `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}&searchKeyword=${searchKeyword}`,
       leaveReqObj
     );
   }
