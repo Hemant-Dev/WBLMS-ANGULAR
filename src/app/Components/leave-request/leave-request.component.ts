@@ -101,20 +101,20 @@ export class LeaveRequestComponent implements OnInit {
 
     if (startDate.match(endDate)) {
       this.leaveRequestForm.get('isHalfDay')?.enable();
-      console.log("isHalfDay")
+      // console.log("isHalfDay")
     } else {
       this.leaveRequestForm.get('isHalfDay')?.disable();
     }
     var event;
     while (start <= end) {
       const dayOfWeek = start.getDay();
-      console.log("start => ", start)
+      // console.log("start => ", start)
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         var date = this.formatDate(start);
         var isHoliday: boolean = false;
         this.wonderbizHolidays.map(
           holiday => {
-            console.log(`${holiday.date} === ${date}`)
+            // console.log(`${holiday.date} === ${date}`)
             if (holiday.date == date) {
               event = holiday.event;
               isHoliday = true
@@ -122,7 +122,7 @@ export class LeaveRequestComponent implements OnInit {
           });
         if (isHoliday) {
           successToast(`We have holiday on ${date} => ${event}`)
-          console.log("isHoliday => ", isHoliday)
+          // console.log("isHoliday => ", isHoliday)
         }
         else {
           count++;
@@ -162,7 +162,6 @@ export class LeaveRequestComponent implements OnInit {
 
   handleSubmit() {
     if (this.leaveRequestForm.valid) {
-      console.log(this.leaveRequestForm.value)
       this.leaveRequestService
       .createLeaveRequest(this.leaveRequestForm.value)
       .subscribe({
