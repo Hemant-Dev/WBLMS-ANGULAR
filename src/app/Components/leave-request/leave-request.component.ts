@@ -36,7 +36,6 @@ export class LeaveRequestComponent implements OnInit {
   leaveStatusesCount!: LeaveStatusesCount;
 
   ngOnInit(): void {
-    // console.log('fetch data');
     this.getLeaveType();
     this.getDataFromUserStore();
 
@@ -139,6 +138,15 @@ export class LeaveRequestComponent implements OnInit {
     if (startDate == '' || endDate == '') {
       return;
     }
+
+    if (
+      startDate == endDate &&
+      this.checkWonderbizHoliday(startDate, showHolidays)
+    ) {
+      this.leaveRequestForm.controls['isHalfDay']?.disable();
+      successToast('We have holiday on this day');
+      return;
+    }
     let start = new Date(this.getValue('startDate'));
     let end = new Date(this.getValue('endDate'));
     let count = 0;
@@ -226,38 +234,6 @@ export class LeaveRequestComponent implements OnInit {
     });
     return isHoliday;
   }
-
-  // checkWonderbizHoliday(){
-  //   while (start <= end) {
-  //     const dayOfWeek = start.getDay();
-  //     // console.log("start => ", start)
-  //     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-  //       var date = this.formatDate(start);
-  //       var isHoliday: boolean = false;
-  //       this.wonderbizHolidays.map(
-  //         holiday => {
-  //           // console.log(`${holiday.date} === ${date}`)
-  //           if (holiday.date == date) {
-  //             isHoliday = true
-  //             var newHoliday: WonderbizHolidaysModel = {
-  //               date: holiday.date,
-  //               event: holiday.event
-  //             };
-  //             showHolidays.push(newHoliday);
-  //           }
-  //         });
-  //       if (!isHoliday) {
-  //         count++;
-  //         console.log(this.leaveStatusesCount.leavesRemaining)
-  //         if (count > this.leaveStatusesCount.leavesRemaining! ) {
-  //           this.resetEndDate('You dont have this much leave remaining')
-  //           return;
-  //         }
-  //       }
-  //     }
-  //     start.setDate(start.getDate() + 1);
-  //   }
-  // }
 
   showholidaysToast(showHolidays: WonderbizHolidaysModel[]) {
     var showHolidaysDisplayString = 'We have holiday on \n';
