@@ -25,6 +25,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { AngleDoubleDownIcon } from 'primeng/icons/angledoubledown';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';

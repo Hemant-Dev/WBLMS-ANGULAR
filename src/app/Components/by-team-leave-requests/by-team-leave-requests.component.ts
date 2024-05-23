@@ -40,6 +40,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   lazyRequest = {
     first: 0,
     rows: 0,
+    sortField: '',
+    sortOrder: 1,
   };
 
   constructor(
@@ -63,8 +65,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
       .getLeaveRequestsByRoles(
-        '',
-        '',
+        this.lazyRequest.sortField,
+        this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
         this.pageNumber,
         this.pageSize,
         this.initialLeaveRequestObj,
@@ -153,8 +155,11 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
+    // console.log($event);
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
+    this.lazyRequest.sortField = $event.sortField?.toString() || '';
+    this.lazyRequest.sortOrder = $event.sortOrder || 1;
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;
