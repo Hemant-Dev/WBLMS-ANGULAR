@@ -61,8 +61,8 @@ export class DashboardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.fetchSessionData();
-    this.fetchSelfRequestData();
-    this.fetchAllRequestData();
+    // this.fetchSelfRequestData();
+    // this.fetchAllRequestData();
     if (this.role === 'Admin') {
       this.router.navigate(['home/dashboard/hr']);
     } else {
