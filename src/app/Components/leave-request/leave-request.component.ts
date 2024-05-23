@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
+import { LeaveBalance } from 'src/app/Models/leave-balance';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
+import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { WonderbizHolidaysModel } from 'src/app/Models/WonderbizHolidays';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -30,12 +32,16 @@ export class LeaveRequestComponent implements OnInit {
 
   leaveRequestForm!: FormGroup;
   wonderbizHolidays!: WonderbizHolidaysModel[];
+  leaveBalance!: LeaveBalance;
+  leaveStatusesCount!: LeaveStatusesCount;
+
 
   ngOnInit(): void {
     // console.log('fetch data');
     this.getLeaveType();
     this.getDataFromUserStore();
 
+    this.fetchHolidayData()
     this.leaveRequestForm = this.fb.group({
       id: 0,
       employeeId: [0, Validators.required],
@@ -48,15 +54,13 @@ export class LeaveRequestComponent implements OnInit {
         Validators.required
       ),
       isHalfDay: [false, Validators.required],
-    });
-
+    })
     this.leaveRequestForm.patchValue({
       employeeId: Number(this.employeeId),
     });
+    console.log(this.leaveRequestForm.value)
+    this.getLeaveStatusesData(this.employeeId)
 
-    // console.log(this.leaveRequestForm.value)
-
-    this.fetchHolidayData();
   }
 
   constructor(
@@ -78,9 +82,9 @@ export class LeaveRequestComponent implements OnInit {
     const year = date.getFullYear().toString().padStart(4, '0');
     return `${year}-${month}-${day}`;
   }
+  
   employeeId!: number;
   todayDate: any = new Date();
-
   leaveTypeData!: LeaveTypeModel[];
 
   getLeaveType() {
@@ -100,48 +104,115 @@ export class LeaveRequestComponent implements OnInit {
     });
   }
 
+  getLeaveBalanceByEmployeeId(employeeId: number) {
+    this.leaveRequestService.getLeavesBalances(employeeId).subscribe({
+      next: (data: any) => {
+        this.leaveBalance = data.data;
+        console.log(this.leaveBalance)
+      },
+      error: (err) => console.log(err),
+    });
+  }
+
+  getLeaveStatusesData(employeeId: number) {
+    this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
+      next: (res) => {
+        this.leaveStatusesCount = res.data;
+        this.leaveStatusesCount.leavesRemaining = 25 - (this.leaveStatusesCount.approvedLeavesCount + this.leaveStatusesCount.pendingLeavesCount);
+        console.log(this.leaveStatusesCount)
+      },
+      error: (err) => console.log(err),
+    });
+  }
+
   calculateLeaveDays() {
+    const showHolidays: WonderbizHolidaysModel[] = [];
+
     var startDate = this.getValue('startDate');
     var endDate = this.getValue('endDate');
+
+    if (startDate == '' || endDate == '') {
+      return;
+    }
     let start = new Date(this.getValue('startDate'));
     let end = new Date(this.getValue('endDate'));
     let count = 0;
 
-    if (startDate.match(endDate)) {
-      this.leaveRequestForm.get('isHalfDay')?.enable();
-      // console.log("isHalfDay")
-    } else {
-      this.leaveRequestForm.get('isHalfDay')?.disable();
-    }
-    var event;
-    while (start <= end) {
-      const dayOfWeek = start.getDay();
-      // console.log("start => ", start)
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        var date = this.formatDate(start);
-        var isHoliday: boolean = false;
-        this.wonderbizHolidays.map((holiday) => {
-          // console.log(`${holiday.date} === ${date}`)
-          if (holiday.date == date) {
-            event = holiday.event;
-            isHoliday = true;
+    if (!this.resetEndDate("Start date should not be greater than end date", startDate, endDate,)) {
+      this.halfDayIsDisable(startDate, endDate);
+      while (start <= end) {
+        const dayOfWeek = start.getDay();
+        // console.log("start => ", start)
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+          var date = this.formatDate(start);
+          var isHoliday: boolean = false;
+          this.wonderbizHolidays.map(
+            holiday => {
+              // console.log(`${holiday.date} === ${date}`)
+              if (holiday.date == date) {
+                isHoliday = true
+                var newHoliday: WonderbizHolidaysModel = {
+                  date: holiday.date,
+                  event: holiday.event
+                };
+                showHolidays.push(newHoliday);
+              }
+            });
+          if (!isHoliday) {
+            count++;
+            console.log(this.leaveStatusesCount.leavesRemaining)
+            if (count > this.leaveStatusesCount.leavesRemaining!) {
+              this.resetEndDate('You dont have this much leave remaining')
+              return;
+            }
           }
-        });
-        if (isHoliday) {
-          successToast(`We have holiday on ${date} => ${event}`);
-          // console.log("isHoliday => ", isHoliday)
-        } else {
-          count++;
         }
+        start.setDate(start.getDate() + 1);
       }
-      start.setDate(start.getDate() + 1);
+      if (start === end && this.getValue('isHalfDay')) {
+        count = 0.5;
+      }
+      this.leaveRequestForm.patchValue({
+        numberOfLeaveDays: count
+      });
     }
-    if (start === end && this.getValue('isHalfDay')) {
-      count = 0.5;
+    console.log(showHolidays)
+    var showHolidaysDisplayString = "We have holiday on \n";
+
+    if(showHolidays.length){
+      this.showholidaysToast(showHolidays);
     }
-    this.leaveRequestForm.patchValue({
-      numberOfLeaveDays: count,
-    });
+    
+  }
+
+  showholidaysToast(showHolidays: WonderbizHolidaysModel[]){
+    var showHolidaysDisplayString = "We have holiday on \n";
+
+    showHolidays.map(
+      holiday => {
+        showHolidaysDisplayString += 'Date = ' + holiday.date + '\nEvent = ' + holiday.event 
+      }
+    )
+    successToast(showHolidaysDisplayString)
+  }
+
+  resetEndDate(
+    toastMsg: string,
+    start?: string,
+    end?: string,
+  ): boolean {
+    console.log('You dont have this much leave remaining----------')
+    console.log(start ,'  => '  ,end)
+    if ((start === undefined && end === undefined) || start! > end!) {
+      this.leaveRequestForm.patchValue({
+        endDate: '',
+        numberOfLeaveDays: 0,
+      })
+      console.log(toastMsg)
+      errorToast(toastMsg)
+      return true;
+    }
+    return false;
   }
 
   getValue(name: string): any {
@@ -159,6 +230,14 @@ export class LeaveRequestComponent implements OnInit {
     }
   }
 
+  halfDayIsDisable(startDate: string, endDate: string) {
+    if (startDate.match(endDate)) {
+      this.leaveRequestForm.get('isHalfDay')?.enable();
+    } else {
+      this.leaveRequestForm.get('isHalfDay')?.disable();
+    }
+  }
+
   getDataFromUserStore() {
     this.userService.getEmployeeIdFromStore().subscribe((val) => {
       const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
@@ -172,7 +251,6 @@ export class LeaveRequestComponent implements OnInit {
         .createLeaveRequest(this.leaveRequestForm.value)
         .subscribe({
           next: (res) => {
-            // console.log(res);
             successToast('Leave request created successfully!');
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
@@ -181,9 +259,6 @@ export class LeaveRequestComponent implements OnInit {
             this.service.changeData(true);
             this.leaveRequestForm.reset();
             this.ngOnInit();
-
-            // this.router.navigate(['home/leaveRequests']);
-            // this.router.navigate([this.router.url]);
           },
           error: (err) =>
             errorToast('Something went wrong while creating Leave Requests!'),
@@ -192,5 +267,6 @@ export class LeaveRequestComponent implements OnInit {
       // console.log(this.leaveRequestForm.value)
       ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
+
   }
 }

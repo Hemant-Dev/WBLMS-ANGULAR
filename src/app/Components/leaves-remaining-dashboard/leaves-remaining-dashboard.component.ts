@@ -35,7 +35,6 @@ export class LeavesRemainingDashboardComponent implements OnInit {
         ) {
           this.getLeaveBalanceByEmployeeId(this.userSessionObj.employeeId);
           this.getLeaveStatusesData(this.userSessionObj.employeeId);
-          this;
         }
       },
     });
@@ -45,7 +44,6 @@ export class LeavesRemainingDashboardComponent implements OnInit {
     ) {
       this.getLeaveBalanceByEmployeeId(this.userSessionObj.employeeId);
       this.getLeaveStatusesData(this.userSessionObj.employeeId);
-      this;
     }
   }
   constructor(
