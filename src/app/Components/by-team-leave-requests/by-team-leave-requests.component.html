@@ -53,8 +53,14 @@
           {{ request.lastName }}
         </td>
         <td>{{ request.leaveType }}</td>
-        <td>
-          {{ request.reason }}
+        <td
+          style="cursor: pointer"
+          data-toggle="tooltip"
+          title="To see reason"
+          data-placement="top"
+          (click)="showReason(request.reason)"
+        >
+          {{ request.reason.slice(0, 10) }}...
         </td>
         <td>
           <p-tag

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { errorAlert, errorToast, showReason, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
+import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -24,7 +25,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   totalCount!: number;
   activityValues: number[] = [0, 100];
   searchValue: string | undefined;
-  
+
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
@@ -46,6 +47,12 @@ export class LeaveRequestsTableComponent implements OnInit {
   email!: string;
   employeeId!: string;
   searchKeyword: string = '';
+  leaveStatusesCount: LeaveStatusesCount = {
+    approvedLeavesCount: 0,
+    pendingLeavesCount: 0,
+    rejectedLeavesCount: 0,
+    leavesRemaining : 0
+  };
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
@@ -77,8 +84,23 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSessionData();
+
+    this.getLeaveStatusesData(Number(this.employeeId));
     // this.fetchAllRequestData();
     // this.fetchSelfRequestData();
+
+
+
+  }
+  getLeaveStatusesData(employeeId: number) {
+    this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
+      next: (res) => {
+        this.leaveStatusesCount = res.data;
+        this.leaveStatusesCount.leavesRemaining = 25 - (this.leaveStatusesCount.approvedLeavesCount + this.leaveStatusesCount.pendingLeavesCount);
+        console.log(this.leaveStatusesCount)
+      },
+      error: (err) => console.log(err),
+    });
   }
   // fetchAllRequestData() {
   //   if (this.role === 'Admin') {

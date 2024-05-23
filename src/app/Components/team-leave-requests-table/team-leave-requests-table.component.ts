@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { successToast, errorToast, errorAlert } from 'src/app/Helpers/swal';
+import { successToast, errorToast, errorAlert, showReason } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -44,7 +44,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     private auth: AuthService,
     private userStore: UserStoreService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.fetchSessionData();
     // Fetching Employee requests data
@@ -178,6 +178,9 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           errorAlert(err.ErrorMessages);
         },
       });
+  }
+  getReason(reason: string) {
+    showReason(reason)
   }
   // handleSearch() {
   //   console.log('search');

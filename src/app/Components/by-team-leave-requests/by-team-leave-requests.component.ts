@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorToast, showReason, successToast } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./by-team-leave-requests.component.css'],
 })
 export class ByTeamLeaveRequestsComponent implements OnInit {
+  
   leaveRequests!: LeaveRequestModel[];
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
@@ -31,7 +32,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
   constructor(
     private byRolesService: ByRolesService,
     private leaveRequestService: LeaveRequestsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.byRolesService.data$.subscribe((val) => {
@@ -58,6 +59,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
           console.log(err);
         },
       });
+  }
+  showReason(reason : string) {
+    showReason(reason)
   }
 
   handleRejectClick(Id: number) {

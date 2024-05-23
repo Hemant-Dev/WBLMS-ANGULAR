@@ -70,7 +70,7 @@ export class LeaveRequestComponent implements OnInit {
     private router: Router,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
@@ -82,7 +82,7 @@ export class LeaveRequestComponent implements OnInit {
     const year = date.getFullYear().toString().padStart(4, '0');
     return `${year}-${month}-${day}`;
   }
-  
+
   employeeId!: number;
   todayDate: any = new Date();
   leaveTypeData!: LeaveTypeModel[];
@@ -130,6 +130,11 @@ export class LeaveRequestComponent implements OnInit {
 
     var startDate = this.getValue('startDate');
     var endDate = this.getValue('endDate');
+    
+
+    if(this.checkForHalfDayRemaining(startDate, showHolidays)){
+      return;
+    }
 
     if (startDate == '' || endDate == '') {
       return;
@@ -145,19 +150,7 @@ export class LeaveRequestComponent implements OnInit {
         // console.log("start => ", start)
         if (dayOfWeek !== 0 && dayOfWeek !== 6) {
           var date = this.formatDate(start);
-          var isHoliday: boolean = false;
-          this.wonderbizHolidays.map(
-            holiday => {
-              // console.log(`${holiday.date} === ${date}`)
-              if (holiday.date == date) {
-                isHoliday = true
-                var newHoliday: WonderbizHolidaysModel = {
-                  date: holiday.date,
-                  event: holiday.event
-                };
-                showHolidays.push(newHoliday);
-              }
-            });
+          var isHoliday: boolean = this.checkWonderbizHoliday(date, showHolidays);
           if (!isHoliday) {
             count++;
             console.log(this.leaveStatusesCount.leavesRemaining)
@@ -176,21 +169,90 @@ export class LeaveRequestComponent implements OnInit {
         numberOfLeaveDays: count
       });
     }
-    console.log(showHolidays)
-    var showHolidaysDisplayString = "We have holiday on \n";
 
-    if(showHolidays.length){
+    if (showHolidays.length) {
       this.showholidaysToast(showHolidays);
     }
-    
+
   }
 
-  showholidaysToast(showHolidays: WonderbizHolidaysModel[]){
+  checkForHalfDayRemaining(startDate: string, showHolidays: WonderbizHolidaysModel[]): boolean {
+    if (this.leaveStatusesCount.leavesRemaining === 0.5) {
+      
+      this.leaveRequestForm.patchValue({
+        endDate: startDate,
+        numberOfLeaveDays: 0.5,
+        isHalfDay: true
+      })
+      if(this.checkWonderbizHoliday(startDate, showHolidays)){
+        this.leaveRequestForm.patchValue({
+          startDate : '',
+          endDate: '',
+        })
+        successToast('We have holiday on this day')
+        return true;
+      }
+      successToast('You can take half day')
+      return true;
+    }
+    return false
+  }
+
+  checkWonderbizHoliday(date: string, showHolidays: WonderbizHolidaysModel[]): boolean {
+    var isHoliday: boolean = false;
+    this.wonderbizHolidays.map(
+      holiday => {
+        // console.log(`${holiday.date} === ${date}`)
+        if (holiday.date == date) {
+          var newHoliday: WonderbizHolidaysModel = {
+            date: holiday.date,
+            event: holiday.event
+          };
+          showHolidays.push(newHoliday);
+          isHoliday = true;
+        }
+      });
+    return isHoliday;
+  }
+
+  // checkWonderbizHoliday(){
+  //   while (start <= end) {
+  //     const dayOfWeek = start.getDay();
+  //     // console.log("start => ", start)
+  //     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+  //       var date = this.formatDate(start);
+  //       var isHoliday: boolean = false;
+  //       this.wonderbizHolidays.map(
+  //         holiday => {
+  //           // console.log(`${holiday.date} === ${date}`)
+  //           if (holiday.date == date) {
+  //             isHoliday = true
+  //             var newHoliday: WonderbizHolidaysModel = {
+  //               date: holiday.date,
+  //               event: holiday.event
+  //             };
+  //             showHolidays.push(newHoliday);
+  //           }
+  //         });
+  //       if (!isHoliday) {
+  //         count++;
+  //         console.log(this.leaveStatusesCount.leavesRemaining)
+  //         if (count > this.leaveStatusesCount.leavesRemaining! ) {
+  //           this.resetEndDate('You dont have this much leave remaining')
+  //           return;
+  //         }
+  //       }
+  //     }
+  //     start.setDate(start.getDate() + 1);
+  //   }
+  // }
+
+  showholidaysToast(showHolidays: WonderbizHolidaysModel[]) {
     var showHolidaysDisplayString = "We have holiday on \n";
 
     showHolidays.map(
       holiday => {
-        showHolidaysDisplayString += 'Date = ' + holiday.date + '\nEvent = ' + holiday.event 
+        showHolidaysDisplayString += 'Date = ' + holiday.date + '\nEvent = ' + holiday.event
       }
     )
     successToast(showHolidaysDisplayString)
@@ -202,7 +264,7 @@ export class LeaveRequestComponent implements OnInit {
     end?: string,
   ): boolean {
     console.log('You dont have this much leave remaining----------')
-    console.log(start ,'  => '  ,end)
+    console.log(start, '  => ', end)
     if ((start === undefined && end === undefined) || start! > end!) {
       this.leaveRequestForm.patchValue({
         endDate: '',
@@ -246,6 +308,10 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   handleSubmit() {
+    if(!this.getValue('numberOfLeaveDays')){
+      errorAlert('Number of leaves day are zero')
+      return;
+    }
     if (this.leaveRequestForm.valid) {
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
@@ -263,6 +329,7 @@ export class LeaveRequestComponent implements OnInit {
           error: (err) =>
             errorToast('Something went wrong while creating Leave Requests!'),
         });
+        
     } else {
       // console.log(this.leaveRequestForm.value)
       ValidateForm.validateAllFormFields(this.leaveRequestForm);

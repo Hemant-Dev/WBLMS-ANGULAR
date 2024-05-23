@@ -53,9 +53,7 @@
           {{ request.lastName }}
         </td>
         <td>{{ request.leaveType }}</td>
-        <td>
-          {{ request.reason }}
-        </td>
+        <td style="cursor: pointer;" class="reason" data-bs-toggle="tooltip" data-placement="right" title="Click to see Reason" (click)="getReason(request.reason)">{{ request.reason.slice(0,10) }}...</td>
         <td>
           <p-tag
             *ngIf="request.status === 'Approved'"
