@@ -63,7 +63,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
           },
           error: (err) => {
             // console.log(err);
-            errorAlert(err.data.errorMessage);
+            // errorAlert(err.data.errorMessage);
+            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
           },
         });
     }
@@ -172,6 +173,9 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         next: (res) => {
           this.leaveRequests = res.data.dataArray;
           // console.log(this.leaveRequests);
+        },
+        error: (err) => {
+          errorAlert(err.ErrorMessages);
         },
       });
   }
