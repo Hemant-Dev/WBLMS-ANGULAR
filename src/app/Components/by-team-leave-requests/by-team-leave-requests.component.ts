@@ -41,7 +41,14 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
     // console.log(this.initialLeaveRequestObj.roleName);
     this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
-      .getLeaveRequestsByRoles('', '', 1, 100, this.initialLeaveRequestObj)
+      .getLeaveRequestsByRoles(
+        '',
+        '',
+        1,
+        100,
+        this.initialLeaveRequestObj,
+        this.searchKeyword
+      )
       .subscribe({
         next: (res) => {
           // console.log(res);
@@ -110,20 +117,6 @@ export class ByTeamLeaveRequestsComponent implements OnInit {
     });
   }
   handleSearch() {
-    // console.log(this.initialLeaveRequestObj.roleName);
-    // this.leaveRequestService
-    //   .searchLeaveRequests(
-    //     1,
-    //     100,
-    //     this.searchKeyword,
-    //     0,
-    //     Number(this.initialLeaveRequestObj.employeeId)
-    //   )
-    //   .subscribe({
-    //     next: (res) => {
-    //       this.leaveRequests = res.data.dataArray;
-    //     },
-    //   });
     this.leaveRequestService
       .getLeaveRequestsByRoles(
         '',

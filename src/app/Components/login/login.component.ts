@@ -70,7 +70,10 @@ export class LoginComponent implements OnInit {
 
           successToast('Logged in successfully!');
         },
-        error: (err) => errorToast(err),
+        // error: (err) => {
+        //   console.log(err);
+        //   errorToast(err);
+        // },
       });
     } else {
       ValidateForm.validateAllFormFields(this.loginForm);
@@ -99,9 +102,9 @@ export class LoginComponent implements OnInit {
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
           },
-          error: (err) => {
-            errorToast('Something went wrong');
-          },
+          // error: (err) => {
+          //   errorToast('Something went wrong');
+          // },
         });
     } else {
       errorToast('Invalid Email');

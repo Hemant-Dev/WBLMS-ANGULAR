@@ -73,7 +73,7 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSessionData();
-    this.fetchAllRequestData();
+    // this.fetchAllRequestData();
     this.fetchSelfRequestData();
   }
   fetchAllRequestData() {
@@ -83,9 +83,11 @@ export class LeaveRequestsTableComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.selfLeaveRequests = res.data.dataArray;
-            console.log(res);
+            // console.log(res);
           },
-          error: (err) => console.log(err),
+          error: (err) => {
+            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+          },
         });
     }
   }
@@ -105,8 +107,9 @@ export class LeaveRequestsTableComponent implements OnInit {
             this.initialLeaveRequestObj.employeeId = 0;
           },
           error: (err) => {
-            // console.log(err);
-            errorAlert(err);
+            console.log(err);
+            // errorAlert(err);
+            // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
           },
         });
     }
@@ -170,8 +173,8 @@ export class LeaveRequestsTableComponent implements OnInit {
   }
 
   handleSearch() {
-    console.log('search');
-    console.log(this.searchKeyword);
+    // console.log('search');
+    // console.log(this.searchKeyword);
     this.leaveRequestService
       .searchLeaveRequests(
         1,
@@ -183,7 +186,10 @@ export class LeaveRequestsTableComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.selfLeaveRequests = res.data.dataArray;
-          console.log(this.selfLeaveRequests);
+          // console.log(this.selfLeaveRequests);
+        },
+        error: (err) => {
+          errorAlert(err.ErrorMessages);
         },
       });
   }

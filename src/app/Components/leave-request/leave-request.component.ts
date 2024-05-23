@@ -1,5 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
@@ -44,11 +49,14 @@ export class LeaveRequestComponent implements OnInit {
       reason: ['', [Validators.required, Validators.maxLength(100)]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      numberOfLeaveDays: new FormControl({ value: 0, disabled: true }, Validators.required),
+      numberOfLeaveDays: new FormControl(
+        { value: 0, disabled: true },
+        Validators.required
+      ),
       isHalfDay: [false, Validators.required],
     })
     this.leaveRequestForm.patchValue({
-      employeeId: Number(this.employeeId)
+      employeeId: Number(this.employeeId),
     });
     console.log(this.leaveRequestForm.value)
     this.getLeaveStatusesData(this.employeeId)
@@ -62,7 +70,7 @@ export class LeaveRequestComponent implements OnInit {
     private router: Router,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
@@ -91,7 +99,7 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestService.getWonderbizholidays().subscribe({
       next: (response: any) => {
         this.wonderbizHolidays = response.data;
-        console.log(this.wonderbizHolidays)
+        // console.log(this.wonderbizHolidays)
       },
     });
   }
@@ -212,10 +220,10 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   halfDay() {
-    console.log("half day")
+    console.log('half day');
     if (this.getValue('isHalfDay'))
       this.leaveRequestForm.patchValue({
-        numberOfLeaveDays: 0.5
+        numberOfLeaveDays: 0.5,
       });
     else {
       this.calculateLeaveDays();
@@ -256,8 +264,8 @@ export class LeaveRequestComponent implements OnInit {
             errorToast('Something went wrong while creating Leave Requests!'),
         });
     } else {
-      console.log(this.leaveRequestForm.value)
-      ValidateForm.validateAllFormFields(this.leaveRequestForm)
+      // console.log(this.leaveRequestForm.value)
+      ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
 
   }

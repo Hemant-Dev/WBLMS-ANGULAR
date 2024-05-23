@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
@@ -17,7 +22,6 @@ import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-
   initialEmployeeData: EmployeeModel = {
     id: 0,
     firstName: '',
@@ -54,7 +58,7 @@ export class RegisterComponent implements OnInit {
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
   registerForm!: FormGroup;
 
   ngOnInit() {
@@ -65,22 +69,31 @@ export class RegisterComponent implements OnInit {
     // console.log(this.initialEmployeeData)
     this.fetchData();
 
-    const regex = '/^[6-9]\d{9}'
+    const regex = '/^[6-9]d{9}';
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       contactNumber: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^[6-9]\d{9}$/)
-        ]],
+        [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)],
+      ],
       genderId: [0, Validators.required],
       roleId: [0, Validators.required],
-      managerId: new FormControl({ value: 0, disabled: true }, Validators.required),
+      managerId: new FormControl(
+        { value: 0, disabled: true },
+        Validators.required
+      ),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          ),
+        ],
+      ],
     });
 
     this.onChangeRole();
@@ -88,7 +101,7 @@ export class RegisterComponent implements OnInit {
   }
 
   async handleSubmit() {
-    console.log(this.registerForm.value)
+    console.log(this.registerForm.value);
     if (this.registerForm.valid) {
       if (this.initialEmployeeData.id) {
         try {
@@ -109,7 +122,7 @@ export class RegisterComponent implements OnInit {
             .subscribe({
               next: (response: any) => {
                 console.log(response);
-                this.initialEmployeeData = response.data;
+                // this.initialEmployeeData = response.data;
                 successToast('Employee Added Successfully');
                 this.router.navigate(['home/dashboard']);
               },
@@ -118,13 +131,11 @@ export class RegisterComponent implements OnInit {
           console.log(error);
         }
       }
-      console.log("submit")
-    }
-    else {
-      console.log("invalid")
+      console.log('submit');
+    } else {
+      console.log('invalid');
       ValidateForm.validateAllFormFields(this.registerForm);
     }
-
   }
   type: string = 'password';
   isText: boolean = false;
@@ -148,9 +159,9 @@ export class RegisterComponent implements OnInit {
   managerFieldDisable: boolean = true;
 
   onChangeRole() {
-    console.log(this.registerForm.value)
+    console.log(this.registerForm.value);
     var roleId = this.registerForm.get('roleId')?.value;
-    console.log("roleId => ", roleId)
+    console.log('roleId => ', roleId);
     if (!roleId) {
       this.registerForm.get('managerId')?.disable();
     } else {
@@ -192,15 +203,13 @@ export class RegisterComponent implements OnInit {
   }
   fetchManagers() {
     var roleId = this.registerForm.get('roleId')?.value;
-    this.employeeService
-      .getManagers(roleId)
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.managerData = response.data;
-          console.log(this.managerData);
-        },
-      });
+    this.employeeService.getManagers(roleId).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.managerData = response.data;
+        console.log(this.managerData);
+      },
+    });
   }
   fetchData() {
     if (this.initialEmployeeData.id !== 0) {
