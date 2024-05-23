@@ -8,6 +8,7 @@ import {
   successToast,
 } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
+import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -28,6 +29,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   pageSize: number = 5;
   totalCount!: number;
   activityValues: number[] = [0, 100];
+  searchValue: string | undefined;
 
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
@@ -50,6 +52,19 @@ export class LeaveRequestsTableComponent implements OnInit {
   email!: string;
   employeeId!: string;
   searchKeyword: string = '';
+  leaveStatusesCount: LeaveStatusesCount = {
+    approvedLeavesCount: 0,
+    pendingLeavesCount: 0,
+    rejectedLeavesCount: 0,
+    leavesRemaining : 0
+  };
+
+  constructor(
+    private leaveRequestService: LeaveRequestsService,
+    private auth: AuthService,
+    private userStore: UserStoreService,
+    private router: Router
+  ) { }
   leaveRequest = {
     name: '',
     phoneNumber: '',
@@ -60,12 +75,8 @@ export class LeaveRequestsTableComponent implements OnInit {
     sortField: '',
     sortOrder: 1,
   };
-  constructor(
-    private leaveRequestService: LeaveRequestsService,
-    private auth: AuthService,
-    private userStore: UserStoreService,
-    private router: Router
-  ) {}
+
+
 
   bootstrap: any;
   submitLeaveRequest() {
@@ -82,31 +93,30 @@ export class LeaveRequestsTableComponent implements OnInit {
 
   ngOnInit() {
     this.fetchSessionData();
+
+    this.getLeaveStatusesData(Number(this.employeeId));
     // this.fetchAllRequestData();
     // this.fetchSelfRequestData();
+
+
+
   }
-  // fetchAllRequestData() {
-  //   if (this.role === 'Admin') {
-  //     this.leaveRequestService
-  //       .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
-  //       .subscribe({
-  //         next: (res) => {
-  //           this.selfLeaveRequests = res.data.dataArray;
-  //           // console.log(res);
-  //         },
-  //         error: (err) => {
-  //           errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-  //         },
-  //       });
-  //   }
-  // }
+  getLeaveStatusesData(employeeId: number) {
+    this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
+      next: (res) => {
+        this.leaveStatusesCount = res.data;
+        this.leaveStatusesCount.leavesRemaining = 25 - (this.leaveStatusesCount.approvedLeavesCount + this.leaveStatusesCount.pendingLeavesCount);
+        console.log(this.leaveStatusesCount)
+      },
+      error: (err) => console.log(err),
+    });
+  }
+ 
   fetchSessionAndSelfRequestData() {
     this.fetchSessionData();
     // this.fetchSelfRequestData();
   }
   fetchSelfRequestData() {
-    // debugger;
-    // temp set then reset the id
     if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
       this.leaveRequestService

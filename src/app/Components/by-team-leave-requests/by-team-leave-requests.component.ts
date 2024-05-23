@@ -86,6 +86,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         },
       });
   }
+  showReason(reason : string) {
+    this.showReason(reason)
+  }
 
   handleRejectClick(Id: number) {
     Swal.fire({

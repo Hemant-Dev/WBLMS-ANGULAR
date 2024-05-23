@@ -48,7 +48,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     private auth: AuthService,
     private userStore: UserStoreService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.fetchSessionData();
     // Fetching Team Leave requests data
@@ -110,6 +110,9 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         // Swal.fire('Changes are not saved', '', 'info');
       }
     });
+  }
+  getReason(reason : string){
+    
   }
   handleApproveClick(Id: number) {
     Swal.fire({
