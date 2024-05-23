@@ -145,22 +145,6 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   handleSearch() {
-    this.leaveRequestService;
-    // .getLeaveRequestsByRoles(
-    //   this.lazyRequest.sortField,
-    //   this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
-    //   this.pageNumber,
-    //   this.pageSize,
-    //   this.initialLeaveRequestObj,
-    //   this.searchKeyword
-    // )
-    // .subscribe({
-    //   next: (res) => {
-    //     this.leaveRequests = res.data.dataArray;
-    //     this.totalCount = res.data.totalCount;
-    //   },
-    //   error: (err) => console.log(err),
-    // });
     this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
       .getLeaveRequestsByRoles(

@@ -12,6 +12,7 @@
     [rowsPerPageOptions]="[5, 10, 15]"
     [lazy]="true"
     (onLazyLoad)="lazyLoadSelfRequestsData($event)"
+    [loading]="loading"
     [customSort]="true"
     (sortFunction)="lazyLoadSelfRequestsData($event)"
     [totalRecords]="totalCount"
@@ -47,7 +48,7 @@
             data-bs-toggle="modal"
             data-bs-target="#addLeaveRequestModal"
           >
-            <i cla  ss="fa fa-plus"></i>
+            <i cla ss="fa fa-plus"></i>
             Apply Leave
           </button>
         </div>

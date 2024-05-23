@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import {
@@ -20,7 +26,7 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   templateUrl: './leave-requests-table.component.html',
   styleUrls: ['./leave-requests-table.component.css'],
 })
-export class LeaveRequestsTableComponent implements OnInit {
+export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
   submitStatus: boolean = false;
   leaveRequests!: LeaveRequestModel[];
   selfLeaveRequests!: LeaveRequestModel[];
@@ -56,15 +62,16 @@ export class LeaveRequestsTableComponent implements OnInit {
     approvedLeavesCount: 0,
     pendingLeavesCount: 0,
     rejectedLeavesCount: 0,
-    leavesRemaining : 0
+    leavesRemaining: 0,
   };
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
     private userStore: UserStoreService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
   leaveRequest = {
     name: '',
     phoneNumber: '',
@@ -75,8 +82,6 @@ export class LeaveRequestsTableComponent implements OnInit {
     sortField: '',
     sortOrder: 1,
   };
-
-
 
   bootstrap: any;
   submitLeaveRequest() {
@@ -97,21 +102,26 @@ export class LeaveRequestsTableComponent implements OnInit {
     this.getLeaveStatusesData(Number(this.employeeId));
     // this.fetchAllRequestData();
     // this.fetchSelfRequestData();
-
-
-
   }
+
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
+  }
+
   getLeaveStatusesData(employeeId: number) {
     this.leaveRequestService.getLeaveStatusesCount(employeeId).subscribe({
       next: (res) => {
         this.leaveStatusesCount = res.data;
-        this.leaveStatusesCount.leavesRemaining = 25 - (this.leaveStatusesCount.approvedLeavesCount + this.leaveStatusesCount.pendingLeavesCount);
-        console.log(this.leaveStatusesCount)
+        this.leaveStatusesCount.leavesRemaining =
+          25 -
+          (this.leaveStatusesCount.approvedLeavesCount +
+            this.leaveStatusesCount.pendingLeavesCount);
+        // console.log(this.leaveStatusesCount);
       },
       error: (err) => console.log(err),
     });
   }
- 
+
   fetchSessionAndSelfRequestData() {
     this.fetchSessionData();
     // this.fetchSelfRequestData();
@@ -132,6 +142,8 @@ export class LeaveRequestsTableComponent implements OnInit {
             this.selfLeaveRequests = res.data.dataArray;
             this.totalCount = res.data.totalCount;
             this.initialLeaveRequestObj.employeeId = 0;
+            this.loading = false;
+            this.cdr.detectChanges();
           },
           error: (err) => {
             // console.log(err);
@@ -200,28 +212,30 @@ export class LeaveRequestsTableComponent implements OnInit {
   }
 
   handleSearch() {
-    // console.log('search');
-    // console.log(this.searchKeyword);
     this.leaveRequestService
-      .searchLeaveRequests(
+      .getLeaveRequestsByRoles(
+        this.lazyRequest.sortField,
+        this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
         this.pageNumber,
         this.pageSize,
-        this.searchKeyword,
-        Number(this.employeeId),
-        0
+        this.initialLeaveRequestObj,
+        this.searchKeyword
       )
       .subscribe({
         next: (res) => {
           this.selfLeaveRequests = res.data.dataArray;
-          // console.log(this.selfLeaveRequests);
+          this.totalCount = res.data.totalCount;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
-          errorAlert(err.ErrorMessages);
+          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
         },
       });
   }
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
+    this.loading = true;
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
     this.lazyRequest.sortField = $event.sortField?.toString() || '';
@@ -229,6 +243,8 @@ export class LeaveRequestsTableComponent implements OnInit {
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;
-    this.fetchSelfRequestData();
+    setTimeout(() => {
+      this.fetchSelfRequestData();
+    }, 1000);
   }
 }

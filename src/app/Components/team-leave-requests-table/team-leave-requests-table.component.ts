@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { successToast, errorToast, errorAlert } from 'src/app/Helpers/swal';
@@ -14,7 +19,9 @@ import Swal from 'sweetalert2';
   templateUrl: './team-leave-requests-table.component.html',
   styleUrls: ['./team-leave-requests-table.component.css'],
 })
-export class TeamLeaveRequestsTableComponent implements OnInit {
+export class TeamLeaveRequestsTableComponent
+  implements OnInit, AfterViewChecked
+{
   leaveRequests!: LeaveRequestModel[];
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
@@ -47,13 +54,18 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
     private userStore: UserStoreService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
   ngOnInit(): void {
     this.fetchSessionData();
     // Fetching Team Leave requests data
     // this.fetchTeamLeaveRequests();
   }
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
+  }
+
   fetchTeamLeaveRequests() {
     if (this.role !== 'Employee') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
@@ -74,6 +86,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
             // console.log(this.leaveRequests);
             this.initialLeaveRequestObj.managerId = 0;
             this.initialLeaveRequestObj.status = '';
+            this.loading = false;
+            this.cdr.detectChanges();
           },
           error: (err) => {
             // console.log(err);
@@ -111,9 +125,7 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
       }
     });
   }
-  getReason(reason : string){
-    
-  }
+  getReason(reason: string) {}
   handleApproveClick(Id: number) {
     Swal.fire({
       title: 'Do you want to approve the leave?',
@@ -181,8 +193,10 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
         },
       });
   }
+
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
+    this.loading = true;
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
     this.lazyRequest.sortField = $event.sortField?.toString() || '';
@@ -190,6 +204,8 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
     this.pageSize = this.lazyRequest.rows;
-    this.fetchTeamLeaveRequests();
+    setTimeout(() => {
+      this.fetchTeamLeaveRequests();
+    }, 1000);
   }
 }
