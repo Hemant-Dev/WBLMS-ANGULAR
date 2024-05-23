@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Table } from 'primeng/table';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
@@ -19,7 +19,9 @@ export class LeaveRequestsTableComponent implements OnInit {
   leaveRequests!: LeaveRequestModel[];
   selfLeaveRequests!: LeaveRequestModel[];
   loading: boolean = true;
-
+  pageNumber!: number;
+  pageSize: number = 5;
+  totalCount!: number;
   activityValues: number[] = [0, 100];
 
   searchValue: string | undefined;
@@ -45,8 +47,6 @@ export class LeaveRequestsTableComponent implements OnInit {
   employeeId!: string;
   searchKeyword: string = '';
 
-  pageSize: number = 2;
-
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -56,6 +56,10 @@ export class LeaveRequestsTableComponent implements OnInit {
   leaveRequest = {
     name: '',
     phoneNumber: '',
+  };
+  lazyRequest = {
+    first: 0,
+    rows: this.pageSize,
   };
 
   bootstrap: any;
@@ -74,36 +78,44 @@ export class LeaveRequestsTableComponent implements OnInit {
   ngOnInit() {
     this.fetchSessionData();
     // this.fetchAllRequestData();
-    this.fetchSelfRequestData();
+    // this.fetchSelfRequestData();
   }
-  fetchAllRequestData() {
-    if (this.role === 'Admin') {
-      this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
-        .subscribe({
-          next: (res) => {
-            this.selfLeaveRequests = res.data.dataArray;
-            // console.log(res);
-          },
-          error: (err) => {
-            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-          },
-        });
-    }
-  }
+  // fetchAllRequestData() {
+  //   if (this.role === 'Admin') {
+  //     this.leaveRequestService
+  //       .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+  //       .subscribe({
+  //         next: (res) => {
+  //           this.selfLeaveRequests = res.data.dataArray;
+  //           // console.log(res);
+  //         },
+  //         error: (err) => {
+  //           errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+  //         },
+  //       });
+  //   }
+  // }
   fetchSessionAndSelfRequestData() {
     this.fetchSessionData();
-    this.fetchSelfRequestData();
+    // this.fetchSelfRequestData();
   }
   fetchSelfRequestData() {
+    // debugger;
     // temp set then reset the id
     if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
       this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
+        .getLeaveRequests(
+          '',
+          '',
+          this.pageNumber,
+          this.pageSize,
+          this.initialLeaveRequestObj
+        )
         .subscribe({
           next: (res) => {
             this.selfLeaveRequests = res.data.dataArray;
+            this.totalCount = res.data.totalCount;
             this.initialLeaveRequestObj.employeeId = 0;
           },
           error: (err) => {
@@ -192,5 +204,13 @@ export class LeaveRequestsTableComponent implements OnInit {
           errorAlert(err.ErrorMessages);
         },
       });
+  }
+  lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
+    console.log($event);
+    this.lazyRequest.first = $event.first || 0;
+    this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows + 1;
+    this.lazyRequest.rows = $event.rows || 5;
+    this.pageSize = this.lazyRequest.rows;
+    this.fetchSelfRequestData();
   }
 }

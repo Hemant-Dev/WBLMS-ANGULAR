@@ -9,10 +9,16 @@
   <p-table
     #dt2
     [value]="selfLeaveRequests"
+    [scrollable]="true"
+    scrollHeight="60vh"
     dataKey="id"
-    [rows]="pageSize"
-    [rowsPerPageOptions]="[2, 4, 10]"
     [paginator]="true"
+    [rows]="lazyRequest.rows"
+    [first]="lazyRequest.first"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadSelfRequestsData($event)"
+    [totalRecords]="totalCount"
     [globalFilterFields]="[
       'name',
       'country.name',

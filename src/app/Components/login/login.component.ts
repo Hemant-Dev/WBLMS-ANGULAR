@@ -70,10 +70,10 @@ export class LoginComponent implements OnInit {
 
           successToast('Logged in successfully!');
         },
-        // error: (err) => {
-        //   console.log(err);
-        //   errorToast(err);
-        // },
+        error: (err: Error) => {
+          console.log(err);
+          errorToast(err.message);
+        },
       });
     } else {
       ValidateForm.validateAllFormFields(this.loginForm);
