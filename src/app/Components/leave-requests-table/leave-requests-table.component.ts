@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
-import { errorAlert, errorToast, showReason, successToast } from 'src/app/Helpers/swal';
+import {
+  errorAlert,
+  errorToast,
+  showReason,
+  successToast,
+} from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -51,7 +56,7 @@ export class LeaveRequestsTableComponent implements OnInit {
   };
   lazyRequest = {
     first: 0,
-    rows: this.pageSize,
+    rows: 0,
   };
 
   constructor(
@@ -126,7 +131,7 @@ export class LeaveRequestsTableComponent implements OnInit {
     }
   }
   getReason(reason: string) {
-    showReason(reason)
+    showReason(reason);
   }
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
@@ -207,9 +212,9 @@ export class LeaveRequestsTableComponent implements OnInit {
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
     this.lazyRequest.first = $event.first || 0;
+    this.lazyRequest.rows = $event.rows || 5;
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
-    this.lazyRequest.rows = $event.rows || 5;
     this.pageSize = this.lazyRequest.rows;
     this.fetchSelfRequestData();
   }

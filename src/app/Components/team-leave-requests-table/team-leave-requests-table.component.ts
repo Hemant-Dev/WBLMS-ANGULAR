@@ -179,9 +179,9 @@ export class TeamLeaveRequestsTableComponent implements OnInit {
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
     this.lazyRequest.first = $event.first || 0;
+    this.lazyRequest.rows = $event.rows || 5;
     this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
     this.pageNumber++;
-    this.lazyRequest.rows = $event.rows || 5;
     this.pageSize = this.lazyRequest.rows;
     this.fetchTeamLeaveRequests();
   }
