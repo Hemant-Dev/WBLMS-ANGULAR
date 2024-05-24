@@ -10,7 +10,7 @@ import { Table, TableLazyLoadEvent } from 'primeng/table';
 import {
   errorAlert,
   errorToast,
-  showReason,
+  showReasonDisplayMessage,
   successToast,
 } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
@@ -154,7 +154,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     }
   }
   getReason(reason: string) {
-    showReason(reason);
+    showReasonDisplayMessage(reason);
   }
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {

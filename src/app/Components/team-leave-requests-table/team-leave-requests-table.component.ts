@@ -10,7 +10,7 @@ import {
   successToast,
   errorToast,
   errorAlert,
-  showReason,
+  showReasonDisplayMessage,
 } from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
@@ -132,7 +132,7 @@ export class TeamLeaveRequestsTableComponent
     });
   }
   getReason(reason: string) {
-    showReason(reason);
+    showReasonDisplayMessage(reason);
   }
   handleApproveClick(Id: number) {
     Swal.fire({

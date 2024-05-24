@@ -5,12 +5,7 @@ import {
   AfterViewChecked,
 } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import {
-  errorAlert,
-  errorToast,
-  showReason,
-  successToast,
-} from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, showReasonDisplayMessage, successToast } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
@@ -130,7 +125,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   showReason(reason: string) {
-    showReason(reason);
+    showReasonDisplayMessage(reason);
   }
 
   handleRejectClick(Id: number) {
