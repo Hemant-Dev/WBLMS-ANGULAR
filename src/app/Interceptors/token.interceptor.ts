@@ -39,7 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
           // }
         }
         errorToast(err.error.errorMessages);
-        return throwError(() => new Error(JSON.stringify(err)));
+        return throwError(() => new Error(err));
       })
     );
   }
