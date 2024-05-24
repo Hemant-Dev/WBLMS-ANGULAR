@@ -20,19 +20,35 @@
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <p-header> Leave Requests</p-header>
-        <div class="input-group w-50">
+        <span class="p-input-icon-right">
+          <i class="fa-solid fa-search"></i>
           <input
             type="text"
-            name="searchKeyword"
+            pInputText
             [(ngModel)]="searchKeyword"
-            (ngModelChange)="handleSearch()"
-            class="form-control mr-2"
-            placeholder="Search"
+            (ngModelChange)="filterData()"
           />
-          <button style="z-index: 1" class="btn btn-primary mx-3">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
+        </span>
+        <p-multiSelect
+          [options]="tableHeaderObj"
+          [(ngModel)]="selectedFields"
+          optionLabel="name"
+          optionValue="value"
+          placeholder="Filter Fields"
+          display="chip"
+          [showClear]="true"
+          [showToggleAll]="false"
+          [maxSelectedLabels]="2"
+          (onChange)="filterData()"
+        ></p-multiSelect>
+        <p-dropdown
+          [options]="leaveTypes"
+          optionLabel="leaveTypeName"
+          [showClear]="true"
+          placeholder="Select LeaveType"
+          optionValue="leaveTypeName"
+          (onChange)="filterLeaveTypeData($event)"
+        ></p-dropdown>
       </div>
     </ng-template>
 
@@ -47,7 +63,7 @@
         <th pSortableColumn="leaveType">
           Leave Type <p-sortIcon field="leaveType"></p-sortIcon>
         </th>
-        <th style="max-width: 100px" pSortableColumn="reason">
+        <th pSortableColumn="reason">
           Reason <p-sortIcon field="reason"></p-sortIcon>
         </th>
         <th pSortableColumn="status">
@@ -59,106 +75,13 @@
         <th pSortableColumn="endDate">
           End Date <p-sortIcon field="endDate"></p-sortIcon>
         </th>
-        <th style="max-width: 30px" pSortableColumn="numberOfLeaveDays">
+        <th pSortableColumn="numberOfLeaveDays">
           Number Of Days <p-sortIcon field="numberOfLeaveDays"></p-sortIcon>
         </th>
         <th pSortableColumn="requestDate">
           Request Date <p-sortIcon field="requestDate"></p-sortIcon>
         </th>
         <th>Actions</th>
-      </tr>
-      <tr>
-        <th>
-          <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search First Name"
-            [(ngModel)]="initialLeaveRequestObj.firstName"
-          />
-        </th>
-        <th>
-          <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Last Name"
-            [(ngModel)]="initialLeaveRequestObj.lastName"
-          />
-        </th>
-        <th>
-          <!-- <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Leave Type"
-            [(ngModel)]="initialLeaveRequestObj.leaveType"
-          /> -->
-        </th>
-        <th>
-          <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Reason"
-            [(ngModel)]="initialLeaveRequestObj.reason"
-          />
-        </th>
-        <th>
-          <!-- <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Status"
-            [(ngModel)]="initialLeaveRequestObj.status"
-          /> -->
-        </th>
-        <th>
-          <!-- <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Start Date"
-            [(ngModel)]="initialLeaveRequestObj.startDate"
-          /> -->
-        </th>
-        <th>
-          <!-- <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search End Date"
-            [(ngModel)]="initialLeaveRequestObj.endDate"
-          /> -->
-        </th>
-        <th>
-          <input
-            style="max-width: 100px"
-            pInputText
-            type="number"
-            (input)="filterData()"
-            placeholder="Search Number of leave days"
-            [(ngModel)]="initialLeaveRequestObj.numberOfLeaveDays"
-          />
-        </th>
-        <th>
-          <!-- <input
-            style="max-width: 100px"
-            pInputText
-            type="text"
-            (input)="filterData()"
-            placeholder="Search Request Date"
-            [(ngModel)]="initialLeaveRequestObj.requestDate"
-          /> -->
-        </th>
-        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-request>
