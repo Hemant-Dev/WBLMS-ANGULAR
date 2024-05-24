@@ -69,7 +69,6 @@ export class RegisterComponent implements OnInit {
     // console.log(this.initialEmployeeData)
     this.fetchData();
 
-    const regex = '/^[6-9]d{9}';
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -81,7 +80,7 @@ export class RegisterComponent implements OnInit {
       roleId: [0, Validators.required],
       managerId: new FormControl(
         { value: 0, disabled: true },
-        [Validators.required, Validators.min(1)]
+        [Validators.required]
       ),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
@@ -90,7 +89,7 @@ export class RegisterComponent implements OnInit {
         [
           Validators.required,
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,25}$/
           ),
         ],
       ],
