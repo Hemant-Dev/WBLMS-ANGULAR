@@ -12,7 +12,7 @@ export function successAlert(msg: string) {
   });
 }
 
-export function showReason(msg: string) {
+export function showReasonDisplayMessage(msg: string) {
   Swal.fire({
     position: 'center',
     // icon: 'info',
