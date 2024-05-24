@@ -122,10 +122,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  fetchSessionAndSelfRequestData() {
-    this.fetchSessionData();
-    // this.fetchSelfRequestData();
-  }
   fetchSelfRequestData() {
     if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.employeeId = Number(this.employeeId);

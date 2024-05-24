@@ -38,7 +38,7 @@ export class LeaveRequestComponent implements OnInit {
   ngOnInit(): void {
     this.getLeaveType();
     this.getDataFromUserStore();
-
+    this.submitStatus = false;
     this.fetchHolidayData();
     this.leaveRequestForm = this.fb.group({
       id: 0,
@@ -305,9 +305,8 @@ export class LeaveRequestComponent implements OnInit {
             buttonRef?.click();
             this.submitStatus = true;
             this.submitButtonClicked();
-            this.service.changeData(true);
+            this.service.changeData(this.submitStatus);
             this.leaveRequestForm.reset();
-            this.ngOnInit();
           },
           error: (err) =>
             errorToast('Something went wrong while creating Leave Requests!'),
