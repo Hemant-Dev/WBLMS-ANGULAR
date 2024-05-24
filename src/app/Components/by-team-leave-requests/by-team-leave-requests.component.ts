@@ -14,8 +14,10 @@ import {
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
+import { AuthService } from 'src/app/Services/auth.service';
 import { ByRolesService } from 'src/app/Services/by-roles.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
+import { UserStoreService } from 'src/app/Services/user-store.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,7 +26,14 @@ import Swal from 'sweetalert2';
   styleUrls: ['./by-team-leave-requests.component.css'],
 })
 export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
+  // List Of Requests
   leaveRequests!: LeaveRequestModel[];
+  // Current User Session Details
+  role!: string;
+  fullName!: string;
+  email!: string;
+  employeeId!: string;
+  // Obj to filter data if required
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
     employeeId: 0,
@@ -37,29 +46,31 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     numberOfLeaveDays: 0,
     roleName: '',
   };
+  // Lazy Loading Variables
   pageNumber!: number;
   pageSize: number = 5;
   totalCount!: number;
   searchKeyword: string = '';
   loading: boolean = true;
+  // Obj to maintain var sent by the ng table
   lazyRequest = {
     first: 0,
     rows: 0,
     sortField: '',
     sortOrder: 1,
-    filter: {
-      firstName: '',
-    },
   };
 
   constructor(
     private byRolesService: ByRolesService,
     private leaveRequestService: LeaveRequestsService,
+    private userStore: UserStoreService,
+    private auth: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loading = true;
+    this.fetchSessionData();
     this.byRolesService.data$.subscribe((val) => {
       const getRoleFromService = this.byRolesService.role;
       this.initialLeaveRequestObj.roleName = val || getRoleFromService;
@@ -71,6 +82,11 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   fetchByRoleLeaveRequestData() {
+    // Only if a manager logs in other than admin
+    if (this.role !== 'Employee' && this.role !== 'Admin') {
+      this.initialLeaveRequestObj.managerId = Number(this.employeeId);
+      this.initialLeaveRequestObj.roleName = '';
+    }
     this.initialLeaveRequestObj.status = 'Pending';
     this.leaveRequestService
       .getLeaveRequestsByRoles(
@@ -93,6 +109,26 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         },
       });
   }
+
+  fetchSessionData() {
+    this.userStore.getFullNameFromStore().subscribe((val) => {
+      const fullNameFromToken = this.auth.getFullNameFromToken();
+      this.fullName = val || fullNameFromToken;
+    });
+    this.userStore.getRoleFromStore().subscribe((val) => {
+      const roleFromToken = this.auth.getRoleFromToken();
+      this.role = val || roleFromToken;
+    });
+    this.userStore.getEmailFromStore().subscribe((val) => {
+      const emailFromToken = this.auth.getEmailFromToken();
+      this.email = val || emailFromToken;
+    });
+    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
+      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
+      this.employeeId = val || employeeIdFromToken;
+    });
+  }
+
   showReason(reason: string) {
     showReason(reason);
   }

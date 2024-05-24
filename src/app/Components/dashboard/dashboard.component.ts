@@ -1,16 +1,10 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { errorAlert } from 'src/app/Helpers/swal';
-import { TokenInterceptor } from 'src/app/Interceptors/token.interceptor';
-import { EmployeeModel } from 'src/app/Models/EmployeeModel';
-import { PaginatedModel } from 'src/app/Models/PaginatedModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ByRolesService } from 'src/app/Services/by-roles.service';
-import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
-import { GetEmployeeAsync } from 'src/app/Services/employee.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
 
@@ -70,37 +64,7 @@ export class DashboardComponent implements OnInit {
     }
     this.byRolesService.changeData('HR');
   }
-  fetchSelfRequestData() {
-    // temp set then reset the id
-    if (this.role !== 'Admin') {
-      this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
-      this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
-        .subscribe({
-          next: (res) => {
-            this.selfLeaveRequests = res.data.dataArray;
-            this.initialLeaveRequestObj.employeeId = 0;
-          },
-          error: (err) => {
-            // console.log(err);
-            errorAlert(err);
-          },
-        });
-    }
-  }
-  fetchAllRequestData() {
-    if (this.role === 'Admin') {
-      this.leaveRequestService
-        .getLeaveRequests('', '', 1, 100, this.initialLeaveRequestObj)
-        .subscribe({
-          next: (res) => {
-            this.selfLeaveRequests = res.data.dataArray;
-            // console.log(res);
-          },
-          error: (err) => console.log(err),
-        });
-    }
-  }
+
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();

@@ -48,7 +48,7 @@ const routes: Routes = [
           },
           {
             path: 'teamLeaveRequests',
-            component: TeamLeaveRequestsTableComponent,
+            component: ByTeamLeaveRequestsComponent,
           },
           {
             path: 'hr',
