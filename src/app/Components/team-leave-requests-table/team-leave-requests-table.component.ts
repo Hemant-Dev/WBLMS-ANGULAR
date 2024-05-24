@@ -25,8 +25,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./team-leave-requests-table.component.css'],
 })
 export class TeamLeaveRequestsTableComponent
-  implements OnInit, AfterViewChecked
-{
+  implements OnInit, AfterViewChecked {
   leaveRequests!: LeaveRequestModel[];
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
@@ -61,7 +60,7 @@ export class TeamLeaveRequestsTableComponent
     private userStore: UserStoreService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.fetchSessionData();
     // Fetching Team Leave requests data

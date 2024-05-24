@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit {
       roleId: [0, Validators.required],
       managerId: new FormControl(
         { value: 0, disabled: true },
-        Validators.required
+        [Validators.required, Validators.min(1)]
       ),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],

@@ -77,8 +77,8 @@ export class LoginComponent implements OnInit {
           successToast('Logged in successfully!');
         },
         error: (err: Error) => {
-          console.log(err);
-          errorToast(err.message);
+          //console.log(err);
+          //errorToast(err.message);
         },
       });
     } else {

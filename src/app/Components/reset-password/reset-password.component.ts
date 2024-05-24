@@ -57,7 +57,10 @@ export class ResetPasswordComponent implements OnInit {
           successToast('Password Reset Successfull.');
           this.router.navigate(['login']);
         },
-        error: (err) => errorToast(err),
+        error: (err) => {
+          errorToast(err)
+        },
+
       });
     } else {
       ValidateForm.validateAllFormFields(this.resetPasswordForm);
