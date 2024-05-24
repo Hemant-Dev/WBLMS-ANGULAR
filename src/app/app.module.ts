@@ -32,6 +32,9 @@ import { LeaveRequestComponent } from './Components/leave-request/leave-request.
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AutoFocusModule } from 'primeng/autofocus';
+import { ChipModule } from 'primeng/chip';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,6 +72,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CommonModule,
     InputTextModule,
     InputNumberModule,
+    AutoFocusModule,
+    ChipModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

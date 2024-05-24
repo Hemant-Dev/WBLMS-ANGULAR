@@ -7,6 +7,16 @@
   </div>
 
   <a class="navbar-brand px-4" id="logo"> WBLMS </a>
+  <div class="card flex align-items-center">
+    <p-chip styleClass="pl-0 pr-3">
+      <!-- <span
+        class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center"
+      >
+        P
+      </span> -->
+      <span class="font-medium"> {{role}} </span>
+    </p-chip>
+  </div>
 
   <!-- <div class="navbar-collapse">
     <ul class="navbar-nav me-auto">
@@ -34,12 +44,24 @@
   </form> -->
 
   <div class="profile-logo dropstart ms-auto">
-    <button
+    <!-- <button
       class="btn btn-outline-light dropdown-toggle"
       data-bs-toggle="dropdown"
     >
+    image="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava{{
+        2
+      }}.webp"
       {{ fullName }}
-    </button>
+    </button> -->
+    <p-chip
+      styleClass="profile-logo"
+      class="btn btn-outline-light dropdown-toggle pointer-cursor"
+      class=".bg-dark"
+      data-bs-toggle="dropdown"
+      label="{{ fullName }}"
+      image="../../../assets/img/WBLMS-logo.jfif"
+      alt="Avatar image"
+    />
     <ul class="dropdown-menu dropdown-menu-dark">
       <li>
         <a class="dropdown-item btn" [routerLink]="['profile']">Profile</a>

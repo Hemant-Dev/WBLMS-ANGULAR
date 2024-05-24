@@ -18,7 +18,7 @@ export function showReasonDisplayMessage(msg: string) {
     // icon: 'info',
     title: msg,
     showConfirmButton: false,
-    timer: 1500,
+    timer: 5500,
     width: 400,
     heightAuto: true,
   });

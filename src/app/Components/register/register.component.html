@@ -20,6 +20,8 @@
                   >
                     <span class="fa fa-user p-2"></span>
                     <input
+                      pAutoFocus
+                      [autofocus]="true"
                       type="text"
                       formControlName="firstName"
                       placeholder="First Name"
@@ -97,7 +99,8 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.controls['contactNumber']?.value.length != 10
+                      registerForm.controls['contactNumber']?.value.length != 10 && 
+                      !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
                   >
@@ -106,7 +109,8 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.hasError('pattern', 'contactNumber')
+                      registerForm.hasError('pattern', 'contactNumber') && 
+                      !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
                   >

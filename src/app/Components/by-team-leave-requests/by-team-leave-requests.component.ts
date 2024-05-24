@@ -61,7 +61,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     private userStore: UserStoreService,
     private auth: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -125,7 +125,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   showReason(reason: string) {
-    showReasonDisplayMessage(reason);
+    showReasonDisplayMessage(reason)
   }
 
   handleRejectClick(Id: number) {
