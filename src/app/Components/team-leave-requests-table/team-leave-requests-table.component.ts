@@ -6,7 +6,12 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { successToast, errorToast, errorAlert } from 'src/app/Helpers/swal';
+import {
+  successToast,
+  errorToast,
+  errorAlert,
+  showReasonDisplayMessage,
+} from 'src/app/Helpers/swal';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -116,7 +121,8 @@ export class TeamLeaveRequestsTableComponent
           .subscribe({
             next: (res) => {
               errorToast('Leave Request Rejected.');
-              this.ngOnInit();
+              // this.ngOnInit();
+              this.fetchTeamLeaveRequests();
             },
             error: (err) => errorToast('Error Occured while updating status'),
           });
@@ -125,7 +131,9 @@ export class TeamLeaveRequestsTableComponent
       }
     });
   }
-  getReason(reason: string) {}
+  getReason(reason: string) {
+    showReasonDisplayMessage(reason);
+  }
   handleApproveClick(Id: number) {
     Swal.fire({
       title: 'Do you want to approve the leave?',
@@ -145,7 +153,8 @@ export class TeamLeaveRequestsTableComponent
           .subscribe({
             next: (res) => {
               successToast('Leave Request Approved.');
-              this.ngOnInit();
+              // this.ngOnInit();
+              this.fetchTeamLeaveRequests();
             },
             error: (err) => errorToast('Error Occured while updating status'),
           });

@@ -179,38 +179,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  handleRejectClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 3,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Rejected.');
-          this.fetchSelfRequestData();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
-  }
-
-  handleApproveClick(Id: number) {
-    const updateLeaveRequestStatus: UpdateRequestStatus = {
-      id: Id,
-      statusId: 2,
-    };
-    this.leaveRequestService
-      .updateLeaveRequestStatus(Id, updateLeaveRequestStatus)
-      .subscribe({
-        next: (res) => {
-          successToast('Leave Request Approved.');
-          this.fetchSelfRequestData();
-        },
-        error: (err) => errorToast('Error Occured while updating status'),
-      });
-  }
-
   handleSearch() {
     this.leaveRequestService
       .getLeaveRequestsByRoles(
