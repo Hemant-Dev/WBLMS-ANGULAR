@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  .dropdown-size {
+    min-width: 200px;
+    max-width: 300px;
+  }
+  .calendar-size {
+    max-width: 220px;
+  }
+}

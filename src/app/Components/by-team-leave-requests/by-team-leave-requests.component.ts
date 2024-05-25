@@ -65,12 +65,11 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   };
   selectedFields: string[] = [];
   rangeDates: string[] | undefined;
+  requestDateFilterField: string | undefined;
   tableHeaderObj: any[] = [
     { name: 'FirstName', value: 'firstName' },
     { name: 'LastName', value: 'lastName' },
     { name: 'Reason', value: 'reason' },
-    { name: 'StartDate', value: 'startDate' },
-    { name: 'EndDate', value: 'endDate' },
     { name: 'RequestDate', value: 'requestDate' },
   ];
   leaveTypes: LeaveTypeModel[] = [];
@@ -303,10 +302,16 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.initialLeaveRequestObj.reason = '';
     this.selectedFields = [];
   }
-  handleClearDate() {
-    // this.rangeDates = ['0001-01-01', '0001-01-01'];
-    // this.fetchByRoleLeaveRequestData();
-    // this.filterDate();
-    // console.log('After Clear All : ' + this.rangeDates);
+  filterRequestDate() {
+    if (
+      this.requestDateFilterField !== undefined &&
+      this.requestDateFilterField !== null
+    ) {
+      this.initialLeaveRequestObj.requestDate = this.requestDateFilterField;
+    } else {
+      this.initialLeaveRequestObj.requestDate = '0001-01-01';
+    }
+    console.log(this.initialLeaveRequestObj.requestDate);
+    this.fetchByRoleLeaveRequestData();
   }
 }

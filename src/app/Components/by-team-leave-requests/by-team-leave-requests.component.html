@@ -18,30 +18,35 @@
     [tableStyle]="{ width: '100vw - 4rem' }"
   >
     <ng-template pTemplate="caption">
-      <div class="d-flex justify-content-between align-items-center mb-2 py-4">
-        <p-header> Leave Requests</p-header>
-        <span class="p-input-icon-right">
+      <p-header> Leave Requests</p-header>
+      <div class="d-flex gap-4 align-items-center py-4">
+        <span class="p-input-icon-right p-float-label">
           <i class="fa-solid fa-search"></i>
           <input
+            id="searchKeyword"
             type="text"
             pInputText
             [(ngModel)]="searchKeyword"
             (ngModelChange)="filterData()"
           />
+          <label for="searchKeyword">Search</label>
         </span>
+
         <p-multiSelect
+          inputId="float-label"
           [options]="tableHeaderObj"
           [(ngModel)]="selectedFields"
           optionLabel="name"
           optionValue="value"
-          placeholder="Filter Fields"
           display="chip"
           [showClear]="true"
           (onClear)="handleClearSelectedFields()"
           [showToggleAll]="false"
           [maxSelectedLabels]="2"
           (onChange)="filterData()"
+          placeholder="Filter Fields"
         ></p-multiSelect>
+
         <span class="p-float-label">
           <p-calendar
             id="rangeDate"
@@ -59,14 +64,35 @@
             >Select Leave Requests Range</label
           >
         </span>
-        <p-dropdown
-          [options]="leaveTypes"
-          optionLabel="leaveTypeName"
-          [showClear]="true"
-          placeholder="Select LeaveType"
-          optionValue="leaveTypeName"
-          (onChange)="filterLeaveTypeData($event)"
-        ></p-dropdown>
+
+        <span class="p-float-label">
+          <p-calendar
+            styleClass="calendar-size"
+            [readonlyInput]="true"
+            [(ngModel)]="requestDateFilterField"
+            (onClearClick)="filterRequestDate()"
+            (ngModelChange)="filterRequestDate()"
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+            [showClear]="true"
+          ></p-calendar>
+          <label for="float-label">Filter Request Date</label>
+        </span>
+
+        <span class="p-float-label">
+          <p-dropdown
+            styleClass="dropdown-size"
+            inputId="float-label"
+            [options]="leaveTypes"
+            optionLabel="leaveTypeName"
+            [showClear]="true"
+            placeholder=""
+            optionValue="leaveTypeName"
+            (onChange)="filterLeaveTypeData($event)"
+          ></p-dropdown>
+          <label for="float-label">Select LeaveType</label>
+        </span>
       </div>
     </ng-template>
 
