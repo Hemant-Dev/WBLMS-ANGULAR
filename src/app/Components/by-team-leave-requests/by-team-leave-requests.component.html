@@ -15,7 +15,9 @@
     [customSort]="true"
     (sortFunction)="lazyLoadSelfRequestsData($event)"
     [loading]="loading"
+    loadingIcon="fa fa-spinner fa-spin"
     [tableStyle]="{ width: '100vw - 4rem' }"
+    styleClass="my-spinner"
   >
     <ng-template pTemplate="caption">
       <p-header> Leave Requests</p-header>
