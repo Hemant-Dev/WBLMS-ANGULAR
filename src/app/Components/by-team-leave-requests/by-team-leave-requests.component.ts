@@ -70,7 +70,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     { name: 'FirstName', value: 'firstName' },
     { name: 'LastName', value: 'lastName' },
     { name: 'Reason', value: 'reason' },
-    { name: 'RequestDate', value: 'requestDate' },
+    { name: 'Number of Days', value: 'numberOfLeaveDays' },
   ];
   leaveTypes: LeaveTypeModel[] = [];
   constructor(
@@ -256,24 +256,19 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         else if (header === 'reason')
           this.initialLeaveRequestObj.reason = this.searchKeyword;
         else if (
-          header === 'startDate' &&
-          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
+          header === 'numberOfLeaveDays' &&
+          typeof Number(this.searchKeyword) === 'number' &&
+          !isNaN(Number(this.searchKeyword))
         )
-          this.initialLeaveRequestObj.startDate = this.searchKeyword;
-        else if (
-          header === 'endDate' &&
-          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
-        )
-          this.initialLeaveRequestObj.endDate = this.searchKeyword;
-        else if (
-          header === 'requestDate' &&
-          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
-        )
-          this.initialLeaveRequestObj.requestDate = this.searchKeyword;
+          this.initialLeaveRequestObj.numberOfLeaveDays = Number(
+            this.searchKeyword
+          );
         else return;
       });
+    } else {
+      this.initialLeaveRequestObj.numberOfLeaveDays = 0;
     }
-    // console.log(this.initialLeaveRequestObj);
+    console.log(this.initialLeaveRequestObj);
     this.fetchByRoleLeaveRequestData();
   }
   filterLeaveTypeData(event$: any) {
