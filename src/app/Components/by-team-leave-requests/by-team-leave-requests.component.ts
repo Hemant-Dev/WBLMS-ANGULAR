@@ -64,15 +64,13 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     sortOrder: 1,
   };
   selectedFields: string[] = [];
+  rangeDates: string[] | undefined;
   tableHeaderObj: any[] = [
     { name: 'FirstName', value: 'firstName' },
     { name: 'LastName', value: 'lastName' },
-    { name: 'LeaveType', value: 'leaveType' },
     { name: 'Reason', value: 'reason' },
-    // { name: 'Status', value: 'status' },
     { name: 'StartDate', value: 'startDate' },
     { name: 'EndDate', value: 'endDate' },
-    // { name: 'NumberOfLeaveDays', value: 'numberOfLeaveDays' },
     { name: 'RequestDate', value: 'requestDate' },
   ];
   leaveTypes: LeaveTypeModel[] = [];
@@ -249,32 +247,33 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   filterData() {
-    this.selectedFields.forEach((header) => {
-      if (header === 'firstName')
-        this.initialLeaveRequestObj.firstName = this.searchKeyword;
-      else if (header === 'lastName')
-        this.initialLeaveRequestObj.lastName = this.searchKeyword;
-      else if (header === 'leaveType')
-        this.initialLeaveRequestObj.leaveType = this.searchKeyword;
-      else if (header === 'reason')
-        this.initialLeaveRequestObj.reason = this.searchKeyword;
-      else if (
-        header === 'startDate' &&
-        this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
-      )
-        this.initialLeaveRequestObj.startDate = this.searchKeyword;
-      else if (
-        header === 'endDate' &&
-        this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
-      )
-        this.initialLeaveRequestObj.endDate = this.searchKeyword;
-      else if (
-        header === 'requestDate' &&
-        this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
-      )
-        this.initialLeaveRequestObj.requestDate = this.searchKeyword;
-      else return;
-    });
+    console.log(this.selectedFields);
+    if (this.selectedFields) {
+      this.selectedFields.forEach((header) => {
+        if (header === 'firstName')
+          this.initialLeaveRequestObj.firstName = this.searchKeyword;
+        else if (header === 'lastName')
+          this.initialLeaveRequestObj.lastName = this.searchKeyword;
+        else if (header === 'reason')
+          this.initialLeaveRequestObj.reason = this.searchKeyword;
+        else if (
+          header === 'startDate' &&
+          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
+        )
+          this.initialLeaveRequestObj.startDate = this.searchKeyword;
+        else if (
+          header === 'endDate' &&
+          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
+        )
+          this.initialLeaveRequestObj.endDate = this.searchKeyword;
+        else if (
+          header === 'requestDate' &&
+          this.searchKeyword.match('/^d{4}-d{2}-d{2}$')
+        )
+          this.initialLeaveRequestObj.requestDate = this.searchKeyword;
+        else return;
+      });
+    }
     // console.log(this.initialLeaveRequestObj);
     this.fetchByRoleLeaveRequestData();
   }
@@ -282,8 +281,32 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.initialLeaveRequestObj.leaveType = event$.value || '';
     this.filterData();
   }
+  filterDate() {
+    console.log(this.rangeDates);
+    if (this.rangeDates !== undefined && this.rangeDates !== null) {
+      this.initialLeaveRequestObj.startDate =
+        this.rangeDates[0] || '0001-01-01';
+      this.initialLeaveRequestObj.endDate = this.rangeDates[1] || '0001-01-01';
+    } else {
+      this.initialLeaveRequestObj.startDate = '0001-01-01';
+      this.initialLeaveRequestObj.endDate = '0001-01-01';
+    }
+    this.fetchByRoleLeaveRequestData();
+  }
   handleClearAll() {
     this.initialLeaveRequestObj.leaveType = '';
     console.log(this.initialLeaveRequestObj);
+  }
+  handleClearSelectedFields() {
+    this.initialLeaveRequestObj.firstName = '';
+    this.initialLeaveRequestObj.lastName = '';
+    this.initialLeaveRequestObj.reason = '';
+    this.selectedFields = [];
+  }
+  handleClearDate() {
+    // this.rangeDates = ['0001-01-01', '0001-01-01'];
+    // this.fetchByRoleLeaveRequestData();
+    // this.filterDate();
+    // console.log('After Clear All : ' + this.rangeDates);
   }
 }

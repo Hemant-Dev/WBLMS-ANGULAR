@@ -31,6 +31,7 @@ import { LeaveRequestComponent } from './Components/leave-request/leave-request.
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,6 +69,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     InputNumberModule,
     MultiSelectModule,
+    CalendarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

@@ -18,7 +18,7 @@
     [tableStyle]="{ width: '100vw - 4rem' }"
   >
     <ng-template pTemplate="caption">
-      <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="d-flex justify-content-between align-items-center mb-2 py-4">
         <p-header> Leave Requests</p-header>
         <span class="p-input-icon-right">
           <i class="fa-solid fa-search"></i>
@@ -37,10 +37,28 @@
           placeholder="Filter Fields"
           display="chip"
           [showClear]="true"
+          (onClear)="handleClearSelectedFields()"
           [showToggleAll]="false"
           [maxSelectedLabels]="2"
           (onChange)="filterData()"
         ></p-multiSelect>
+        <span class="p-float-label">
+          <p-calendar
+            id="rangeDate"
+            [(ngModel)]="rangeDates"
+            selectionMode="range"
+            [readonlyInput]="true"
+            [showIcon]="true"
+            (ngModelChange)="filterDate()"
+            [showClear]="true"
+            (onClearClick)="filterDate()"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+          />
+          <label for="rangeDate" style="text-wrap: wrap"
+            >Select Leave Requests Range</label
+          >
+        </span>
         <p-dropdown
           [options]="leaveTypes"
           optionLabel="leaveTypeName"
