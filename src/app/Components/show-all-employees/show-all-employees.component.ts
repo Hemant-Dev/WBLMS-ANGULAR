@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeLeaveReqModel } from 'src/app/Models/EmployeeLeaveReqModel';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
+import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 
 @Component({
   selector: 'app-show-all-employees',
@@ -19,6 +20,7 @@ export class ShowAllEmployeesComponent implements OnInit {
   pageSize: number = 10;
   sortColumn: string = "";
   sortOrder: string = "";
+  year : number = 2024;
   initialEmployeeData: EmployeeLeaveReqModel = {
     id: 0,
     firstName: '',
@@ -36,19 +38,28 @@ export class ShowAllEmployeesComponent implements OnInit {
     totalLeaveRequest: 0
   }
 
+
+
   employeeData : any;
   constructor(
     private employeeService: EmployeeRxjsService,
+    private leaveReqService : LeaveRequestsService
   ) { }
   ngOnInit(): void {
     this.barChart();
     this.getEmployee();
+    this.getLeaveRequestByYear();
   }
-  // this.leaveRequestService.getLeaveType().subscribe({
-  //   next: (response: any) => {
-  //     this.leaveTypeData = response.data;
-  //   },
-  // });
+
+  getLeaveRequestByYear(){
+    this.leaveReqService
+    .getLeaveRequestsByYear(this.year)
+    .subscribe(({
+      next : (response : any) => {
+        console.log(response)
+      }
+    }))
+  }
 
   getEmployee() {
     this.employeeService

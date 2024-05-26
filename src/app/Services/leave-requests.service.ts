@@ -50,6 +50,14 @@ export class LeaveRequestsService {
     );
   }
 
+  getLeaveRequestsByYear(
+    year : number
+  ) : Observable<any> {
+    return this.http.get<any>(
+      this.leave_api_url + `/getLeaveBy/${year}`
+    )
+  }
+
   getWonderbizholidays(): Observable<any> {
     return this.http.get<any>(this.leave_api_url + '/wbHolidays');
   }
