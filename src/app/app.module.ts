@@ -25,7 +25,6 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { AngleDoubleDownIcon } from 'primeng/icons/angledoubledown';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { LeaveRequestComponent } from './Components/leave-request/leave-request.component';
@@ -35,6 +34,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ChipModule } from 'primeng/chip';
 
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +66,6 @@ import { ChipModule } from 'primeng/chip';
     TableModule,
     TagModule,
     FieldsetModule,
-    InputTextModule,
     MultiSelectModule,
     DropdownModule,
     CommonModule,
@@ -74,6 +73,8 @@ import { ChipModule } from 'primeng/chip';
     InputNumberModule,
     AutoFocusModule,
     ChipModule
+    MultiSelectModule,
+    CalendarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
