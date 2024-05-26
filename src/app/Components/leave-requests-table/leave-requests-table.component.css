@@ -28,12 +28,17 @@
 } */
 
 :host ::ng-deep {
-  .p-progressbar {
-    height: 0.5rem;
-    background-color: #d8dadc;
-
-    .p-progressbar-value {
-      background-color: #607d8b;
-    }
+  .dropdown-size {
+    min-width: 200px;
+    max-width: 300px;
+  }
+  .calendar-size {
+    max-width: 220px;
+  }
+  .my-spinner {
+    color: #3377f2;
+  }
+  .my-spinner .p-datatable-loading-overlay {
+    background: rgba(255, 255, 255, 0.5);
   }
 }
