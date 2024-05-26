@@ -14,6 +14,7 @@ import { LeaveRequestsTableComponent } from './Components/leave-requests-table/l
 import { TeamLeaveRequestsTableComponent } from './Components/team-leave-requests-table/team-leave-requests-table.component';
 import { AdminGuard } from './Guards/admin.guard';
 import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-requests/by-team-leave-requests.component';
+import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,11 @@ const routes: Routes = [
       },
       { path: 'register/:id', component: RegisterComponent },
       { path: 'profile', component: ProfileComponent },
+      {
+        path: 'showAllEmployees',
+        component: ShowAllEmployeesComponent,
+        canActivate: [AdminGuard],
+      },
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -65,6 +71,7 @@ const routes: Routes = [
             component: ByTeamLeaveRequestsComponent,
             canActivate: [AdminGuard],
           },
+          
         ],
       },
       { path: 'employee', component: EmployeeComponent },

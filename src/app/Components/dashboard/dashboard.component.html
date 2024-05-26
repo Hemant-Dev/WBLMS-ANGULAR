@@ -1,56 +1,29 @@
 <div class="col-sm-12 row" *ngIf="role !== 'Admin'">
   <!-- <app-team-leave-requests-table></app-team-leave-requests-table> -->
-  <app-leaves-remaining-dashboard
-    [userSessionObj]="initialUserSessionObj"
-  ></app-leaves-remaining-dashboard>
+  <app-leaves-remaining-dashboard [userSessionObj]="initialUserSessionObj"></app-leaves-remaining-dashboard>
 </div>
 
 <!-- Still need to decide what to show -->
 <div class="row mt-4">
   <ul class="nav nav-tabs">
     <li *ngIf="role !== 'Admin'" class="nav-item">
-      <a
-        [routerLink]="['leaveRequests']"
-        routerLinkActive="active"
-        class="nav-link"
-        aria-current="page"
-        >Self Leave Requests</a
-      >
+      <a [routerLink]="['leaveRequests']" routerLinkActive="active" class="nav-link" aria-current="page">Self Leave
+        Requests</a>
     </li>
     <li *ngIf="role !== 'Employee' && role !== 'Admin'" class="nav-item">
-      <a
-        [routerLink]="['teamLeaveRequests']"
-        routerLinkActive="active"
-        class="nav-link"
-        >Team Leave Requests</a
-      >
+      <a [routerLink]="['teamLeaveRequests']" routerLinkActive="active" class="nav-link">Team Leave Requests</a>
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a
-        (click)="handleHRLeaveRequestClick()"
-        [routerLink]="['hr']"
-        routerLinkActive="active"
-        class="nav-link"
-        >HR Leave Requests</a
-      >
+      <a (click)="handleHRLeaveRequestClick()" [routerLink]="['hr']" routerLinkActive="active" class="nav-link">HR Leave
+        Requests</a>
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a
-        (click)="handleTeamLeadLeaveRequestClick()"
-        [routerLink]="['teamLead']"
-        routerLinkActive="active"
-        class="nav-link"
-        >Team Lead Leave Requests</a
-      >
+      <a (click)="handleTeamLeadLeaveRequestClick()" [routerLink]="['teamLead']" routerLinkActive="active"
+        class="nav-link">Team Lead Leave Requests</a>
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a
-        (click)="handleEmployeeLeaveRequestClick()"
-        [routerLink]="['employee']"
-        routerLinkActive="active"
-        class="nav-link"
-        >Employee Leave Requests</a
-      >
+      <a (click)="handleEmployeeLeaveRequestClick()" [routerLink]="['employee']" routerLinkActive="active"
+        class="nav-link">Employee Leave Requests</a>
     </li>
   </ul>
 </div>

@@ -26,8 +26,15 @@ export class HeaderComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.fetchSessionData();
+   // this.getNameFromSession()
   }
-
+  getNameFromSession(){
+    this.userStore.getFullNameFromStore().subscribe((val) => {
+      const fullNameFromToken = this.auth.getFullNameFromToken();
+      this.fullName = val || fullNameFromToken;
+     // console.log(this.fullName)
+    });
+  }
   SideNavToggled() {
     this.menuStatus = !this.menuStatus;
     this.sideNavToggled.emit(this.menuStatus);
@@ -57,6 +64,7 @@ export class HeaderComponent implements OnInit {
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();
+      console.log(fullNameFromToken)
       this.fullName = val || fullNameFromToken;
     });
     this.userStore.getRoleFromStore().subscribe((val) => {

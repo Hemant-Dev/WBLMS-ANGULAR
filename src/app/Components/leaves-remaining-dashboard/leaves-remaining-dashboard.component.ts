@@ -46,6 +46,8 @@ export class LeavesRemainingDashboardComponent implements OnInit {
       this.getLeaveStatusesData(this.userSessionObj.employeeId);
     }
   }
+
+  
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private shared: SharedServiceService

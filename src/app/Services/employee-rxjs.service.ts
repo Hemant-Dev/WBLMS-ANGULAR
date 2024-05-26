@@ -7,6 +7,7 @@ import { PaginatedModel } from '../Models/PaginatedModel';
 import { GenderModel } from '../Models/GenderModel';
 import { ManagerModel } from '../Models/ManagerModel';
 import { RolesModel } from '../Models/RolesModels';
+import { EmployeeLeaveReqModel } from '../Models/EmployeeLeaveReqModel';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,20 @@ export class EmployeeRxjsService {
     return this.http.post<any>(
       this.api_url +
         `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+      initialEmployeeObj
+    );
+  }
+
+  getEmployeesLeaveReq(
+    page: number,
+    pageSize: number,
+    sortColumn: string,
+    sortOrder: string,
+    initialEmployeeObj: EmployeeLeaveReqModel
+  ): Observable<any> {
+    return this.http.post<any>(
+      this.api_url +
+        `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
       initialEmployeeObj
     );
   }

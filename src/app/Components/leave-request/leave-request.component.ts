@@ -67,7 +67,7 @@ export class LeaveRequestComponent implements OnInit {
     private router: Router,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
@@ -119,7 +119,6 @@ export class LeaveRequestComponent implements OnInit {
           25 -
           (this.leaveStatusesCount.approvedLeavesCount +
             this.leaveStatusesCount.pendingLeavesCount);
-        // console.log(this.leaveStatusesCount)
       },
       error: (err) => console.log(err),
     });
@@ -291,11 +290,12 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   handleSubmit() {
-    if (!this.getValue('numberOfLeaveDays')) {
-      errorAlert('Number of leaves day are zero');
-      return;
-    }
+
     if (this.leaveRequestForm.valid) {
+      if (!this.getValue('numberOfLeaveDays')) {
+        errorAlert('Number of leaves day are zero');
+        return;
+      }
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
         .subscribe({
@@ -307,6 +307,7 @@ export class LeaveRequestComponent implements OnInit {
             this.submitButtonClicked();
             this.service.changeData(this.submitStatus);
             this.leaveRequestForm.reset();
+            this.ngOnInit();
           },
           error: (err) =>
             errorToast('Something went wrong while creating Leave Requests!'),

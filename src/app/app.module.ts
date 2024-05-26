@@ -33,8 +33,9 @@ import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-request
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ChipModule } from 'primeng/chip';
-
+import { ChartModule } from 'primeng/chart';
 import { CalendarModule } from 'primeng/calendar';
+import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { CalendarModule } from 'primeng/calendar';
     LeaveRequestComponent,
     TeamLeaveRequestsTableComponent,
     ByTeamLeaveRequestsComponent,
+    ShowAllEmployeesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,7 @@ import { CalendarModule } from 'primeng/calendar';
     AutoFocusModule,
     ChipModule,
     CalendarModule,
+    ChartModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

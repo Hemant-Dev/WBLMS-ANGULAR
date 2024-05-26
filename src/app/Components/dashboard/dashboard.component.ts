@@ -26,6 +26,9 @@ export class DashboardComponent implements OnInit {
     email: '',
     role: '',
   };
+  data: any;
+
+  options: any;
   seachKeyword: string = '';
   pageSize: number = 2;
   submitStatus: boolean = false;
@@ -52,7 +55,7 @@ export class DashboardComponent implements OnInit {
     private leaveRequestService: LeaveRequestsService,
     private router: Router,
     private byRolesService: ByRolesService
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.fetchSessionData();
     // this.fetchSelfRequestData();
@@ -63,8 +66,9 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['home/dashboard/leaveRequests']);
     }
     this.byRolesService.changeData('HR');
-  }
 
+  }
+  
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();
