@@ -38,11 +38,14 @@ export class TokenInterceptor implements HttpInterceptor {
           //   this.errorAlert(err.error.message);
           // }
         }
-        errorToast(err.error.errorMessages);
-        console.log(err)
-        console.log(err.error.message);
+        if (err.status === 0) {
+          // console.log(err.message);
+          errorAlert('Http Connection Error, Server Refused to connect!');
+        } else {
+          errorToast(err.error.errorMessages);
+          // console.log(err);
+        }
         return throwError(() => JSON.stringify(err.error.message));
-        return throwError(() => new Error(err));
       })
     );
   }

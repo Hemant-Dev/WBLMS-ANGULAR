@@ -72,8 +72,7 @@ import { CalendarModule } from 'primeng/calendar';
     InputTextModule,
     InputNumberModule,
     AutoFocusModule,
-    ChipModule
-    MultiSelectModule,
+    ChipModule,
     CalendarModule,
   ],
   providers: [
