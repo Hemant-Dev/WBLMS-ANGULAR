@@ -6,11 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Table } from 'primeng/table';
 import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
-import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { WonderbizHolidaysModel } from 'src/app/Models/WonderbizHolidays';
@@ -56,7 +54,7 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestForm.patchValue({
       employeeId: Number(this.employeeId),
     });
-    console.log(this.leaveRequestForm.value);
+    // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
   }
 
@@ -107,7 +105,8 @@ export class LeaveRequestComponent implements OnInit {
         this.leaveBalance = data.data;
         // console.log(this.leaveBalance)
       },
-      error: (err) => console.log(err),
+      error: (err) =>
+        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
     });
   }
 
@@ -120,7 +119,8 @@ export class LeaveRequestComponent implements OnInit {
           (this.leaveStatusesCount.approvedLeavesCount +
             this.leaveStatusesCount.pendingLeavesCount);
       },
-      error: (err) => console.log(err),
+      error: (err) =>
+        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
     });
   }
 
@@ -310,7 +310,7 @@ export class LeaveRequestComponent implements OnInit {
             this.ngOnInit();
           },
           error: (err) =>
-            errorToast('Something went wrong while creating Leave Requests!'),
+            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
         });
     } else {
       // console.log(this.leaveRequestForm.value)

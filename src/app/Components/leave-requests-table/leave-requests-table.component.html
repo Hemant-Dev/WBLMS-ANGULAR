@@ -13,45 +13,110 @@
     [lazy]="true"
     (onLazyLoad)="lazyLoadSelfRequestsData($event)"
     [loading]="loading"
+    [totalRecords]="totalCount"
     [customSort]="true"
     (sortFunction)="lazyLoadSelfRequestsData($event)"
-    [totalRecords]="totalCount"
-    [globalFilterFields]="[
-      'name',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
-    [tableStyle]="{ 'min-width': '70rem' }"
+    loadingIcon="fa fa-spinner fa-spin"
+    [tableStyle]="{ width: '100vw - 4rem' }"
+    styleClass="my-spinner"
   >
     <ng-template pTemplate="caption">
-      <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="d-flex justify-content-between">
         <p-header *ngIf="role !== 'Admin'">Created Leave Requests</p-header>
         <p-header *ngIf="role === 'Admin'">Employee Leave Requests</p-header>
-
-        <div class="input-group w-50">
+        <!-- <input
+          type="text"
+          [(ngModel)]="searchKeyword"
+          (ngModelChange)="handleSearch()"
+          name="searchKeyword"
+          class="form-control mr-2"
+          style="z-index: 1"
+          placeholder="Search"
+        />
+        <button style="z-index: 1" class="btn btn-primary mx-3">
+          <i class="fa fa-search"></i>
+        </button> -->
+        <button
+          style="z-index: 1"
+          class="btn btn-primary me-4"
+          data-bs-toggle="modal"
+          data-bs-target="#addLeaveRequestModal"
+        >
+          Apply Leave
+        </button>
+      </div>
+      <div
+        class="d-flex gap-4 align-items-center justify-content-evenly py-4 flex-shrink flex-wrap"
+      >
+        <span class="p-input-icon-right p-float-label">
+          <i class="fa-solid fa-search"></i>
           <input
+            id="searchKeyword"
             type="text"
+            pInputText
             [(ngModel)]="searchKeyword"
-            (ngModelChange)="handleSearch()"
-            name="searchKeyword"
-            class="form-control mr-2"
-            style="z-index: 1"
-            placeholder="Search"
+            (ngModelChange)="filterData()"
           />
-          <button style="z-index: 1" class="btn btn-primary mx-3">
-            <i class="fa fa-search"></i>
-          </button>
-          <button
-            style="z-index: 1"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#addLeaveRequestModal"
+          <label for="searchKeyword">Search</label>
+        </span>
+        <p-multiSelect
+          inputId="float-label"
+          [options]="tableHeaderObj"
+          [(ngModel)]="selectedFields"
+          optionLabel="name"
+          optionValue="value"
+          display="chip"
+          [showClear]="true"
+          (onClear)="handleClearSelectedFields()"
+          [showToggleAll]="false"
+          [maxSelectedLabels]="2"
+          (onChange)="filterData()"
+          placeholder="Filter Fields"
+        ></p-multiSelect>
+        <span class="p-float-label">
+          <p-calendar
+            id="rangeDate"
+            [(ngModel)]="rangeDates"
+            selectionMode="range"
+            [readonlyInput]="true"
+            [showIcon]="true"
+            (ngModelChange)="filterDate()"
+            [showClear]="true"
+            (onClearClick)="filterDate()"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+          />
+          <label for="rangeDate" style="text-wrap: wrap"
+            >Select Leave Requests Range</label
           >
-            <i cla ss="fa fa-plus"></i>
-            Apply Leave
-          </button>
-        </div>
+        </span>
+        <span class="p-float-label">
+          <p-calendar
+            styleClass="calendar-size"
+            [readonlyInput]="true"
+            [(ngModel)]="requestDateFilterField"
+            (onClearClick)="filterRequestDate()"
+            (ngModelChange)="filterRequestDate()"
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+            [showClear]="true"
+          ></p-calendar>
+          <label for="float-label">Filter Request Date</label>
+        </span>
+        <span class="p-float-label">
+          <p-dropdown
+            styleClass="dropdown-size"
+            inputId="float-label"
+            [options]="leaveTypes"
+            optionLabel="leaveTypeName"
+            [showClear]="true"
+            placeholder=""
+            optionValue="leaveTypeName"
+            (onChange)="filterLeaveTypeData($event)"
+          ></p-dropdown>
+          <label for="float-label">Select LeaveType</label>
+        </span>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -96,7 +161,6 @@
           {{ request.reason.slice(0, 10) }}...
         </td>
         <td>
-          <!-- {{ request.status }} -->
           <p-tag
             *ngIf="request.status === 'Approved'"
             severity="success"

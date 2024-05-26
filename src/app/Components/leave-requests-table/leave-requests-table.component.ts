@@ -13,6 +13,7 @@ import {
   showReasonDisplayMessage,
   successToast,
 } from 'src/app/Helpers/swal';
+import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
@@ -27,85 +28,95 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./leave-requests-table.component.css'],
 })
 export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
-  submitStatus: boolean = false;
-  leaveRequests!: LeaveRequestModel[];
+  // List Of Requests
   selfLeaveRequests!: LeaveRequestModel[];
+
+  // Lazy Loading Variables
   loading: boolean = true;
   pageNumber!: number;
   pageSize: number = 5;
   totalCount!: number;
-  activityValues: number[] = [0, 100];
   searchValue: string | undefined;
+  submitStatus: boolean = false;
+  searchKeyword: string = '';
 
-  initialLeaveRequestObj: LeaveRequestModel = {
-    id: 0,
-    employeeId: 0,
-    firstName: '',
-    lastName: '',
-    leaveType: '',
-    reason: '',
-    status: '',
-    numberOfLeaveDays: 0,
-  };
+  // Current User Session Details
+  role!: string;
+  fullName!: string;
+  email!: string;
+  employeeId!: string;
+
   initialUserSessionObj: UserSessionModel = {
     employeeId: 0,
     fullName: '',
     email: '',
     role: '',
   };
-  role!: string;
-  fullName!: string;
-  email!: string;
-  employeeId!: string;
-  searchKeyword: string = '';
+
+  // Obj to filter data if required
+  initialLeaveRequestObj: LeaveRequestModel = {
+    id: 0,
+    employeeId: 0,
+    managerId: 0,
+    firstName: '',
+    lastName: '',
+    leaveType: '',
+    reason: '',
+    status: '',
+    numberOfLeaveDays: 0,
+    startDate: '0001-01-01',
+    endDate: '0001-01-01',
+    requestDate: '0001-01-01',
+  };
+
   leaveStatusesCount: LeaveStatusesCount = {
     approvedLeavesCount: 0,
     pendingLeavesCount: 0,
     rejectedLeavesCount: 0,
     leavesRemaining: 0,
   };
-
-  constructor(
-    private leaveRequestService: LeaveRequestsService,
-    private auth: AuthService,
-    private userStore: UserStoreService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
-  leaveRequest = {
-    name: '',
-    phoneNumber: '',
-  };
+  // Obj to maintain var sent by the ng table
   lazyRequest = {
     first: 0,
     rows: 0,
     sortField: '',
     sortOrder: 1,
   };
+  selectedFields: string[] = [];
+  rangeDates: string[] | undefined;
+  requestDateFilterField: string | undefined;
+  tableHeaderObj: any[] = [
+    { name: 'Reason', value: 'reason' },
+    { name: 'Number of Days', value: 'numberOfLeaveDays' },
+  ];
+  leaveTypes: LeaveTypeModel[] = [];
+  constructor(
+    private leaveRequestService: LeaveRequestsService,
+    private auth: AuthService,
+    private userStore: UserStoreService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   bootstrap: any;
-  submitLeaveRequest() {
-    // You can reset the form and close the modal after submission
-    this.leaveRequest = { name: '', phoneNumber: '' };
-
-    // Close the modal using Bootstrap's data attributes
-    const modalElement = document.getElementById('addLeaveRequestModal');
-    if (modalElement) {
-      const modalInstance = new this.bootstrap.Modal(modalElement);
-      modalInstance.hide();
-    }
-  }
 
   ngOnInit() {
+    this.loading = true;
     this.fetchSessionData();
-
     this.getLeaveStatusesData(Number(this.employeeId));
-    // this.fetchAllRequestData();
-    // this.fetchSelfRequestData();
+    this.fetchLeaveTypes();
   }
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
+  }
+
+  fetchLeaveTypes() {
+    this.leaveRequestService.getLeaveType().subscribe({
+      next: (res) => {
+        // console.log(res);
+        this.leaveTypes = res.data;
+      },
+    });
   }
 
   getLeaveStatusesData(employeeId: number) {
@@ -118,7 +129,9 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
             this.leaveStatusesCount.pendingLeavesCount);
         // console.log(this.leaveStatusesCount);
       },
-      error: (err) => console.log(err),
+
+      error: (err) =>
+        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
     });
   }
 
@@ -126,12 +139,13 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     if (this.role !== 'Admin') {
       this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
       this.leaveRequestService
-        .getLeaveRequests(
+        .getLeaveRequestsByRoles(
           this.lazyRequest.sortField,
           this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
           this.pageNumber,
           this.pageSize,
-          this.initialLeaveRequestObj
+          this.initialLeaveRequestObj,
+          this.searchKeyword
         )
         .subscribe({
           next: (res) => {
@@ -142,8 +156,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            // console.log(err);
-            // errorAlert(err);
             errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
           },
         });
@@ -210,5 +222,66 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     setTimeout(() => {
       this.fetchSelfRequestData();
     }, 1000);
+  }
+  filterData() {
+    // console.log(this.selectedFields);
+    if (this.selectedFields) {
+      this.selectedFields.forEach((header) => {
+        if (header === 'reason')
+          this.initialLeaveRequestObj.reason = this.searchKeyword;
+        else if (
+          header === 'numberOfLeaveDays' &&
+          typeof Number(this.searchKeyword) === 'number' &&
+          !isNaN(Number(this.searchKeyword))
+        )
+          this.initialLeaveRequestObj.numberOfLeaveDays = Number(
+            this.searchKeyword
+          );
+        else return;
+        this.searchKeyword = '';
+      });
+    } else {
+      this.initialLeaveRequestObj.numberOfLeaveDays = 0;
+    }
+    // console.log(this.initialLeaveRequestObj);
+    this.fetchSelfRequestData();
+  }
+  filterLeaveTypeData(event$: any) {
+    this.initialLeaveRequestObj.leaveType = event$.value || '';
+    this.filterData();
+  }
+  filterDate() {
+    // console.log(this.rangeDates);
+    if (this.rangeDates !== undefined && this.rangeDates !== null) {
+      this.initialLeaveRequestObj.startDate =
+        this.rangeDates[0] || '0001-01-01';
+      this.initialLeaveRequestObj.endDate = this.rangeDates[1] || '0001-01-01';
+    } else {
+      this.initialLeaveRequestObj.startDate = '0001-01-01';
+      this.initialLeaveRequestObj.endDate = '0001-01-01';
+    }
+    this.fetchSelfRequestData();
+  }
+  handleClearAll() {
+    this.initialLeaveRequestObj.leaveType = '';
+    // console.log(this.initialLeaveRequestObj);
+  }
+  handleClearSelectedFields() {
+    this.initialLeaveRequestObj.firstName = '';
+    this.initialLeaveRequestObj.lastName = '';
+    this.initialLeaveRequestObj.reason = '';
+    this.selectedFields = [];
+  }
+  filterRequestDate() {
+    if (
+      this.requestDateFilterField !== undefined &&
+      this.requestDateFilterField !== null
+    ) {
+      this.initialLeaveRequestObj.requestDate = this.requestDateFilterField;
+    } else {
+      this.initialLeaveRequestObj.requestDate = '0001-01-01';
+    }
+    // console.log(this.initialLeaveRequestObj.requestDate);
+    this.fetchSelfRequestData();
   }
 }

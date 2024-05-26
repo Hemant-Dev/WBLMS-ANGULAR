@@ -126,7 +126,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
         },
       });
   }
@@ -174,7 +174,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
               errorToast('Leave Request Rejected.');
               this.fetchByRoleLeaveRequestData();
             },
-            error: (err) => errorToast('Error Occured while updating status'),
+            error: (err) =>
+              errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
           });
       }
     });
@@ -200,7 +201,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
               successToast('Leave Request Approved.');
               this.fetchByRoleLeaveRequestData();
             },
-            error: (err) => errorToast('Error Occured while updating status'),
+            error: (err) =>
+              errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
           });
       }
     });
@@ -246,7 +248,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   filterData() {
-    console.log(this.selectedFields);
+    // console.log(this.selectedFields);
     if (this.selectedFields) {
       this.selectedFields.forEach((header) => {
         if (header === 'firstName')
@@ -269,7 +271,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     } else {
       this.initialLeaveRequestObj.numberOfLeaveDays = 0;
     }
-    console.log(this.initialLeaveRequestObj);
+    // console.log(this.initialLeaveRequestObj);
     this.fetchByRoleLeaveRequestData();
   }
   filterLeaveTypeData(event$: any) {
@@ -277,7 +279,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.filterData();
   }
   filterDate() {
-    console.log(this.rangeDates);
+    // console.log(this.rangeDates);
     if (this.rangeDates !== undefined && this.rangeDates !== null) {
       this.initialLeaveRequestObj.startDate =
         this.rangeDates[0] || '0001-01-01';
@@ -290,7 +292,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
   handleClearAll() {
     this.initialLeaveRequestObj.leaveType = '';
-    console.log(this.initialLeaveRequestObj);
+    // console.log(this.initialLeaveRequestObj);
   }
   handleClearSelectedFields() {
     this.initialLeaveRequestObj.firstName = '';
@@ -307,7 +309,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     } else {
       this.initialLeaveRequestObj.requestDate = '0001-01-01';
     }
-    console.log(this.initialLeaveRequestObj.requestDate);
+    // console.log(this.initialLeaveRequestObj.requestDate);
     this.fetchByRoleLeaveRequestData();
   }
 }

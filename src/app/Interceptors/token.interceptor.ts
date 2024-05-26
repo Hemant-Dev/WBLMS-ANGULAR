@@ -41,6 +41,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (err.status === 0) {
           // console.log(err.message);
           errorAlert('Http Connection Error, Server Refused to connect!');
+          this.router.navigate(['login']);
         } else {
           errorToast(err.error.errorMessages);
           // console.log(err);
