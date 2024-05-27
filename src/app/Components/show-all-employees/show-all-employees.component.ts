@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeLeaveReqModel } from 'src/app/Models/EmployeeLeaveReqModel';
+import { LeaveReqByYearModel, LeaveRequestStatusModel } from 'src/app/Models/LeaveReqByYearModel';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
 
@@ -20,7 +21,11 @@ export class ShowAllEmployeesComponent implements OnInit {
   pageSize: number = 10;
   sortColumn: string = "";
   sortOrder: string = "";
-  year : number = 2024;
+  year: number = 2024;
+
+  leaveRequestStatus! : LeaveRequestStatusModel[];
+  leaveRequestByYear!: LeaveReqByYearModel;
+
   initialEmployeeData: EmployeeLeaveReqModel = {
     id: 0,
     firstName: '',
@@ -38,39 +43,64 @@ export class ShowAllEmployeesComponent implements OnInit {
     totalLeaveRequest: 0
   }
 
+  appliedLeaveRequests: [] = [];
+  acceptedLeaveRequests: [] = [];
+  rejectedLeaveRequests: [] = [];
+  pendingLeaveRequests: [] = [];
 
-
-  employeeData : any;
+  employeeData: any;
   constructor(
     private employeeService: EmployeeRxjsService,
-    private leaveReqService : LeaveRequestsService
+    private leaveReqService: LeaveRequestsService
   ) { }
   ngOnInit(): void {
-    this.barChart();
     this.getEmployee();
     this.getLeaveRequestByYear();
+    this.saveData()
+    this.barChart();
   }
 
-  getLeaveRequestByYear(){
+  getLeaveRequestByYear() {
     this.leaveReqService
-    .getLeaveRequestsByYear(this.year)
-    .subscribe(({
-      next : (response : any) => {
-        console.log(response)
-      }
-    }))
+      .getLeaveRequestsByYear(this.year)
+      .subscribe(({
+        next: (response: LeaveReqByYearModel) => {
+          console.log(response)
+          this.leaveRequestByYear = response;
+
+          // this.leaveRequestStatus = response.
+          // this.leaveRequestByYear.january{
+          
+          //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
+          // }
+        }
+      }))
   }
 
   getEmployee() {
     this.employeeService
-    .getEmployeesLeaveReq(this.currentPage, this.pageSize,this.sortColumn,this.sortOrder,this.initialEmployeeData)
-    .subscribe( ({
-      next : (response : any) => {
-        console.log(response)
-        this.employeeData = response.data;
-      }
-    }))
+      .getEmployeesLeaveReq(this.currentPage, this.pageSize, this.sortColumn, this.sortOrder, this.initialEmployeeData)
+      .subscribe(({
+        next: (response: any) => {
+          console.log(response)
+          this.employeeData = response.data;
+        }
+      }))
   }
+
+  saveData() {
+    for (let index = 0; index < 13; index++) {
+
+      // this.appliedLeaveRequests = this.employeeData[index].appliedLeaveRequests;
+      // console.log(this.appliedLeaveRequests)
+      // acceptedLeaveRequests: [] = [];
+      // rejectedLeaveRequests: [] = [];
+      // pendingLeaveRequests: [] = [];
+
+      // for(let )
+    }
+  }
+
   barChart() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
@@ -84,7 +114,7 @@ export class ShowAllEmployeesComponent implements OnInit {
           type: 'bar',
           label: 'Dataset 1',
           backgroundColor: this.setBackgroundColor3,//documentStyle.getPropertyValue('--blue-500'),
-          data: [50, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
+          data: [this.leaveRequestByYear.january.appliedLeaveRequests, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
         },
         {

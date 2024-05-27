@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { API_URL } from '../ApiUrl';
 import { LeaveRequestModel } from '../Models/leave-requestsModel';
 import { UpdateRequestStatus } from '../Models/update-request-status';
+import { LeaveReqByYearModel } from '../Models/LeaveReqByYearModel';
 
 @Injectable({
   providedIn: 'root',
@@ -52,8 +53,8 @@ export class LeaveRequestsService {
 
   getLeaveRequestsByYear(
     year : number
-  ) : Observable<any> {
-    return this.http.get<any>(
+  ) : Observable<LeaveReqByYearModel> {
+    return this.http.get<LeaveReqByYearModel>(
       this.leave_api_url + `/getLeaveBy/${year}`
     )
   }

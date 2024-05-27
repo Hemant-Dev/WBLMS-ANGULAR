@@ -263,6 +263,9 @@ export class LeaveRequestComponent implements OnInit {
     return this.leaveRequestForm.get(name)?.value;
   }
 
+
+  
+
   halfDay() {
     // console.log('half day');
     if (this.getValue('isHalfDay'))

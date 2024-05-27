@@ -99,7 +99,8 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.controls['contactNumber']?.value.length != 10 && 
+                      registerForm.controls['contactNumber']?.value.length !=
+                        10 &&
                       !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
@@ -109,7 +110,7 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.hasError('pattern', 'contactNumber') && 
+                      registerForm.hasError('pattern', 'contactNumber') &&
                       !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
@@ -172,7 +173,8 @@
                       (change)="onChangeRole()"
                     >
                       <option selected disabled [value]="0">Select Role</option>
-                      <option *ngFor="let role of roleData" [value]="role.id">
+                      <option *ngFor="let role of roleData"  [value]="role.id">
+                        
                         {{ role.roleName }}
                       </option>
                     </select>
@@ -293,7 +295,7 @@
                   registerForm.controls['password'].touched &&
                   registerForm.hasError('pattern', 'password')
                 "
-                >*Password must include atleast one <br>
+                >*Password must include atleast one <br />
                 number and alphabet and special character
               </small>
             </div>
