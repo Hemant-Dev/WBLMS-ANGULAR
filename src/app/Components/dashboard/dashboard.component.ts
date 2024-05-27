@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['home/dashboard/leaveRequests']);
     }
     this.byRolesService.changeData('HR');
-
   }
   
   fetchSessionData() {
@@ -91,6 +90,7 @@ export class DashboardComponent implements OnInit {
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
   }
+  
   handleHRLeaveRequestClick() {
     this.byRolesService.changeData('HR');
     this.byRolesService.saveData('HR');

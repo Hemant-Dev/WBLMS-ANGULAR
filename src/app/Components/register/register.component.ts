@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     id: 0,
     firstName: '',
     lastName: '',
-    password: '',
+    password: 'First@123',
     emailAddress: '',
     contactNumber: '',
     genderId: 0,
@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
       password: [
-        '',
+        'First@123',
         [
           Validators.required,
           Validators.pattern(
@@ -182,6 +182,7 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         console.log(response);
         this.roleData = response.data;
+        this.roleData = this.roleData.filter( role => role.roleName != 'Admin' );
         console.log(this.roleData);
       },
     });

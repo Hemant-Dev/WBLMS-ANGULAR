@@ -193,7 +193,8 @@
                       (change)="onChangeRole()"
                     >
                       <option selected disabled [value]="0">Select Role</option>
-                      <option *ngFor="let role of roleData" [value]="role.id">
+                      <option *ngFor="let role of roleData"  [value]="role.id">
+                        
                         {{ role.roleName }}
                       </option>
                     </select>
