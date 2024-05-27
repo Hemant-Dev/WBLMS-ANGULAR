@@ -70,18 +70,17 @@ export class RegisterComponent implements OnInit {
     this.fetchData();
 
     this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.maxLength(20)]],
+      lastName: ['', [Validators.required, Validators.maxLength(20)]],
       contactNumber: [
         '',
         [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)],
       ],
       genderId: [0, Validators.required],
       roleId: [0, Validators.required],
-      managerId: new FormControl(
-        { value: 0, disabled: true },
-        [Validators.required]
-      ),
+      managerId: new FormControl({ value: 0, disabled: true }, [
+        Validators.required,
+      ]),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
       password: [

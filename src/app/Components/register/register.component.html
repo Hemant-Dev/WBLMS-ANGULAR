@@ -15,7 +15,8 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['firstName'].touched &&
-                      registerForm.hasError('required', 'firstName')
+                      (registerForm.hasError('required', 'firstName') ||
+                        registerForm.hasError('maxlength', 'firstName'))
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -36,6 +37,15 @@
                   >
                     First Name is required
                   </small>
+                  <small
+                    *ngIf="
+                      registerForm.controls['firstName'].touched &&
+                      registerForm.hasError('maxlength', 'firstName')
+                    "
+                    class="text-danger"
+                  >
+                    First Name cannot have more than 20 chars
+                  </small>
                 </div>
               </div>
               <div class="col-s m">
@@ -44,7 +54,8 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['lastName'].touched &&
-                      registerForm.hasError('required', 'lastName')
+                      (registerForm.hasError('required', 'lastName') ||
+                        registerForm.hasError('maxlength', 'lastName'))
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -62,6 +73,15 @@
                     class="text-danger"
                   >
                     Last Name is required
+                  </small>
+                  <small
+                    *ngIf="
+                      registerForm.controls['lastName'].touched &&
+                      registerForm.hasError('maxlength', 'lastName')
+                    "
+                    class="text-danger"
+                  >
+                    Last Name cannot have more than 20 chars
                   </small>
                 </div>
               </div>
@@ -99,7 +119,8 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.controls['contactNumber']?.value.length != 10 && 
+                      registerForm.controls['contactNumber']?.value.length !=
+                        10 &&
                       !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
@@ -109,7 +130,7 @@
                   <small
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
-                      registerForm.hasError('pattern', 'contactNumber') && 
+                      registerForm.hasError('pattern', 'contactNumber') &&
                       !registerForm.hasError('required', 'contactNumber')
                     "
                     class="text-danger"
@@ -293,7 +314,7 @@
                   registerForm.controls['password'].touched &&
                   registerForm.hasError('pattern', 'password')
                 "
-                >*Password must include atleast one <br>
+                >*Password must include atleast one <br />
                 number and alphabet and special character
               </small>
             </div>

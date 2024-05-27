@@ -23,7 +23,7 @@ export class ResetPasswordComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private resetService: ResetService,
     private router: Router
-  ) { }
+  ) {}
   ngOnInit(): void {
     this.resetPasswordForm = this.fb.group(
       {
@@ -54,13 +54,15 @@ export class ResetPasswordComponent implements OnInit {
       this.resetPasswordObj.emailToken = this.emailToken;
       this.resetService.resetPassword(this.resetPasswordObj).subscribe({
         next: (res) => {
-          successToast('Password Reset Successfull.');
+          // let parsedRes = JSON.parse(res);
+          successToast('Password Reset Successfull!');
           this.router.navigate(['login']);
         },
         error: (err) => {
-          errorToast(err)
+          let parseErr = JSON.parse(err);
+          // console.log(parseErr);
+          errorToast(parseErr.message);
         },
-
       });
     } else {
       ValidateForm.validateAllFormFields(this.resetPasswordForm);

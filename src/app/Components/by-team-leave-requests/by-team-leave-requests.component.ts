@@ -63,7 +63,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     sortField: '',
     sortOrder: 1,
   };
-  selectedFields: string[] = [];
+  selectedFields!: string[];
   rangeDates: string[] | undefined;
   requestDateFilterField: string | undefined;
   tableHeaderObj: any[] = [
