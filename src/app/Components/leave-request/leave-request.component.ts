@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, showReasonDisplayMessage, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
@@ -56,6 +56,8 @@ export class LeaveRequestComponent implements OnInit {
     });
     // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
+
+    this.todayDate = this.formatDate(this.todayDate);
   }
 
   constructor(
@@ -124,11 +126,22 @@ export class LeaveRequestComponent implements OnInit {
     });
   }
 
+
+
   calculateLeaveDays() {
     const showHolidays: WonderbizHolidaysModel[] = [];
 
     var startDate = this.getValue('startDate');
     var endDate = this.getValue('endDate');
+
+    console.log(startDate)
+    console.log(this.todayDate)
+
+    if (startDate < this.todayDate || endDate < this.todayDate) {
+      this.resetStartDate();
+      errorToast('Please select valid date\nYou cant select previous date');
+      return;
+    }
 
     if (this.checkForHalfDayRemaining(startDate, showHolidays)) {
       return;
@@ -258,13 +271,18 @@ export class LeaveRequestComponent implements OnInit {
     }
     return false;
   }
+  resetStartDate() {
+    this.leaveRequestForm.patchValue({
+      startDate: ''
+    })
+  }
 
   getValue(name: string): any {
     return this.leaveRequestForm.get(name)?.value;
   }
 
 
-  
+
 
   halfDay() {
     // console.log('half day');

@@ -312,4 +312,6 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     // console.log(this.initialLeaveRequestObj.requestDate);
     this.fetchByRoleLeaveRequestData();
   }
+
 }
+
