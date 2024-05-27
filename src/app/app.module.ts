@@ -36,6 +36,7 @@ import { ChipModule } from 'primeng/chip';
 import { ChartModule } from 'primeng/chart';
 import { CalendarModule } from 'primeng/calendar';
 import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
+import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-
     TeamLeaveRequestsTableComponent,
     ByTeamLeaveRequestsComponent,
     ShowAllEmployeesComponent,
+    HTMLEncodePipe,
   ],
   imports: [
     BrowserModule,
