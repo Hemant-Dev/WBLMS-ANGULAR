@@ -27,6 +27,8 @@
                     placeholder="email"
                   />
                 </div>
+                <!-- Will Implement this pipe in a function form -->
+                {{ this.loginForm.get("email")?.value | hTMLEncode }}
                 <small
                   *ngIf="
                     loginForm.controls['email'].touched &&
