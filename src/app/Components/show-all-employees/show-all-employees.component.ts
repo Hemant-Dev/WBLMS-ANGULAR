@@ -80,12 +80,6 @@ export class ShowAllEmployeesComponent implements OnInit {
         console.log(response);
         this.leaveRequestByYear = response.data;
 
-        var ans2 = this.leaveRequestByYear.april.acceptedLeaveRequests;
-        var ans = response.data.april;
-
-        console.log(ans)
-        console.log(ans2)
-
         Object.values(response.data)
           .forEach((monthData: any) => {
             console.log(monthData.acceptedLeaveRequests)
@@ -96,18 +90,13 @@ export class ShowAllEmployeesComponent implements OnInit {
             this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
           })
         this.barChart();
-
-        console.log(this.acceptedLeaveRequests)
+        // console.log(this.acceptedLeaveRequests)
       },
       error: (error) => {
         console.error('Error fetching leave requests by year:', error);
       }
     })
   }
-
-
-
-
   getEmployee() {
     this.employeeService
       .getEmployeesLeaveReq(
