@@ -91,15 +91,16 @@
             leaveRequestForm.hasError('required', 'startDate')
           "
         >
-          <label for="startDate" class="form-label">Start Date</label>
-          <input
+           <label for="startDate" class="form-label">Start Date</label>
+          <!--<input
             type="date"
             formControlName="startDate"
             (change)="calculateLeaveDays()"
             class="form-control"
             id="startDate"
-          />
+          /> -->
           <!-- <p-calendar dateFormat="0001-01-01" formControlName="startDate" (change)="calculateLeaveDays()" [readonlyInput]="true"></p-calendar> -->
+          <p-calendar  (onSelect)="calculateLeaveDays()"  dateFormat="yy-mm-dd" [minDate]="minDate" [maxDate]="maxDate" formControlName="startDate"></p-calendar>
 
           <small
             *ngIf="
@@ -120,13 +121,15 @@
           "
         >
           <label for="endDate" class="form-label">End Date</label>
-          <input
+          <!-- <input
             type="date"
             formControlName="endDate"
             (change)="calculateLeaveDays()"
             class="form-control"
             id="endDate"
-          />
+          /> -->
+          <p-calendar (onSelect)="calculateLeaveDays()"  dateFormat="yy-mm-dd" [minDate]="minDate" [maxDate]="maxDate" formControlName="endDate"></p-calendar>
+
           <small
             *ngIf="
               leaveRequestForm.controls['endDate'].touched &&

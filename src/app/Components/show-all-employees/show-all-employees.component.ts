@@ -23,7 +23,7 @@ export class ShowAllEmployeesComponent implements OnInit {
   sortOrder: string = "";
   year: number = 2024;
 
-  leaveRequestStatus! : LeaveRequestStatusModel[];
+  leaveRequestStatus!: LeaveRequestStatusModel[];
   leaveRequestByYear!: LeaveReqByYearModel;
 
   initialEmployeeData: EmployeeLeaveReqModel = {
@@ -42,7 +42,15 @@ export class ShowAllEmployeesComponent implements OnInit {
     balanceLeaveRequest: 0,
     totalLeaveRequest: 0
   }
-
+  tableHeader = [
+    "FirstName",
+    "LastName",
+    "EmailAddress",
+    "ContactNumber",
+    "Gender",
+    "RoleName",
+    "ManagerName"
+  ];
   appliedLeaveRequests: [] = [];
   acceptedLeaveRequests: [] = [];
   rejectedLeaveRequests: [] = [];
@@ -69,7 +77,7 @@ export class ShowAllEmployeesComponent implements OnInit {
 
           // this.leaveRequestStatus = response.
           // this.leaveRequestByYear.january{
-          
+
           //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
           // }
         }
@@ -87,7 +95,7 @@ export class ShowAllEmployeesComponent implements OnInit {
       }))
   }
 
-  
+
 
   barChart() {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -101,8 +109,8 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Dataset 1',
-          backgroundColor: this.setBackgroundColor3,//documentStyle.getPropertyValue('--blue-500'),
-          data: [this.leaveRequestByYear.january.appliedLeaveRequests, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
+          backgroundColor: documentStyle.getPropertyValue('--blue-500'), //this.setBackgroundColor3,//
+          data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
         },
         {
@@ -116,10 +124,9 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Dataset 3',
-          backgroundColor: this.setBackgroundColor2,//documentStyle.getPropertyValue('--yellow-500'),
+          backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
           data: [41, 52, 24, 74, 23, 21, 32, 24, 74, 23, 21, 32],
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
-
         }
       ]
     };
