@@ -59,36 +59,54 @@ export class ShowAllEmployeesComponent implements OnInit {
     "Total Leave"
   ];
 
-  appliedLeaveRequests: [] = [];
-  acceptedLeaveRequests: [] = [];
-  rejectedLeaveRequests: [] = [];
-  pendingLeaveRequests: [] = [];
+  appliedLeaveRequests: number[] = [];
+  acceptedLeaveRequests: number[] = [];
+  rejectedLeaveRequests: number[] = [];
+  pendingLeaveRequests: number[] = [];
 
   employeeData: EmployeeLeaveReqModel[] = [];
   constructor(
     private employeeService: EmployeeRxjsService,
     private leaveReqService: LeaveRequestsService
-  ) {}
+  ) { }
   ngOnInit(): void {
-    this.getEmployee();
     this.getLeaveRequestByYear();
-    this.barChart();
+    this.getEmployee();
   }
 
   getLeaveRequestByYear() {
     this.leaveReqService.getLeaveRequestsByYear(this.year).subscribe({
-      next: (response: LeaveReqByYearModel) => {
-        // console.log(response);
-        // this.leaveRequestByYear = response;
+      next: (response: any) => {
+        console.log(response);
+        this.leaveRequestByYear = response.data;
 
-          // this.leaveRequestStatus = response.
-          // this.leaveRequestByYear.january{
+        var ans2 = this.leaveRequestByYear.april.acceptedLeaveRequests;
+        var ans = response.data.april;
 
-          //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
-          // }
-        }
-      })
+        console.log(ans)
+        console.log(ans2)
+
+        Object.values(response.data)
+          .forEach((monthData: any) => {
+            console.log(monthData.acceptedLeaveRequests)
+
+            this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
+            this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
+            this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
+            this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
+          })
+        this.barChart();
+
+        console.log(this.acceptedLeaveRequests)
+      },
+      error: (error) => {
+        console.error('Error fetching leave requests by year:', error);
+      }
+    })
   }
+
+
+
 
   getEmployee() {
     this.employeeService
@@ -136,23 +154,24 @@ export class ShowAllEmployeesComponent implements OnInit {
       datasets: [
         {
           type: 'bar',
-          label: 'Dataset 1',
+          label: 'Accepted Leaves',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'), //this.setBackgroundColor3,//
-          data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
+          // data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
+          data: this.acceptedLeaveRequests,
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
         },
         {
           type: 'bar',
-          label: 'Dataset 2',
+          label: 'Rejected Leaves',
           backgroundColor: this.setBackgroundColor,
-          data: [21, 84, 24, 75, 37, 65, 34, , 24, 75, 37, 65, 34],
+          data: this.rejectedLeaveRequests,
           barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
         },
         {
           type: 'bar',
-          label: 'Dataset 3',
+          label: 'Pending Leaves',
           backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
-          data: [41, 52, 24, 74, 23, 21, 32, 24, 74, 23, 21, 32],
+          data: this.pendingLeaveRequests,
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
         }
       ]

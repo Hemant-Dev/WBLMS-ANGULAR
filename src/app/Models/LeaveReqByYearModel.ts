@@ -13,16 +13,10 @@ export interface LeaveReqByYearModel {
     december: LeaveRequestStatusModel,
 }
 
-export interface EModel {
-    name : string,
-    number : number
-}
-
-
-
 export interface LeaveRequestStatusModel {
     appliedLeaveRequests: number,
     acceptedLeaveRequests: number,
     rejectedLeaveRequests: number,
     pendingLeaveRequests: number
 }
+

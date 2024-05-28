@@ -72,7 +72,7 @@ export class LeaveRequestComponent implements OnInit {
     // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
     // this.setDate()
-    this.todayDate = this.formatDate(this.todayDate);
+   // this.todayDate = this.formatDate(this.todayDate);
   }
 
   constructor(
@@ -321,6 +321,13 @@ export class LeaveRequestComponent implements OnInit {
           this.leaveRequestForm.controls['reason'].value
         ),
       });
+      console.log(this.leaveRequestForm.value)
+      this.leaveRequestForm.patchValue({
+        startDate : this.formatDate(this.getValue('startDate')),
+        endDate : this.formatDate(this.getValue('endDate')),
+      })
+      console.log(this.leaveRequestForm.value)
+      // return;
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
         .subscribe({
