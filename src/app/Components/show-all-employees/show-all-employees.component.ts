@@ -42,9 +42,17 @@ export class ShowAllEmployeesComponent implements OnInit {
     managerName: '',
     joiningDate: '',
     balanceLeaveRequest: 0,
-    totalLeaveRequest: 0,
-  };
-
+    totalLeaveRequest: 0
+  }
+  tableHeader = [
+    "FirstName",
+    "LastName",
+    "EmailAddress",
+    "ContactNumber",
+    "Gender",
+    "RoleName",
+    "ManagerName"
+  ];
   appliedLeaveRequests: [] = [];
   acceptedLeaveRequests: [] = [];
   rejectedLeaveRequests: [] = [];
@@ -67,13 +75,13 @@ export class ShowAllEmployeesComponent implements OnInit {
         console.log(response);
         this.leaveRequestByYear = response;
 
-        // this.leaveRequestStatus = response.
-        // this.leaveRequestByYear.january{
+          // this.leaveRequestStatus = response.
+          // this.leaveRequestByYear.january{
 
-        //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
-        // }
-      },
-    });
+          //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
+          // }
+        }
+      })
   }
 
   getEmployee() {
@@ -92,6 +100,8 @@ export class ShowAllEmployeesComponent implements OnInit {
         },
       });
   }
+
+
 
   barChart() {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -120,9 +130,9 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Dataset 1',
-          backgroundColor: this.setBackgroundColor3, //documentStyle.getPropertyValue('--blue-500'),
-          data: [10, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
-          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
+          backgroundColor: documentStyle.getPropertyValue('--blue-500'), //this.setBackgroundColor3,//
+          data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
+          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
         },
         {
           type: 'bar',
@@ -134,11 +144,11 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Dataset 3',
-          backgroundColor: this.setBackgroundColor2, //documentStyle.getPropertyValue('--yellow-500'),
+          backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
           data: [41, 52, 24, 74, 23, 21, 32, 24, 74, 23, 21, 32],
-          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
-        },
-      ],
+          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
+        }
+      ]
     };
 
     this.options = {

@@ -39,7 +39,16 @@ export class LeaveRequestComponent implements OnInit {
   leaveBalance!: LeaveBalance;
   leaveStatusesCount!: LeaveStatusesCount;
 
+  minDate: Date = new Date();
+  maxDate: Date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() + 3,
+    new Date().getDate()
+  );;
+
+
   ngOnInit(): void {
+    console.log(this.maxDate.getMonth())
     this.getLeaveType();
     this.getDataFromUserStore();
     this.submitStatus = false;
@@ -62,7 +71,7 @@ export class LeaveRequestComponent implements OnInit {
     });
     // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
-
+    // this.setDate()
     this.todayDate = this.formatDate(this.todayDate);
   }
 
@@ -135,23 +144,13 @@ export class LeaveRequestComponent implements OnInit {
   calculateLeaveDays() {
     const showHolidays: WonderbizHolidaysModel[] = [];
 
-    var startDate = this.getValue('startDate');
-    var endDate = this.getValue('endDate');
-
-    console.log(startDate);
-    console.log(this.todayDate);
-
-    // if (startDate < this.todayDate || endDate < this.todayDate) {
-    //   this.resetStartDate();
-    //   errorToast('Please select valid date\nYou cant select previous date');
-    //   return;
-    // }
-
-    if (this.checkForHalfDayRemaining(startDate, showHolidays)) {
+    var startDate = this.getValue('startDate') != "" ? this.formatDate(this.getValue('startDate')) : "";
+    var endDate = this.getValue('endDate') != "" ? this.formatDate(this.getValue('endDate')) : "";
+    if (startDate == '' || endDate == '') {
       return;
     }
 
-    if (startDate == '' || endDate == '') {
+    if (this.checkForHalfDayRemaining(startDate, showHolidays)) {
       return;
     }
 

@@ -48,9 +48,6 @@ export class RegisterComponent implements OnInit {
     'emailAddress',
     'contactNumber',
   ];
-  searchText: string = '';
-
-  errorModel!: ErrorModel[];
 
   constructor(
     private employeeService: EmployeeRxjsService,
@@ -58,15 +55,13 @@ export class RegisterComponent implements OnInit {
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   registerForm!: FormGroup;
 
   ngOnInit() {
-    // await this.getAllEmployee();
     this.initialEmployeeData.id = Number(
       this.route.snapshot.paramMap.get('id')
     );
-    // console.log(this.initialEmployeeData)
     this.fetchData();
 
     this.registerForm = this.fb.group({
@@ -93,9 +88,7 @@ export class RegisterComponent implements OnInit {
         ],
       ],
     });
-
     this.onChangeRole();
-    //  const role = this.registerForm.get('roleId');
   }
 
   async handleSubmit() {
@@ -183,7 +176,7 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         console.log(response);
         this.roleData = response.data;
-        this.roleData = this.roleData.filter( role => role.roleName != 'Admin' );
+        this.roleData = this.roleData.filter(role => role.roleName != 'Admin');
         console.log(this.roleData);
       },
     });
