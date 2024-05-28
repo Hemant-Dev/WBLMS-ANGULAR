@@ -34,17 +34,17 @@ export class TokenInterceptor implements HttpInterceptor {
           if (err.status === 401) {
             return this.handleUnAuthorizedError(request, next);
           }
-          // if (err.status === 400) {
-          //   this.errorAlert(err.error.message);
-          // }
+          if (err.status === 403) {
+            console.log(err.status);
+          }
         }
         if (err.status === 0) {
           // console.log(err.message);
           errorAlert('Http Connection Error, Server Refused to connect!');
           this.router.navigate(['login']);
         } else {
-          errorToast(err.error.errorMessages);
-          // console.log(err);
+          // errorToast(err.error);
+          console.log(err);
         }
         return throwError(() => JSON.stringify(err.error));
       })

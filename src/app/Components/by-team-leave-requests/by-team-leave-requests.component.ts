@@ -119,11 +119,13 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
         this.searchKeyword
       )
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
+          // console.log(res);
           this.leaveRequests = res.data.dataArray;
           this.totalCount = res.data.totalCount;
           this.loading = false;
           this.cdr.detectChanges();
+          // successToast(res.errorMessages);
         },
         error: (err) => {
           errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
@@ -312,6 +314,4 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     // console.log(this.initialLeaveRequestObj.requestDate);
     this.fetchByRoleLeaveRequestData();
   }
-
 }
-

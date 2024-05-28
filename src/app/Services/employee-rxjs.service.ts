@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from '../ApiUrl';
 import { EmployeeModel } from '../Models/EmployeeModel';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { PaginatedModel } from '../Models/PaginatedModel';
 import { GenderModel } from '../Models/GenderModel';
 import { ManagerModel } from '../Models/ManagerModel';
 import { RolesModel } from '../Models/RolesModels';
 import { EmployeeLeaveReqModel } from '../Models/EmployeeLeaveReqModel';
+import { EncodeForms } from '../Helpers/encodeForms';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +25,13 @@ export class EmployeeRxjsService {
     sortOrder: string,
     initialEmployeeObj: EmployeeModel
   ): Observable<any> {
-    return this.http.post<any>(
-      this.api_url +
-        `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
-      initialEmployeeObj
-    );
+    return this.http
+      .post<any>(
+        this.api_url +
+          `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+        initialEmployeeObj
+      )
+      .pipe();
   }
 
   getEmployeesLeaveReq(
@@ -38,11 +41,20 @@ export class EmployeeRxjsService {
     sortOrder: string,
     initialEmployeeObj: EmployeeLeaveReqModel
   ): Observable<any> {
-    return this.http.post<any>(
-      this.api_url +
-        `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
-      initialEmployeeObj
-    );
+    return this.http
+      .post<any>(
+        this.api_url +
+          `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+        initialEmployeeObj
+      )
+      .pipe(
+        map((res: any) => {
+          return res.data.dataArray.map((data: EmployeeLeaveReqModel) => ({
+            firstName: EncodeForms.htmlDecode(data.firstName),
+            lastName: EncodeForms.htmlDecode(data.lastName),
+          }));
+        })
+      );
   }
 
   getEmployeesById(id: number): Observable<any> {
