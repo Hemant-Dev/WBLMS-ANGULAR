@@ -15,7 +15,9 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['firstName'].touched &&
-                      registerForm.hasError('required', 'firstName')
+                      (registerForm.hasError('required', 'firstName') && 
+                      registerForm.hasError('maxlength', 'firstName')
+                    )
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -36,6 +38,15 @@
                   >
                     First Name is required
                   </small>
+                  <small
+                    *ngIf="
+                      registerForm.controls['firstName'].touched &&
+                      registerForm.hasError('maxlength', 'firstName')
+                    "
+                    class="text-danger"
+                  >
+                    First Name Maxlength is 20
+                  </small>
                 </div>
               </div>
               <div class="col-s m">
@@ -44,7 +55,9 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['lastName'].touched &&
-                      registerForm.hasError('required', 'lastName')
+                      (registerForm.hasError('required', 'lastName') && 
+                      registerForm.hasError('maxlength', 'lastName') 
+                    )
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -62,6 +75,15 @@
                     class="text-danger"
                   >
                     Last Name is required
+                  </small>
+                  <small
+                    *ngIf="
+                      registerForm.controls['lastName'].touched &&
+                      registerForm.hasError('maxlength', 'lastName')
+                    "
+                    class="text-danger"
+                  >
+                    Last Name Maxlength is 20
                   </small>
                 </div>
               </div>

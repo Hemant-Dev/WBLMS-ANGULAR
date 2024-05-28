@@ -70,8 +70,8 @@ export class RegisterComponent implements OnInit {
     this.fetchData();
 
     this.registerForm = this.fb.group({
-      firstName: ['', Validators.required, Validators.maxLength(20)],
-      lastName: ['', Validators.required, Validators.maxLength(20)],
+      firstName: ['', [Validators.required, Validators.maxLength(20)]],
+      lastName: ['', [Validators.required, Validators.maxLength(20)]],
       contactNumber: [
         '',
         [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)],
@@ -116,6 +116,7 @@ export class RegisterComponent implements OnInit {
         }
       } else {
         try {
+          console.log("Submit")
           this.employeeService
             .createEmployees(this.registerForm.value)
             .subscribe({

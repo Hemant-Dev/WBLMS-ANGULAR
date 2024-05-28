@@ -56,7 +56,6 @@ export class ShowAllEmployeesComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployee();
     this.getLeaveRequestByYear();
-    this.saveData()
     this.barChart();
   }
 
@@ -88,18 +87,7 @@ export class ShowAllEmployeesComponent implements OnInit {
       }))
   }
 
-  saveData() {
-    for (let index = 0; index < 13; index++) {
-
-      // this.appliedLeaveRequests = this.employeeData[index].appliedLeaveRequests;
-      // console.log(this.appliedLeaveRequests)
-      // acceptedLeaveRequests: [] = [];
-      // rejectedLeaveRequests: [] = [];
-      // pendingLeaveRequests: [] = [];
-
-      // for(let )
-    }
-  }
+  
 
   barChart() {
     const documentStyle = getComputedStyle(document.documentElement);
