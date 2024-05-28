@@ -14,7 +14,7 @@ import { EncodeForms } from '../Helpers/encodeForms';
   providedIn: 'root',
 })
 export class EmployeeRxjsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   api_url = API_URL + 'employee';
 
@@ -28,7 +28,7 @@ export class EmployeeRxjsService {
     return this.http
       .post<any>(
         this.api_url +
-          `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+        `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
         initialEmployeeObj
       )
       .pipe();
@@ -44,15 +44,17 @@ export class EmployeeRxjsService {
     return this.http
       .post<any>(
         this.api_url +
-          `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+        `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
         initialEmployeeObj
       )
       .pipe(
         map((res: any) => {
-          return res.data.dataArray.map((data: EmployeeLeaveReqModel) => ({
+          res.data.dataArray = res.data.dataArray.filter((data: EmployeeLeaveReqModel) => ({
             firstName: EncodeForms.htmlDecode(data.firstName),
             lastName: EncodeForms.htmlDecode(data.lastName),
           }));
+          return res;
+
         })
       );
   }

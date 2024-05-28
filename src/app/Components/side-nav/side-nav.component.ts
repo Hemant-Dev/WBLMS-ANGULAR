@@ -45,7 +45,7 @@ export class SideNavComponent implements OnInit {
     {
       number: '5',
       name: 'See All Employees',
-      icon: 'fa-solid fa-user-plus',
+      icon: 'fa-solid fa-users',
       route: 'showAllEmployees',
       role: ['Admin'],
     },

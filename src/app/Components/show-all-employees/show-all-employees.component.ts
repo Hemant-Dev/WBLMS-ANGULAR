@@ -40,25 +40,31 @@ export class ShowAllEmployeesComponent implements OnInit {
     roleName: '',
     managerId: 0,
     managerName: '',
-    joiningDate: '',
+    joiningDate: "",
     balanceLeaveRequest: 0,
     totalLeaveRequest: 0
   }
+
   tableHeader = [
-    "FirstName",
-    "LastName",
-    "EmailAddress",
-    "ContactNumber",
+    "Sr. no.",
+    "First Name",
+    "Last Name",
+    "Email Address",
+    "Contact Number",
     "Gender",
-    "RoleName",
-    "ManagerName"
+    "Role Name",
+    "Manager Name",
+    "Joining Date",
+    "Balance Leave",
+    "Total Leave"
   ];
+
   appliedLeaveRequests: [] = [];
   acceptedLeaveRequests: [] = [];
   rejectedLeaveRequests: [] = [];
   pendingLeaveRequests: [] = [];
 
-  employeeData: any;
+  employeeData: EmployeeLeaveReqModel[] = [];
   constructor(
     private employeeService: EmployeeRxjsService,
     private leaveReqService: LeaveRequestsService
@@ -72,8 +78,8 @@ export class ShowAllEmployeesComponent implements OnInit {
   getLeaveRequestByYear() {
     this.leaveReqService.getLeaveRequestsByYear(this.year).subscribe({
       next: (response: LeaveReqByYearModel) => {
-        console.log(response);
-        this.leaveRequestByYear = response;
+        // console.log(response);
+        // this.leaveRequestByYear = response;
 
           // this.leaveRequestStatus = response.
           // this.leaveRequestByYear.january{
@@ -95,8 +101,9 @@ export class ShowAllEmployeesComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          console.log(response);
-          this.employeeData = response.data;
+          console.log(response)
+          this.employeeData = response.data.dataArray;
+          console.log(this.employeeData)
         },
       });
   }

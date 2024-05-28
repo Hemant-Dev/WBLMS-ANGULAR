@@ -1,11 +1,11 @@
-<div class="container">
+<!-- <div class="container flex-wrap">
   <h1 class="text-align-center">Employee Leave Calender</h1>
-</div>
-<div *ngIf="'Admin' === 'Admin'">
+</div> -->
+<!-- <div *ngIf="'Admin' === 'Admin'">
   <div class="card" class="card">
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>
-</div>
+</div> -->
 <!-- <div class="row">
   <div class="col-sm-6">
     <h2 class="text-center">Employee</h2>
@@ -31,4 +31,30 @@
     </table>
   </div>
 </div> -->
-<h1>He</h1>
+
+<div class="card">
+  <p-table [value]="employeeData" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of tableHeader">
+          {{ col }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-employee #index>
+      <tr>
+        <td>{{ 1 }}</td>
+        <td>{{ employee.firstName }}</td>
+        <td>{{ employee.lastName }}</td>
+        <td>{{ employee.emailAddress }}</td>
+        <td>{{ employee.contactNumber }}</td>
+        <td>{{ employee.genderName }}</td>
+        <td>{{ employee.roleName }}</td>
+        <td>{{ employee.managerName }}</td>
+        <td>{{ employee.joiningDate }}</td>
+        <td>{{ employee.balanceLeaveRequest }}</td>
+        <td>{{ employee.totalLeaveRequest }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
