@@ -26,7 +26,6 @@ export class ShowAllEmployeesComponent implements OnInit {
   year: number = 2024;
 
   leaveRequestStatus!: LeaveRequestStatusModel[];
-  leaveRequestStatus!: LeaveRequestStatusModel[];
   leaveRequestByYear!: LeaveReqByYearModel;
 
   initialEmployeeData: EmployeeLeaveReqModel = {
@@ -82,7 +81,7 @@ export class ShowAllEmployeesComponent implements OnInit {
           //   this.acceptedLeaveRequests.push(acceptedLeaveRequests.),
           // }
         }
-      }))
+      })
   }
 
   getEmployee() {
