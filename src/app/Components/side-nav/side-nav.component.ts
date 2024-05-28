@@ -19,7 +19,7 @@ export class SideNavComponent implements OnInit {
       name: 'Dashboard',
       icon: 'fa-solid fa-chart-pie',
       route: 'dashboard/leaveRequests',
-      role: ['Employee', 'HR', 'Team Lead'],
+      role: ['Developer', 'HR', 'Team Lead', 'HR Manager'],
     },
     {
       number: '2',
@@ -33,7 +33,7 @@ export class SideNavComponent implements OnInit {
       name: 'Profile',
       icon: 'fa-solid fa-user',
       route: 'profile',
-      role: ['Employee', 'Admin', 'HR', 'Team Lead'],
+      role: ['Developer', 'HR', 'Team Lead', 'HR Manager'],
     },
     {
       number: '4',

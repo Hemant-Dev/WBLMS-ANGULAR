@@ -52,14 +52,11 @@ export class DashboardComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private userStore: UserStoreService,
-    private leaveRequestService: LeaveRequestsService,
     private router: Router,
     private byRolesService: ByRolesService
-  ) { }
+  ) {}
   ngOnInit(): void {
     this.fetchSessionData();
-    // this.fetchSelfRequestData();
-    // this.fetchAllRequestData();
     if (this.role === 'Admin') {
       this.router.navigate(['home/dashboard/hr']);
     } else {
@@ -67,7 +64,7 @@ export class DashboardComponent implements OnInit {
     }
     this.byRolesService.changeData('HR');
   }
-  
+
   fetchSessionData() {
     this.userStore.getFullNameFromStore().subscribe((val) => {
       const fullNameFromToken = this.auth.getFullNameFromToken();
@@ -90,7 +87,7 @@ export class DashboardComponent implements OnInit {
       this.initialUserSessionObj.employeeId = Number(this.employeeId);
     });
   }
-  
+
   handleHRLeaveRequestClick() {
     this.byRolesService.changeData('HR');
     this.byRolesService.saveData('HR');
