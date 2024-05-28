@@ -3,97 +3,178 @@
     <h5 class="modal-title" id="addLeaveRequestModalLabel">
       Leave Request Form
     </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+    ></button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="leaveRequestForm" (ngSubmit)="handleSubmit()" class="form-group">
+    <form
+      [formGroup]="leaveRequestForm"
+      (ngSubmit)="handleSubmit()"
+      class="form-group"
+    >
       <div class="mb-3">
-        <div class="input-field" [class.error]="
+        <div
+          class="input-field"
+          [class.error]="
             leaveRequestForm.controls['leaveTypeId'].touched &&
             leaveRequestForm.get('leaveTypeId')?.value === 0
-          ">
+          "
+        >
           <label for="leaveType" class="form-label">Leave Type</label>
-          <select class="form-select" id="leaveType" formControlName="leaveTypeId">
+          <select
+            class="form-select"
+            id="leaveType"
+            formControlName="leaveTypeId"
+          >
             <option selected disabled [value]="0">Select Leave Type</option>
-            <option *ngFor="let leaveType of leaveTypeData" [value]="leaveType.id">
+            <option
+              *ngFor="let leaveType of leaveTypeData"
+              [value]="leaveType.id"
+            >
               {{ leaveType.leaveTypeName }}
             </option>
           </select>
         </div>
-        <small *ngIf="
+        <small
+          *ngIf="
             leaveRequestForm.controls['leaveTypeId'].touched &&
             leaveRequestForm.get('leaveTypeId')?.value == '0'
-          " class="text-danger">
+          "
+          class="text-danger"
+        >
           *Leave Type is required
         </small>
       </div>
       <div class="mb-3">
-        <div class="input-field" [class.error]="
+        <div
+          class="input-field"
+          [class.error]="
             leaveRequestForm.controls['reason'].touched &&
             (leaveRequestForm.hasError('required', 'reason') ||
               leaveRequestForm.hasError('maxlength', 'reason'))
-          ">
+          "
+        >
           <label for="reason" class="form-label">Reason</label>
-          <textarea formControlName="reason" class="form-control max-height-scrollable" id="reason" rows="3"></textarea>
+          <textarea
+            formControlName="reason"
+            class="form-control max-height-scrollable"
+            id="reason"
+            rows="3"
+          ></textarea>
         </div>
-        <small *ngIf="
+        <small
+          *ngIf="
             leaveRequestForm.controls['reason'].touched &&
             leaveRequestForm.hasError('required', 'reason')
-          " class="text-danger">*Leave reason is required</small>
-        <small *ngIf="
+          "
+          class="text-danger"
+          >*Leave reason is required</small
+        >
+        <small
+          *ngIf="
             leaveRequestForm.controls['reason'].touched &&
             leaveRequestForm.hasError('maxlength', 'reason')
-          " class="text-danger">*Leave reason exceed max length</small>
+          "
+          class="text-danger"
+          >*Leave reason exceed max length</small
+        >
       </div>
       <div class="row mb-3">
-        <div class="col input-field" [class.error]="
+        <div
+          class="col input-field"
+          [class.error]="
             leaveRequestForm.controls['startDate'].touched &&
             leaveRequestForm.hasError('required', 'startDate')
-          ">
+          "
+        >
           <label for="startDate" class="form-label">Start Date</label>
-          <input type="date" formControlName="startDate" (change)="calculateLeaveDays()" class="form-control"
-            id="startDate" />
-            <!-- <p-calendar dateFormat="0001-01-01" formControlName="startDate" (change)="calculateLeaveDays()" [readonlyInput]="true"></p-calendar> -->
+          <input
+            type="date"
+            formControlName="startDate"
+            (change)="calculateLeaveDays()"
+            class="form-control"
+            id="startDate"
+          />
+          <!-- <p-calendar dateFormat="0001-01-01" formControlName="startDate" (change)="calculateLeaveDays()" [readonlyInput]="true"></p-calendar> -->
 
-          <small *ngIf="
+          <small
+            *ngIf="
               leaveRequestForm.controls['startDate'].touched &&
               leaveRequestForm.hasError('required', 'startDate')
-            " class="text-danger">
+            "
+            class="text-danger"
+          >
             *Start date is required
           </small>
         </div>
-        
 
-        <div class="col input-field" [class.error]="
+        <div
+          class="col input-field"
+          [class.error]="
             leaveRequestForm.controls['endDate'].touched &&
             leaveRequestForm.hasError('required', 'endDate')
-          ">
+          "
+        >
           <label for="endDate" class="form-label">End Date</label>
-          <input type="date" formControlName="endDate" (change)="calculateLeaveDays()" class="form-control"
-            id="endDate" />
-          <small *ngIf="
+          <input
+            type="date"
+            formControlName="endDate"
+            (change)="calculateLeaveDays()"
+            class="form-control"
+            id="endDate"
+          />
+          <small
+            *ngIf="
               leaveRequestForm.controls['endDate'].touched &&
               leaveRequestForm.hasError('required', 'endDate')
-            " class="text-danger">
+            "
+            class="text-danger"
+          >
             End Date is required
           </small>
         </div>
 
-        <div class="form-check form-switch" style="margin-left: 20px; margin-top: 5px"
-          *ngIf="getValue('endDate') === getValue('startDate')">
-          <input class="form-check-input" type="checkbox" formControlName="isHalfDay" (change)="halfDay()" value=""
-            id="halfDay" />
+        <div
+          class="form-check form-switch"
+          style="margin-left: 20px; margin-top: 5px"
+          *ngIf="getValue('endDate') === getValue('startDate')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            formControlName="isHalfDay"
+            (change)="halfDay()"
+            value=""
+            id="halfDay"
+          />
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>
       </div>
       <div class="mb-3">
-        <label for="numberOfLeaveDays" class="form-label">Number of Leave Days</label>
-        <input type="text" formControlName="numberOfLeaveDays" class="form-control" id="numberOfLeaveDays" readonly />
+        <label for="numberOfLeaveDays" class="form-label"
+          >Number of Leave Days</label
+        >
+        <input
+          type="text"
+          formControlName="numberOfLeaveDays"
+          class="form-control"
+          id="numberOfLeaveDays"
+          readonly
+        />
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button id="closeBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+    <button
+      id="closeBtn"
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+    >
       Close
     </button>
     <button class="btn btn-primary" type="submit" (click)="handleSubmit()">
