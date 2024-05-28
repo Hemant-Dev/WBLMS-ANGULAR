@@ -6,7 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { errorAlert, errorToast, showReasonDisplayMessage, successToast } from 'src/app/Helpers/swal';
+import { EncodeForms } from 'src/app/Helpers/encodeForms';
+import {
+  errorAlert,
+  errorToast,
+  showReasonDisplayMessage,
+  successToast,
+} from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
@@ -76,7 +82,7 @@ export class LeaveRequestComponent implements OnInit {
     private router: Router,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
@@ -134,8 +140,6 @@ export class LeaveRequestComponent implements OnInit {
         errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
     });
   }
-
-
 
   calculateLeaveDays() {
     const showHolidays: WonderbizHolidaysModel[] = [];
@@ -272,16 +276,13 @@ export class LeaveRequestComponent implements OnInit {
   }
   resetStartDate() {
     this.leaveRequestForm.patchValue({
-      startDate: ''
-    })
+      startDate: '',
+    });
   }
 
   getValue(name: string): any {
     return this.leaveRequestForm.get(name)?.value;
   }
-
-
-
 
   halfDay() {
     // console.log('half day');
@@ -310,12 +311,16 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   handleSubmit() {
-
     if (this.leaveRequestForm.valid) {
       if (!this.getValue('numberOfLeaveDays')) {
         errorAlert('Number of leaves day are zero');
         return;
       }
+      this.leaveRequestForm.patchValue({
+        reason: EncodeForms.htmlEncode(
+          this.leaveRequestForm.controls['reason'].value
+        ),
+      });
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
         .subscribe({
