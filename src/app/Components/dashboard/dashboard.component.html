@@ -1,134 +1,55 @@
 <div class="col-sm-12 row" *ngIf="role !== 'Admin'">
-  <!-- <app-team-leave-requests-table></app-team-leave-requests-table> -->
-  <app-leaves-remaining-dashboard [userSessionObj]="initialUserSessionObj"></app-leaves-remaining-dashboard>
+  <app-leaves-remaining-dashboard
+    [userSessionObj]="initialUserSessionObj"
+  ></app-leaves-remaining-dashboard>
 </div>
 
-<!-- Still need to decide what to show -->
 <div class="row mt-4">
   <ul class="nav nav-tabs">
     <li *ngIf="role !== 'Admin'" class="nav-item">
-      <a [routerLink]="['leaveRequests']" routerLinkActive="active" class="nav-link" aria-current="page">Self Leave
-        Requests</a>
+      <a
+        [routerLink]="['leaveRequests']"
+        routerLinkActive="active"
+        class="nav-link"
+        aria-current="page"
+        >Self Leave Requests</a
+      >
     </li>
-    <li *ngIf="role !== 'Employee' && role !== 'Admin'" class="nav-item">
-      <a [routerLink]="['teamLeaveRequests']" routerLinkActive="active" class="nav-link">Team Leave Requests</a>
+    <li *ngIf="role !== 'Developer' && role !== 'Admin'" class="nav-item">
+      <a
+        [routerLink]="['teamLeaveRequests']"
+        routerLinkActive="active"
+        class="nav-link"
+        >Team Leave Requests</a
+      >
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a (click)="handleHRLeaveRequestClick()" [routerLink]="['hr']" routerLinkActive="active" class="nav-link">HR Leave
-        Requests</a>
+      <a
+        (click)="handleHRLeaveRequestClick()"
+        [routerLink]="['hr']"
+        routerLinkActive="active"
+        class="nav-link"
+        >HR Leave Requests</a
+      >
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a (click)="handleTeamLeadLeaveRequestClick()" [routerLink]="['teamLead']" routerLinkActive="active"
-        class="nav-link">Team Lead Leave Requests</a>
+      <a
+        (click)="handleTeamLeadLeaveRequestClick()"
+        [routerLink]="['teamLead']"
+        routerLinkActive="active"
+        class="nav-link"
+        >Team Lead Leave Requests</a
+      >
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
-      <a (click)="handleEmployeeLeaveRequestClick()" [routerLink]="['employee']" routerLinkActive="active"
-        class="nav-link">Employee Leave Requests</a>
+      <a
+        (click)="handleEmployeeLeaveRequestClick()"
+        [routerLink]="['employee']"
+        routerLinkActive="active"
+        class="nav-link"
+        >Employee Leave Requests</a
+      >
     </li>
   </ul>
 </div>
 <router-outlet></router-outlet>
-<!-- Table 1 -->
-<!-- <div class="card my-4">
-  <p-table
-    #dt2
-    [value]="selfLeaveRequests"
-    dataKey="id"
-    [rows]="pageSize"
-    [rowsPerPageOptions]="[2, 4, 10]"
-    [paginator]="true"
-    [globalFilterFields]="[
-      'name',
-      'country.name',
-      'representative.name',
-      'status'
-    ]"
-    [tableStyle]="{ 'min-width': '70rem' }"
-  >
-    <ng-template pTemplate="caption">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <p-header *ngIf="role !== 'Admin'">Created Leave Requests</p-header>
-        <p-header *ngIf="role === 'Admin'">Employee Leave Requests</p-header>
-
-        <div class="input-group w-50">
-          <input
-            type="text"
-            [(ngModel)]="seachKeyword"
-            (ngModelChange)="handleSearch()"
-            name="searchKeyword"
-            class="form-control mr-2"
-            placeholder="Search"
-          />
-          <button class="btn btn-primary mx-3">
-            <i class="fa fa-search"></i>
-          </button>
-          <button
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#addLeaveRequestModal"
-          >
-            <i class="fa fa-plus"></i>
-            Apply Leave
-          </button>
-        </div>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th *ngIf="role === 'Admin'">First Name</th>
-        <th *ngIf="role === 'Admin'">Last Name</th>
-        <th>Leaves Type</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Number Of Days</th>
-        <th>Request Date</th>
-        <th>Approved Date</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-request>
-      <tr>
-        <td *ngIf="role === 'Admin'">{{ request.firstName }}</td>
-        <td *ngIf="role === 'Admin'">{{ request.lastName }}</td>
-        <td>{{ request.leaveType }}</td>
-        <td>{{ request.reason }}</td>
-        <td>
-          <p-tag [value]="request.status" />
-        </td>
-        <td>{{ request.startDate }}</td>
-        <td>{{ request.endDate }}</td>
-        <td>{{ request.numberOfLeaveDays }}</td>
-        <td>{{ request.requestDate }}</td>
-        <td
-          *ngIf="request.approvedDate !== '0001-01-01'; else elseApprovedDate"
-        >
-          {{ request.approvedDate }}
-        </td>
-        <ng-template #elseApprovedDate>
-          <td>Not Approved</td>
-        </ng-template>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="12">No Leave Requests found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div> -->
-
-<!-- Modal -->
-<!-- <div
-  class="modal fade mt-5"
-  id="addLeaveRequestModal"
-  tabindex="-1"
-  aria-labelledby="addLeaveRequestModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <app-leave-request
-      (submitLeaveRequestClicked)="ngOnInit()"
-    ></app-leave-request>
-  </div>
-</div> -->
