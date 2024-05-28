@@ -78,10 +78,9 @@ export class RegisterComponent implements OnInit {
       ],
       genderId: [0, Validators.required],
       roleId: [0, Validators.required],
-      managerId: new FormControl(
-        { value: 0, disabled: true },
-        [Validators.required]
-      ),
+      managerId: new FormControl({ value: 0, disabled: true }, [
+        Validators.required,
+      ]),
       // managerId: [0, Validators.required],
       emailAddress: ['', [Validators.required, Validators.email]],
       password: [

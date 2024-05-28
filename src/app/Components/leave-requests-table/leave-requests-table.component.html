@@ -42,6 +42,7 @@
           class="btn btn-primary me-4"
           data-bs-toggle="modal"
           data-bs-target="#addLeaveRequestModal"
+          [disabled]="this.leaveStatusesCount.leavesRemaining === 0"
         >
           Apply Leave
         </button>
@@ -60,20 +61,35 @@
           />
           <label for="searchKeyword">Search</label>
         </span>
-        <p-multiSelect
-          inputId="float-label"
-          [options]="tableHeaderObj"
-          [(ngModel)]="selectedFields"
-          optionLabel="name"
-          optionValue="value"
-          display="chip"
-          [showClear]="true"
-          (onClear)="handleClearSelectedFields()"
-          [showToggleAll]="false"
-          [maxSelectedLabels]="2"
-          (onChange)="filterData()"
-          placeholder="Filter Fields"
-        ></p-multiSelect>
+        <span class="p-float-label">
+          <p-multiSelect
+            inputId="float-label"
+            [options]="tableHeaderObj"
+            [(ngModel)]="selectedFields"
+            optionLabel="name"
+            optionValue="value"
+            display="chip"
+            [showClear]="true"
+            (onClear)="handleClearSelectedFields()"
+            [showToggleAll]="false"
+            [maxSelectedLabels]="2"
+            (onChange)="filterData()"
+          ></p-multiSelect>
+          <label for="float-label">Filter Fields</label>
+        </span>
+        <span class="p-float-label">
+          <p-dropdown
+            styleClass="dropdown-size"
+            inputId="float-label"
+            [options]="leaveTypes"
+            optionLabel="leaveTypeName"
+            [showClear]="true"
+            placeholder=""
+            optionValue="leaveTypeName"
+            (onChange)="filterLeaveTypeData($event)"
+          ></p-dropdown>
+          <label for="float-label">Select LeaveType</label>
+        </span>
         <span class="p-float-label">
           <p-calendar
             id="rangeDate"
@@ -104,19 +120,6 @@
             [showClear]="true"
           ></p-calendar>
           <label for="float-label">Filter Request Date</label>
-        </span>
-        <span class="p-float-label">
-          <p-dropdown
-            styleClass="dropdown-size"
-            inputId="float-label"
-            [options]="leaveTypes"
-            optionLabel="leaveTypeName"
-            [showClear]="true"
-            placeholder=""
-            optionValue="leaveTypeName"
-            (onChange)="filterLeaveTypeData($event)"
-          ></p-dropdown>
-          <label for="float-label">Select LeaveType</label>
         </span>
       </div>
     </ng-template>

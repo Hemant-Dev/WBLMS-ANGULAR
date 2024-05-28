@@ -42,13 +42,13 @@ export class SideNavComponent implements OnInit {
       route: 'register',
       role: ['Admin'],
     },
-    {
-      number: '5',
-      name: 'See All Employees',
-      icon: 'fa-solid fa-user-plus',
-      route: 'showAllEmployees',
-      role: ['Admin'],
-    },
+    // {
+    //   number: '5',
+    //   name: 'See All Employees',
+    //   icon: 'fa-solid fa-user-plus',
+    //   route: 'showAllEmployees',
+    //   role: ['Admin'],
+    // },
   ];
   filteredList: any[] = [];
   @Input() sideNavStatus: boolean = false;

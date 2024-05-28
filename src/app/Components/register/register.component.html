@@ -15,9 +15,8 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['firstName'].touched &&
-                      (registerForm.hasError('required', 'firstName') && 
-                      registerForm.hasError('maxlength', 'firstName')
-                    )
+                      (registerForm.hasError('required', 'firstName') ||
+                        registerForm.hasError('maxlength', 'firstName'))
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -45,7 +44,7 @@
                     "
                     class="text-danger"
                   >
-                    First Name Maxlength is 20
+                    First Name cannot have more than 20 chars
                   </small>
                 </div>
               </div>
@@ -55,9 +54,8 @@
                     class="input-field"
                     [class.error]="
                       registerForm.controls['lastName'].touched &&
-                      (registerForm.hasError('required', 'lastName') && 
-                      registerForm.hasError('maxlength', 'lastName') 
-                    )
+                      (registerForm.hasError('required', 'lastName') ||
+                        registerForm.hasError('maxlength', 'lastName'))
                     "
                   >
                     <span class="fa fa-user p-2"></span>
@@ -83,7 +81,7 @@
                     "
                     class="text-danger"
                   >
-                    Last Name Maxlength is 20
+                    Last Name cannot have more than 20 chars
                   </small>
                 </div>
               </div>
