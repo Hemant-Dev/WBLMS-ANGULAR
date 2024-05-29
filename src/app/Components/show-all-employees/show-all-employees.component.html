@@ -1,17 +1,39 @@
 <!-- *ngIf="'Admin' === 'Admin'" -->
-<div>
+<!-- <div>
   <h2 style="text-align: center">Employees Leave request</h2>
   <div class="card" class="card">
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>
-</div>
+</div> -->
 
 <h2 style="text-align: center; margin-top: 25px">Employee Details</h2>
 <div class="card">
   <p-table [value]="employeeData" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">
-      <i class="fa fa-search bg-success"></i>
-      <input type="text" pInputText />
+      <!-- <i class="fa fa-search bg-success"></i> -->
+      <div
+        class="d-flex gap-4 align-items-center justify-content-evenly py-4 flex-shrink flex-wrap"
+      >
+        <span class="p-input-icon-right p-float-label">
+          <i class="fa-solid fa-search"></i>
+          <input id="searchKeyword" type="text" pInputText />
+          <label for="searchKeyword">Search</label>
+        </span>
+        <span class="p-float-label">
+          <p-multiSelect
+            inputId="float-label"
+            optionLabel="name"
+            optionValue="value"
+            display="chip"
+            [showClear]="true"
+            [showToggleAll]="false"
+            [maxSelectedLabels]="2"
+          ></p-multiSelect>
+          <label for="float-label">Filter Fields</label>
+        </span>
+      </div>
+      <!-- [options]="tableHeaderObj" [(ngModel)]="selectedFields"
+      (onClear)="handleClearSelectedFields()" (onChange)="filterData()" -->
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
