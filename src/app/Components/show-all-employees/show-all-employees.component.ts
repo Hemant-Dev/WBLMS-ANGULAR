@@ -59,6 +59,7 @@ export class ShowAllEmployeesComponent implements OnInit {
     "Balance Leave",
     "Total Leave"
   ];
+loading: boolean|undefined;
 
   inreaseSrNoValue(){
     this.srNoIndex++;
