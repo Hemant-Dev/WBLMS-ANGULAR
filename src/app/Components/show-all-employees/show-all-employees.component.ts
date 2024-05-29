@@ -75,7 +75,7 @@ export class ShowAllEmployeesComponent implements OnInit {
     this.updateBarThickness();
     window.addEventListener('resize', this.updateBarThickness.bind(this));
   }
-
+  
   getLeaveRequestByYear() {
     this.leaveReqService.getLeaveRequestsByYear(this.year).subscribe({
       next: (response: any) => {
@@ -120,11 +120,11 @@ export class ShowAllEmployeesComponent implements OnInit {
   updateBarThickness() {
     const width = window.innerWidth;
     if (width < 768) {
+      this.dynaminBarThickness = 10;
+    } else if (width < 1224) {
       this.dynaminBarThickness = 20;
-    } else if (width < 1024) {
-      this.dynaminBarThickness = 40;
     } else {
-      this.dynaminBarThickness = 60;
+      this.dynaminBarThickness = 23;
     }
     this.barChart();
   }
@@ -156,7 +156,8 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Accepted Leaves',
-          backgroundColor: documentStyle.getPropertyValue('--blue-500'), //this.setBackgroundColor3,//
+          
+          backgroundColor: documentStyle.getPropertyValue('--green-700'), //this.setBackgroundColor3,//
           // data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
           data: this.acceptedLeaveRequests,
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
@@ -164,27 +165,34 @@ export class ShowAllEmployeesComponent implements OnInit {
         {
           type: 'bar',
           label: 'Rejected Leaves',
-          backgroundColor: this.setBackgroundColor,
+          backgroundColor: documentStyle.getPropertyValue('--red-600'),
           data: this.rejectedLeaveRequests,
           barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
         },
         {
           type: 'bar',
           label: 'Pending Leaves',
-          backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
+          backgroundColor: documentStyle.getPropertyValue('--yellow-400'),
           data: this.pendingLeaveRequests,
           barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
-        }
+        },
+        {
+          type: '',
+          label: 'Total Leaves',
+          backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+          data: this.appliedLeaveRequests,
+          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
+        },
       ]
     };
 
     this.options = {
       maintainAspectRatio: false,
-      aspectRatio: 1.2,
+      aspectRatio: 1.0,
       plugins: {
         tooltip: {
           mode: 'index',
-          intersect: false,
+          intersect: true,
         },
         legend: {
           labels: {
@@ -192,30 +200,54 @@ export class ShowAllEmployeesComponent implements OnInit {
           },
         },
       },
+      // scales: {
+      //   x: {
+      //     stacked: true,
+      //     ticks: {
+      //       color: textColorSecondary,
+      //     },
+      //     grid: {
+      //       display: false,
+      //       color: surfaceBorder,
+      //       drawBorder: false,
+      //     },
+      //   },
+      //   y: {
+      //     stacked: false,
+      //     ticks: {
+      //       color: textColorSecondary,
+      //     },
+      //     grid: {
+      //       display: false,
+      //       color: surfaceBorder,
+      //       drawBorder: true,
+      //     },
+      //   },
+      // },
       scales: {
         x: {
-          stacked: true,
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            display: false,
-            color: surfaceBorder,
-            drawBorder: false,
-          },
+            ticks: {
+                color: textColorSecondary,
+                font: {
+                    weight: 500
+                }
+            },
+            grid: {
+                color: surfaceBorder,
+                drawBorder: true
+            }
         },
         y: {
-          stacked: true,
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            display: false,
-            color: surfaceBorder,
-            drawBorder: false,
-          },
-        },
-      },
+            ticks: {
+                color: textColorSecondary
+            },
+            grid: {
+                color: surfaceBorder,
+                drawBorder: true
+            }
+        }
+
+    }
     };
   }
 }

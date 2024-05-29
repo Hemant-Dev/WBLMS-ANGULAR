@@ -105,8 +105,7 @@
             styleClass="my-calender"
             (onSelect)="calculateLeaveDays()"
             dateFormat="yy-mm-dd"
-            [minDate]="minDate"
-            [maxDate]="maxDate"
+            
             formControlName="startDate"
           ></p-calendar>
           <small
@@ -127,6 +126,8 @@
             leaveRequestForm.hasError('required', 'endDate')
           "
         >
+        <!-- [minDate]="minDate"
+            [maxDate]="maxDate" -->
           <label for="endDate" class="form-label">End Date</label>
           <!-- <input
             type="date"
@@ -138,8 +139,7 @@
           <p-calendar
             (onSelect)="calculateLeaveDays()"
             dateFormat="yy-mm-dd"
-            [minDate]="minDate"
-            [maxDate]="maxDate"
+            
             formControlName="endDate"
           ></p-calendar>
 

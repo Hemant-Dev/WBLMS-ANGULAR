@@ -1,13 +1,18 @@
-<div *ngIf="'Admin' === 'Admin'">
-  <h2 style="text-align: center;">Admin Dashboard</h2>
+<!-- *ngIf="'Admin' === 'Admin'" -->
+<div>
+  <h2 style="text-align: center">Employees Leave request</h2>
   <div class="card" class="card">
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>
 </div>
 
+<h2 style="text-align: center; margin-top: 25px">Employee Details</h2>
 <div class="card">
-  <h2 style="text-align: center;">Admin Dashboard</h2>
   <p-table [value]="employeeData" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption">
+      <i class="fa fa-search bg-success"></i>
+      <input type="text" pInputText />
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of tableHeader">
