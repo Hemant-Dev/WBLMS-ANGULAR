@@ -37,6 +37,7 @@ import { ChartModule } from 'primeng/chart';
 import { CalendarModule } from 'primeng/calendar';
 import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
 import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
+import { KnobModule } from 'primeng/knob';
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +79,8 @@ import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
     AutoFocusModule,
     ChipModule,
     CalendarModule,
-    ChartModule
+    ChartModule,
+    KnobModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

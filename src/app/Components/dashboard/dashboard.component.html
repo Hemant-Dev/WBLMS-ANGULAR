@@ -1,7 +1,7 @@
 <div class="col-sm-12 row" *ngIf="role !== 'Admin'">
   <app-leaves-remaining-dashboard
     [userSessionObj]="initialUserSessionObj"
-></app-leaves-remaining-dashboard>
+  ></app-leaves-remaining-dashboard>
 </div>
 
 <div class="row mt-4">
@@ -15,7 +15,7 @@
         >Self Leave Requests</a
       >
     </li>
-    <li *ngIf="role !== 'Developer' && role !== 'Admin'" class="nav-item">
+    <li *ngIf="role === 'HR Manager' || role === 'Team Lead'" class="nav-item">
       <a
         [routerLink]="['teamLeaveRequests']"
         routerLinkActive="active"
@@ -25,11 +25,11 @@
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
       <a
-        (click)="handleHRLeaveRequestClick()"
-        [routerLink]="['hr']"
+        (click)="handleHRManagerLeaveRequestClick()"
+        [routerLink]="['hr-manager']"
         routerLinkActive="active"
         class="nav-link"
-        >HR Leave Requests</a
+        >HR Manager Leave Requests</a
       >
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
@@ -43,11 +43,20 @@
     </li>
     <li *ngIf="role === 'Admin'" class="nav-item">
       <a
-        (click)="handleEmployeeLeaveRequestClick()"
-        [routerLink]="['employee']"
+        (click)="handleDeveloperLeaveRequestClick()"
+        [routerLink]="['developer']"
         routerLinkActive="active"
         class="nav-link"
-        >Employee Leave Requests</a
+        >Developer Leave Requests</a
+      >
+    </li>
+    <li *ngIf="role === 'Admin'" class="nav-item">
+      <a
+        (click)="handleHRLeaveRequestClick()"
+        [routerLink]="['hr']"
+        routerLinkActive="active"
+        class="nav-link"
+        >HR Leave Requests</a
       >
     </li>
   </ul>

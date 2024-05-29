@@ -23,6 +23,7 @@ export class LeavesRemainingDashboardComponent implements OnInit {
     pendingLeavesCount: 0,
     rejectedLeavesCount: 0,
   };
+  leavesRemaining!: number;
   @Input() userSessionObj!: UserSessionModel;
   ngOnInit(): void {
     this.shared.data$.subscribe({
@@ -47,7 +48,6 @@ export class LeavesRemainingDashboardComponent implements OnInit {
     }
   }
 
-  
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private shared: SharedServiceService
@@ -65,6 +65,9 @@ export class LeavesRemainingDashboardComponent implements OnInit {
       next: (res) => {
         // console.log(res.data);\
         this.leaveStatusesCount = res.data;
+        this.leavesRemaining =
+          this.leaveBalance.balance -
+          this.leaveStatusesCount.pendingLeavesCount;
       },
       error: (err) => console.log(err),
     });

@@ -1,44 +1,93 @@
-<div class="row card-deck" *ngIf="this.userSessionObj.role !== 'Admin'">
-  <div class="col-sm-3">
-    <div class="card bg-info">
-      <div class="card-body">
+<div class="row flex-wrap" *ngIf="this.userSessionObj.role !== 'Admin'">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-warning">
+      <div
+        class="leaves-taken-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Taken</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveStatusesCount.approvedLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          styleClass="leavesKnob"
+          [(ngModel)]="leaveStatusesCount.approvedLeavesCount"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#eab308"
+          rangeColor="#fde047"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-warning">
-      <div class="card-body">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-success">
+      <div
+        class="leaves-notapproved-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Not Approved</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveStatusesCount.pendingLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leaveStatusesCount.pendingLeavesCount"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#22c55e"
+          rangeColor="#86efac"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-danger">
-      <div class="card-body">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-primary">
+      <div
+        class="leaves-remaining-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Remaining</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveBalance.balance - leaveStatusesCount.pendingLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leavesRemaining"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#3b82f6"
+          rangeColor="#93c5fd"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-success">
-      <div class="card-body">
+  <div class="col-col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-danger">
+      <div
+        class="leaves-total-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Total Leaves</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveBalance.totalLeaves }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leaveBalance.totalLeaves"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#ef4444"
+          rangeColor="#fca5a5"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>

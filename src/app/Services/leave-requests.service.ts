@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { API_URL } from '../ApiUrl';
 import { LeaveRequestModel } from '../Models/leave-requestsModel';
 import { UpdateRequestStatus } from '../Models/update-request-status';
 import { LeaveReqByYearModel } from '../Models/LeaveReqByYearModel';
+import { EncodeForms } from '../Helpers/encodeForms';
+import { EmployeeLeaveReqModel } from '../Models/EmployeeLeaveReqModel';
 
 @Injectable({
   providedIn: 'root',
@@ -44,19 +46,30 @@ export class LeaveRequestsService {
     leaveReqObj: LeaveRequestModel,
     searchKeyword?: string
   ): Observable<any> {
-    return this.http.post<any>(
-      this.leave_api_url +
-        `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}&searchKeyword=${searchKeyword}`,
-      leaveReqObj
-    );
+    return this.http
+      .post<any>(
+        this.leave_api_url +
+          `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}&searchKeyword=${searchKeyword}`,
+        leaveReqObj
+      )
+      .pipe(
+        map((res: any) => {
+          res.data.dataArray = res.data.dataArray.filter(
+            (data: LeaveRequestModel) => ({
+              firstName: EncodeForms.htmlDecode(data.firstName || ''),
+              lastName: EncodeForms.htmlDecode(data.lastName || ''),
+              reason: EncodeForms.htmlDecode(data.reason || ''),
+            })
+          );
+          return res;
+        })
+      );
   }
 
-  getLeaveRequestsByYear(
-    year : number
-  ) : Observable<LeaveReqByYearModel> {
+  getLeaveRequestsByYear(year: number): Observable<LeaveReqByYearModel> {
     return this.http.get<LeaveReqByYearModel>(
       this.leave_api_url + `/getLeaveBy/${year}`
-    )
+    );
   }
 
   getWonderbizholidays(): Observable<any> {
@@ -73,7 +86,7 @@ export class LeaveRequestsService {
     return this.http.get<any>(
       this.leave_api_url +
         `/search?page=${page}&pageSize=${pageSize}&search=${search}&employeeId=${employeeId}&managerId=${managerId}`
-    );  
+    );
   }
 
   updateLeaveRequestStatus(
@@ -97,4 +110,3 @@ export class LeaveRequestsService {
     );
   }
 }
-
