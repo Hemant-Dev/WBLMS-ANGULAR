@@ -1,4 +1,4 @@
-<div class="col-sm-12 row" *ngIf="role !== 'Admin'">
+<div class="col-sm-12 row" *ngIf="initialUserSessionObj.role !== 'Admin'">
   <app-leaves-remaining-dashboard
     [userSessionObj]="initialUserSessionObj"
   ></app-leaves-remaining-dashboard>
@@ -6,7 +6,7 @@
 
 <div class="row mt-4">
   <ul class="nav nav-tabs">
-    <li *ngIf="role !== 'Admin'" class="nav-item">
+    <li *ngIf="initialUserSessionObj.role !== 'Admin'" class="nav-item">
       <a
         [routerLink]="['leaveRequests']"
         routerLinkActive="active"
@@ -15,7 +15,13 @@
         >Self Leave Requests</a
       >
     </li>
-    <li *ngIf="role === 'HR Manager' || role === 'Team Lead'" class="nav-item">
+    <li
+      *ngIf="
+        initialUserSessionObj.role === 'HR Manager' ||
+        initialUserSessionObj.role === 'Team Lead'
+      "
+      class="nav-item"
+    >
       <a
         [routerLink]="['teamLeaveRequests']"
         routerLinkActive="active"
@@ -23,7 +29,7 @@
         >Team Leave Requests</a
       >
     </li>
-    <li *ngIf="role === 'Admin'" class="nav-item">
+    <li *ngIf="initialUserSessionObj.role === 'Admin'" class="nav-item">
       <a
         (click)="handleHRManagerLeaveRequestClick()"
         [routerLink]="['hr-manager']"
@@ -32,7 +38,7 @@
         >HR Manager Leave Requests</a
       >
     </li>
-    <li *ngIf="role === 'Admin'" class="nav-item">
+    <li *ngIf="initialUserSessionObj.role === 'Admin'" class="nav-item">
       <a
         (click)="handleTeamLeadLeaveRequestClick()"
         [routerLink]="['teamLead']"
@@ -41,7 +47,7 @@
         >Team Lead Leave Requests</a
       >
     </li>
-    <li *ngIf="role === 'Admin'" class="nav-item">
+    <li *ngIf="initialUserSessionObj.role === 'Admin'" class="nav-item">
       <a
         (click)="handleDeveloperLeaveRequestClick()"
         [routerLink]="['developer']"
@@ -50,7 +56,7 @@
         >Developer Leave Requests</a
       >
     </li>
-    <li *ngIf="role === 'Admin'" class="nav-item">
+    <li *ngIf="initialUserSessionObj.role === 'Admin'" class="nav-item">
       <a
         (click)="handleHRLeaveRequestClick()"
         [routerLink]="['hr']"
