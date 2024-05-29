@@ -2,21 +2,14 @@ import {
   AfterViewChecked,
   ChangeDetectorRef,
   Component,
-  Input,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { Table, TableLazyLoadEvent } from 'primeng/table';
-import {
-  errorAlert,
-  errorToast,
-  showReasonDisplayMessage,
-  successToast,
-} from 'src/app/Helpers/swal';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
+import { errorAlert, showReasonDisplayMessage } from 'src/app/Helpers/swal';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
-import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
@@ -41,11 +34,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
   searchKeyword: string = '';
 
   // Current User Session Details
-  role!: string;
-  fullName!: string;
-  email!: string;
-  employeeId!: string;
-
   initialUserSessionObj: UserSessionModel = {
     employeeId: 0,
     fullName: '',
@@ -101,8 +89,10 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.loading = true;
-    this.fetchSessionData();
-    this.getLeaveStatusesData(Number(this.employeeId));
+    // this.fetchSessionData();
+    const sessionObj = new FetchSessionData(this.auth, this.userStore);
+    sessionObj.fetchSessionData(this.initialUserSessionObj);
+    this.getLeaveStatusesData(Number(this.initialUserSessionObj.employeeId));
     this.fetchLeaveTypes();
   }
 
@@ -136,8 +126,10 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
   }
 
   fetchSelfRequestData() {
-    if (this.role !== 'Admin') {
-      this.initialLeaveRequestObj.employeeId = Number(this.employeeId);
+    if (this.initialUserSessionObj.role !== 'Admin') {
+      this.initialLeaveRequestObj.employeeId = Number(
+        this.initialUserSessionObj.employeeId
+      );
       this.leaveRequestService
         .getLeaveRequestsByRoles(
           this.lazyRequest.sortField,
@@ -164,51 +156,30 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
   getReason(reason: string) {
     showReasonDisplayMessage(reason);
   }
-  fetchSessionData() {
-    this.userStore.getFullNameFromStore().subscribe((val) => {
-      const fullNameFromToken = this.auth.getFullNameFromToken();
-      this.fullName = val || fullNameFromToken;
-      this.initialUserSessionObj.fullName = this.fullName;
-    });
-    this.userStore.getRoleFromStore().subscribe((val) => {
-      const roleFromToken = this.auth.getRoleFromToken();
-      this.role = val || roleFromToken;
-      this.initialUserSessionObj.role = this.role;
-    });
-    this.userStore.getEmailFromStore().subscribe((val) => {
-      const emailFromToken = this.auth.getEmailFromToken();
-      this.email = val || emailFromToken;
-      this.initialUserSessionObj.email = this.email;
-    });
-    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
-      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-      this.employeeId = val || employeeIdFromToken;
-      this.initialUserSessionObj.employeeId = Number(this.employeeId);
-    });
-  }
 
-  handleSearch() {
-    this.leaveRequestService
-      .getLeaveRequestsByRoles(
-        this.lazyRequest.sortField,
-        this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
-        this.pageNumber,
-        this.pageSize,
-        this.initialLeaveRequestObj,
-        this.searchKeyword
-      )
-      .subscribe({
-        next: (res) => {
-          this.selfLeaveRequests = res.data.dataArray;
-          this.totalCount = res.data.totalCount;
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-        },
-      });
-  }
+  // handleSearch() {
+  //   this.leaveRequestService
+  //     .getLeaveRequestsByRoles(
+  //       this.lazyRequest.sortField,
+  //       this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
+  //       this.pageNumber,
+  //       this.pageSize,
+  //       this.initialLeaveRequestObj,
+  //       this.searchKeyword
+  //     )
+  //     .subscribe({
+  //       next: (res) => {
+  //         this.selfLeaveRequests = res.data.dataArray;
+  //         this.totalCount = res.data.totalCount;
+  //         this.loading = false;
+  //         this.cdr.detectChanges();
+  //       },
+  //       error: (err) => {
+  //         errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+  //       },
+  //     });
+  // }
+
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
     this.loading = true;

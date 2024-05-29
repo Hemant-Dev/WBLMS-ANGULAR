@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import { errorAlert } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -23,11 +24,12 @@ export class ProfileComponent implements OnInit {
     managerName: '',
     roleId: 0,
   };
-  role!: string;
-  fullName!: string;
-  email!: string;
-  employeeId!: number;
-
+  initialUserSessionObj: UserSessionModel = {
+    employeeId: 0,
+    fullName: '',
+    email: '',
+    role: '',
+  };
   genderPicId: number = 3;
 
   constructor(
@@ -37,51 +39,29 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // debugger;
-    this.fetchSessionData();
-    // console.log('fetched session data');
-
+    // this.fetchSessionData();
+    const sessionObj = new FetchSessionData(this.auth, this.userStore);
+    sessionObj.fetchSessionData(this.initialUserSessionObj);
     this.getEmployeeData();
   }
 
   setGenderId() {
-    // console.log(this.genderPicId);
-    // console.log(this.employeeData.genderName);
     if (this.employeeData.genderName?.toLowerCase() === 'female') {
       this.genderPicId = 2;
     }
   }
 
   getEmployeeData() {
-    this.employeeService.getEmployeesById(this.employeeId).subscribe({
-      next: (res) => {
-        // console.log(res);
-        this.employeeData = res.data;
-        // console.log(this.employeeData);
-        this.setGenderId();
-      },
-      error: (err) => {
-        // console.log(err);
-        errorAlert('Connection Error');
-      },
-    });
-  }
-  fetchSessionData() {
-    this.userStore.getFullNameFromStore().subscribe((val) => {
-      const fullNameFromToken = this.auth.getFullNameFromToken();
-      this.fullName = val || fullNameFromToken;
-    });
-    this.userStore.getRoleFromStore().subscribe((val) => {
-      const roleFromToken = this.auth.getRoleFromToken();
-      this.role = val || roleFromToken;
-    });
-    this.userStore.getEmailFromStore().subscribe((val) => {
-      const emailFromToken = this.auth.getEmailFromToken();
-      this.email = val || emailFromToken;
-    });
-    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
-      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-      this.employeeId = val || employeeIdFromToken;
-    });
+    this.employeeService
+      .getEmployeesById(this.initialUserSessionObj.employeeId)
+      .subscribe({
+        next: (res) => {
+          this.employeeData = res.data;
+          this.setGenderId();
+        },
+        error: (err) => {
+          errorAlert('Connection Error');
+        },
+      });
   }
 }
