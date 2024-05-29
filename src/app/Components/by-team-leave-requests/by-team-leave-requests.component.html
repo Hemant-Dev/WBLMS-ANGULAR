@@ -3,8 +3,10 @@
     #dt2
     [value]="leaveRequests"
     [scrollable]="true"
-    scrollHeight="62vh"
+    scrollHeight="60vh"
     dataKey="id"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [paginator]="true"
     [rows]="lazyRequest.rows"
     [first]="lazyRequest.first"
@@ -102,6 +104,7 @@
 
     <ng-template pTemplate="header">
       <tr>
+        <th style="max-width: 100px">Sr. No</th>
         <th pSortableColumn="firstName">
           First Name <p-sortIcon field="firstName"></p-sortIcon>
         </th>
@@ -132,9 +135,12 @@
         <th>Actions</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-request>
+    <ng-template pTemplate="body" let-request let-rowIndex="rowIndex">
       <tr>
-        <td>{{ request.firstName | htmlDecode }}</td>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>
+          {{ request.firstName | htmlDecode }}
+        </td>
         <td>
           {{ request.lastName | htmlDecode }}
         </td>

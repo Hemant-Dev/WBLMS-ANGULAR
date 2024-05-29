@@ -7,6 +7,8 @@
     scrollHeight="60vh"
     dataKey="id"
     [paginator]="true"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [rows]="lazyRequest.rows"
     [first]="lazyRequest.first"
     [rowsPerPageOptions]="[5, 10, 15]"
@@ -22,8 +24,12 @@
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between">
-        <p-header *ngIf="role !== 'Admin'">Created Leave Requests</p-header>
-        <p-header *ngIf="role === 'Admin'">Employee Leave Requests</p-header>
+        <p-header *ngIf="initialUserSessionObj.role !== 'Admin'"
+          >Created Leave Requests</p-header
+        >
+        <p-header *ngIf="initialUserSessionObj.role === 'Admin'"
+          >Employee Leave Requests</p-header
+        >
         <!-- <input
           type="text"
           [(ngModel)]="searchKeyword"

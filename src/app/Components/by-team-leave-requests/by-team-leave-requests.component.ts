@@ -5,16 +5,17 @@ import {
   AfterViewChecked,
 } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
+import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import {
   errorAlert,
   errorToast,
   showReasonDisplayMessage,
   successToast,
 } from 'src/app/Helpers/swal';
-import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { UpdateRequestStatus } from 'src/app/Models/update-request-status';
+import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ByRolesService } from 'src/app/Services/by-roles.service';
 import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
@@ -30,10 +31,12 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   // List Of Requests
   leaveRequests!: LeaveRequestModel[];
   // Current User Session Details
-  role!: string;
-  fullName!: string;
-  email!: string;
-  employeeId!: string;
+  initialUserSessionObj: UserSessionModel = {
+    employeeId: 0,
+    fullName: '',
+    email: '',
+    role: '',
+  };
   // Obj to filter data if required
   initialLeaveRequestObj: LeaveRequestModel = {
     id: 0,
@@ -83,7 +86,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.loading = true;
-    this.fetchSessionData();
+    // this.fetchSessionData();
+    const sessionObj = new FetchSessionData(this.auth, this.userStore);
+    sessionObj.fetchSessionData(this.initialUserSessionObj);
     this.byRolesService.data$.subscribe((val) => {
       const getRoleFromService = this.byRolesService.role;
       this.initialLeaveRequestObj.roleName = val || getRoleFromService;
@@ -97,15 +102,19 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   fetchLeaveTypes() {
     this.leaveRequestService.getLeaveType().subscribe({
       next: (res) => {
-        // console.log(res);
         this.leaveTypes = res.data;
       },
     });
   }
   fetchByRoleLeaveRequestData() {
     // Only if a manager logs in other than admin
-    if (this.role === 'HR Manager' || this.role === 'Team Lead') {
-      this.initialLeaveRequestObj.managerId = Number(this.employeeId);
+    if (
+      this.initialUserSessionObj.role === 'HR Manager' ||
+      this.initialUserSessionObj.role === 'Team Lead'
+    ) {
+      this.initialLeaveRequestObj.managerId = Number(
+        this.initialUserSessionObj.employeeId
+      );
       this.initialLeaveRequestObj.roleName = '';
     }
     this.initialLeaveRequestObj.status = 'Pending';
@@ -125,31 +134,11 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
           this.totalCount = res.data.totalCount;
           this.loading = false;
           this.cdr.detectChanges();
-          // successToast(res.errorMessages);
         },
         error: (err) => {
           errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
         },
       });
-  }
-
-  fetchSessionData() {
-    this.userStore.getFullNameFromStore().subscribe((val) => {
-      const fullNameFromToken = this.auth.getFullNameFromToken();
-      this.fullName = val || fullNameFromToken;
-    });
-    this.userStore.getRoleFromStore().subscribe((val) => {
-      const roleFromToken = this.auth.getRoleFromToken();
-      this.role = val || roleFromToken;
-    });
-    this.userStore.getEmailFromStore().subscribe((val) => {
-      const emailFromToken = this.auth.getEmailFromToken();
-      this.email = val || emailFromToken;
-    });
-    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
-      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-      this.employeeId = val || employeeIdFromToken;
-    });
   }
 
   showReason(reason: string) {
@@ -211,29 +200,29 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  handleSearch() {
-    this.initialLeaveRequestObj.status = 'Pending';
-    this.leaveRequestService
-      .getLeaveRequestsByRoles(
-        this.lazyRequest.sortField,
-        this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
-        this.pageNumber,
-        this.pageSize,
-        this.initialLeaveRequestObj,
-        this.searchKeyword
-      )
-      .subscribe({
-        next: (res) => {
-          this.leaveRequests = res.data.dataArray;
-          this.totalCount = res.data.totalCount;
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-        },
-      });
-  }
+  // handleSearch() {
+  //   this.initialLeaveRequestObj.status = 'Pending';
+  //   this.leaveRequestService
+  //     .getLeaveRequestsByRoles(
+  //       this.lazyRequest.sortField,
+  //       this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
+  //       this.pageNumber,
+  //       this.pageSize,
+  //       this.initialLeaveRequestObj,
+  //       this.searchKeyword
+  //     )
+  //     .subscribe({
+  //       next: (res) => {
+  //         this.leaveRequests = res.data.dataArray;
+  //         this.totalCount = res.data.totalCount;
+  //         this.loading = false;
+  //         this.cdr.detectChanges();
+  //       },
+  //       error: (err) => {
+  //         errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+  //       },
+  //     });
+  // }
 
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);

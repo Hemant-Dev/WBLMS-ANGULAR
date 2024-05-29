@@ -9,7 +9,7 @@
   <a class="navbar-brand px-4" id="logo"> WBLMS </a>
   <div class="flex align-items-center">
     <p-tag>
-      {{ this.initialUserSessionObj.role }}
+      {{ this.initialUserSessionObj.role | htmlDecode }}
     </p-tag>
   </div>
   <!-- <div class="navbar-collapse">

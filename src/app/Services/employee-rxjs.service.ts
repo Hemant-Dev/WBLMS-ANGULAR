@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../ApiUrl';
 import { EmployeeModel } from '../Models/EmployeeModel';
 import { Observable, map } from 'rxjs';
-import { PaginatedModel } from '../Models/PaginatedModel';
 import { GenderModel } from '../Models/GenderModel';
 import { ManagerModel } from '../Models/ManagerModel';
 import { RolesModel } from '../Models/RolesModels';
