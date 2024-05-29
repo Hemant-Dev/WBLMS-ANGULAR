@@ -28,7 +28,7 @@ export class UserStoreService {
     return this.email$.asObservable();
   }
   public setEmailToStore(email: string) {
-    this.fullName$.next(email);
+    this.email$.next(email);
   }
   public getEmployeeIdFromStore() {
     return this.employeeId$.asObservable();

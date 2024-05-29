@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import { successToast } from 'src/app/Helpers/swal';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
     // this.fetchSessionData();
     const sessionObj = new FetchSessionData(this.auth, this.userStore);
     sessionObj.fetchSessionData(this.initialUserSessionObj);
+    console.log(this.initialUserSessionObj);
   }
 
   SideNavToggled() {

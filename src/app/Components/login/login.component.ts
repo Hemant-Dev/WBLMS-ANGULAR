@@ -70,20 +70,18 @@ export class LoginComponent implements OnInit {
           this.auth.storeRefreshToken(res.refreshToken);
           const tokenPayload = this.auth.decodedToken();
           console.log(tokenPayload);
-          this.userStore.setFullNameToStore(
-            EncodeForms.htmlDecode(tokenPayload.name)
-          );
+          this.userStore.setFullNameToStore(tokenPayload.name);
           this.userStore.setRoleToStore(tokenPayload.role);
           this.userStore.setEmailToStore(tokenPayload.email);
           this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
-          // this.router.navigate(['home/dashboard']);
-          window.location.href = 'home/dashboard';
+          // window.location.href = 'home/dashboard';
 
           successToast('Logged in successfully!');
+          this.router.navigate(['home/dashboard']);
         },
-        error: (err: Error) => {
-          //console.log(err);
-          //errorToast(err.message);
+        error: (err) => {
+          // console.log(err);
+          errorToast(err.error.errorMessages);
         },
       });
     } else {
@@ -108,14 +106,16 @@ export class LoginComponent implements OnInit {
         .sendResetPasswordLink(this.resetPasswordEmail)
         .subscribe({
           next: (res) => {
-            successToast('Reset Link sent Successfully!');
+            // console.log(res);
+            // successToast('Reset Link sent Successfully!');
+            successToast(res.errorMessages);
             this.resetPasswordEmail = '';
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
           },
-          // error: (err) => {
-          //   errorToast('Something went wrong');
-          // },
+          error: (err) => {
+            errorToast(err.error.errorMessages);
+          },
         });
     } else {
       errorToast('Invalid Email');
