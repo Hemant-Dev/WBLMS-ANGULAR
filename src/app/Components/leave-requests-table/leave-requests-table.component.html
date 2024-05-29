@@ -7,6 +7,8 @@
     scrollHeight="60vh"
     dataKey="id"
     [paginator]="true"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [rows]="lazyRequest.rows"
     [first]="lazyRequest.first"
     [rowsPerPageOptions]="[5, 10, 15]"
