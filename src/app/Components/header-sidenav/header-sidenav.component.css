@@ -1,4 +1,4 @@
-app-header {
+/* app-header {
   position: fixed;
   width: 100%;
   top: 0px;
@@ -36,11 +36,11 @@ app-side-nav {
 .display-area-shrink {
   width: calc(100% - 250px);
   left: 250px;
-}
+} */
 
 /* Ensure the body and html take up the full height */
 
-/* app-header {
+app-header {
   position: fixed;
   width: 100%;
   top: 0px;
@@ -75,4 +75,4 @@ app-side-nav {
   flex-grow: 1;
   transition: margin-left 250ms linear, width 250ms linear;
   margin-left: 20px;
-} */
+}
