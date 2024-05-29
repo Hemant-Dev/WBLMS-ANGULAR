@@ -42,9 +42,9 @@
         </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-employee #index>
+    <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">
       <tr>
-        <td>{{ 1 }}</td>
+        <td>{{ rowIndex+1 }}</td>
         <td>{{ employee.firstName | htmlDecode }}</td>
         <td>{{ employee.lastName | htmlDecode }}</td>
         <td>{{ employee.emailAddress | htmlDecode }}</td>

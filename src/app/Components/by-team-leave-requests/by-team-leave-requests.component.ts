@@ -79,7 +79,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     private userStore: UserStoreService,
     private auth: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -205,7 +205,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
             },
             error: (err) =>
               errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
-          });
+          }
+        );
       }
     });
   }

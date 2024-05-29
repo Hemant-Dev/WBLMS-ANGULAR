@@ -21,6 +21,7 @@ export class ShowAllEmployeesComponent implements OnInit {
   setBackgroundColor3: any = ['rgba(55, 201, 101, 0.2)'];
   currentPage: number = 1;
   pageSize: number = 10;
+  srNoIndex : number = ((this.currentPage - 1) * 10) + 1
   sortColumn: string = '';
   sortOrder: string = '';
   year: number = 2024;
@@ -58,6 +59,10 @@ export class ShowAllEmployeesComponent implements OnInit {
     "Balance Leave",
     "Total Leave"
   ];
+
+  inreaseSrNoValue(){
+    this.srNoIndex++;
+  }
 
   appliedLeaveRequests: number[] = [];
   acceptedLeaveRequests: number[] = [];
