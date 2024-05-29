@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { errorToast } from 'src/app/Helpers/swal';
 import { EmployeeLeaveReqModel } from 'src/app/Models/EmployeeLeaveReqModel';
 import {
   LeaveReqByYearModel,
@@ -21,7 +22,7 @@ export class ShowAllEmployeesComponent implements OnInit {
   setBackgroundColor3: any = ['rgba(55, 201, 101, 0.2)'];
   currentPage: number = 1;
   pageSize: number = 10;
-  srNoIndex : number = ((this.currentPage - 1) * 10) + 1
+  srNoIndex: number = (this.currentPage - 1) * 10 + 1;
   sortColumn: string = '';
   sortOrder: string = '';
   year: number = 2024;
@@ -41,27 +42,27 @@ export class ShowAllEmployeesComponent implements OnInit {
     roleName: '',
     managerId: 0,
     managerName: '',
-    joiningDate: "",
+    joiningDate: '',
     balanceLeaveRequest: 0,
-    totalLeaveRequest: 0
-  }
+    totalLeaveRequest: 0,
+  };
 
   tableHeader = [
-    "Sr. no.",
-    "First Name",
-    "Last Name",
-    "Email Address",
-    "Contact Number",
-    "Gender",
-    "Role Name",
-    "Manager Name",
-    "Joining Date",
-    "Balance Leave",
-    "Total Leave"
+    'Sr. no.',
+    'First Name',
+    'Last Name',
+    'Email Address',
+    'Contact Number',
+    'Gender',
+    'Role Name',
+    'Manager Name',
+    'Joining Date',
+    'Balance Leave',
+    'Total Leave',
   ];
-loading: boolean|undefined;
+  loading: boolean | undefined;
 
-  inreaseSrNoValue(){
+  inreaseSrNoValue() {
     this.srNoIndex++;
   }
 
@@ -74,36 +75,36 @@ loading: boolean|undefined;
   constructor(
     private employeeService: EmployeeRxjsService,
     private leaveReqService: LeaveRequestsService
-  ) { }
+  ) {}
   ngOnInit(): void {
     this.getLeaveRequestByYear();
     this.getEmployee();
     this.updateBarThickness();
     window.addEventListener('resize', this.updateBarThickness.bind(this));
   }
-  
+
   getLeaveRequestByYear() {
     this.leaveReqService.getLeaveRequestsByYear(this.year).subscribe({
       next: (response: any) => {
         console.log(response);
         this.leaveRequestByYear = response.data;
 
-        Object.values(response.data)
-          .forEach((monthData: any) => {
-            console.log(monthData.acceptedLeaveRequests)
+        Object.values(response.data).forEach((monthData: any) => {
+          console.log(monthData.acceptedLeaveRequests);
 
-            this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
-            this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
-            this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
-            this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
-          })
+          this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
+          this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
+          this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
+          this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
+        });
         this.barChart();
         // console.log(this.acceptedLeaveRequests)
       },
-      error: (error) => {
-        console.error('Error fetching leave requests by year:', error);
-      }
-    })
+      error: (err) => {
+        // console.error('Error fetching leave requests by year:', error);
+        errorToast(err.error.errorMessages);
+      },
+    });
   }
   getEmployee() {
     this.employeeService
@@ -116,9 +117,12 @@ loading: boolean|undefined;
       )
       .subscribe({
         next: (response: any) => {
-          console.log(response)
+          console.log(response);
           this.employeeData = response.data.dataArray;
-          console.log(this.employeeData)
+          console.log(this.employeeData);
+        },
+        error: (err) => {
+          errorToast(err.error.errorMessages);
         },
       });
   }
@@ -162,11 +166,11 @@ loading: boolean|undefined;
         {
           type: 'bar',
           label: 'Accepted Leaves',
-          
+
           backgroundColor: documentStyle.getPropertyValue('--green-700'), //this.setBackgroundColor3,//
           // data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
           data: this.acceptedLeaveRequests,
-          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
         },
         {
           type: 'bar',
@@ -180,16 +184,16 @@ loading: boolean|undefined;
           label: 'Pending Leaves',
           backgroundColor: documentStyle.getPropertyValue('--yellow-400'),
           data: this.pendingLeaveRequests,
-          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
         },
         {
           type: '',
           label: 'Total Leaves',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           data: this.appliedLeaveRequests,
-          barThickness: this.dynaminBarThickness // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
         },
-      ]
+      ],
     };
 
     this.options = {
@@ -232,28 +236,27 @@ loading: boolean|undefined;
       // },
       scales: {
         x: {
-            ticks: {
-                color: textColorSecondary,
-                font: {
-                    weight: 500
-                }
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
             },
-            grid: {
-                color: surfaceBorder,
-                drawBorder: true
-            }
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: true,
+          },
         },
         y: {
-            ticks: {
-                color: textColorSecondary
-            },
-            grid: {
-                color: surfaceBorder,
-                drawBorder: true
-            }
-        }
-
-    }
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: true,
+          },
+        },
+      },
     };
   }
 }

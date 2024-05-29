@@ -6,7 +6,11 @@ import {
 } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
-import { errorAlert, showReasonDisplayMessage } from 'src/app/Helpers/swal';
+import {
+  errorAlert,
+  errorToast,
+  showReasonDisplayMessage,
+} from 'src/app/Helpers/swal';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
@@ -63,7 +67,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     rejectedLeavesCount: 0,
     leavesRemaining: 0,
   };
-  // Obj to maintain var sent by the ng table
+  // Obj to maintain var sent by the ng prime table
   lazyRequest = {
     first: 0,
     rows: 0,
@@ -85,8 +89,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     private cdr: ChangeDetectorRef
   ) {}
 
-  bootstrap: any;
-
   ngOnInit() {
     this.loading = true;
     // this.fetchSessionData();
@@ -106,6 +108,9 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
         // console.log(res);
         this.leaveTypes = res.data;
       },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
   }
 
@@ -121,7 +126,8 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
       },
 
       error: (err) =>
-        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+        // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+        errorToast(err.error.errorMessages),
     });
   }
 
@@ -148,7 +154,8 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+            // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+            errorToast(err.error.errorMessages);
           },
         });
     }

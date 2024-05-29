@@ -82,7 +82,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     private userStore: UserStoreService,
     private auth: AuthService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -103,6 +103,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     this.leaveRequestService.getLeaveType().subscribe({
       next: (res) => {
         this.leaveTypes = res.data;
+      },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
       },
     });
   }
@@ -136,7 +139,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+          // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+          errorToast(err.error.errorMessages);
         },
       });
   }
@@ -166,7 +170,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
               this.fetchByRoleLeaveRequestData();
             },
             error: (err) =>
-              errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+              // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+              errorToast(err.error.errorMessages),
           });
       }
     });
@@ -193,9 +198,9 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
               this.fetchByRoleLeaveRequestData();
             },
             error: (err) =>
-              errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
-          }
-        );
+              // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+              errorToast(err.error.errorMessages),
+          });
       }
     });
   }

@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EncodeForms } from 'src/app/Helpers/encodeForms';
-import { successToast } from 'src/app/Helpers/swal';
+import { errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { ErrorModel } from 'src/app/Models/ErrorModel';
@@ -108,6 +108,9 @@ export class RegisterComponent implements OnInit {
               next: (response: any) => {
                 console.log(response);
               },
+              error: (err) => {
+                errorToast(err.error.errorMessages);
+              },
             });
         } catch (error) {
           console.log(error);
@@ -124,14 +127,17 @@ export class RegisterComponent implements OnInit {
                 successToast('Employee Added Successfully');
                 this.router.navigate(['home/dashboard']);
               },
+              error: (err) => {
+                errorToast(err.error.errorMessages);
+              },
             });
         } catch (error) {
           console.log(error);
         }
       }
-      console.log('submit');
+      // console.log('submit');
     } else {
-      console.log('invalid');
+      // console.log('invalid');
       ValidateForm.validateAllFormFields(this.registerForm);
     }
   }
@@ -178,6 +184,9 @@ export class RegisterComponent implements OnInit {
         this.gendersData = response.data;
         console.log(this.gendersData);
       },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
   }
   fetchRoles() {
@@ -188,7 +197,10 @@ export class RegisterComponent implements OnInit {
         this.roleData = this.roleData.filter(
           (role) => role.roleName != 'Admin'
         );
-        console.log(this.roleData);
+        // console.log(this.roleData);
+      },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
       },
     });
   }
@@ -203,6 +215,9 @@ export class RegisterComponent implements OnInit {
           console.log(this.initialEmployeeData.roleId);
           this.fetchManagers();
         },
+        error: (err) => {
+          errorToast(err.error.errorMessages);
+        },
       });
   }
   fetchManagers() {
@@ -212,6 +227,9 @@ export class RegisterComponent implements OnInit {
         console.log(response);
         this.managerData = response.data;
         console.log(this.managerData);
+      },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
       },
     });
   }

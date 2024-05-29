@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
-import { errorAlert } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit {
           this.setGenderId();
         },
         error: (err) => {
-          errorAlert('Connection Error');
+          errorToast(err.error.errorMessages);
         },
       });
   }

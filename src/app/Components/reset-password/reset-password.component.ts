@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   emailToReset!: string;
   emailToken!: string;
   forgetPasswordObj = new ForgetPasswordModel();
-  passwordNotSame! : boolean;
+  passwordNotSame!: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -30,12 +30,13 @@ export class ResetPasswordComponent implements OnInit {
     this.forgetPasswordForm = this.fb.group(
       {
         newPassword: [
-          null, 
-          [Validators.required,
+          null,
+          [
+            Validators.required,
             Validators.pattern(
               /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,25}$/
             ),
-          ]
+          ],
         ],
         confirmPassword: [null, Validators.required],
       }
@@ -50,22 +51,24 @@ export class ResetPasswordComponent implements OnInit {
         let uriToken = val['token'];
         this.emailToken = uriToken.replace(/ /g, '+');
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
-    
   }
 
   onSubmit() {
-    if(!this.isNewPWSameAsConfirmPW()){
-      errorToast("New Password and confirm password doesnt match")
+    if (!this.isNewPWSameAsConfirmPW()) {
+      errorToast('New Password and confirm password doesnt match');
       return;
     }
     if (this.forgetPasswordForm.valid) {
-      console.log(this.forgetPasswordForm)
-      console.log(this.forgetPasswordObj)
+      console.log(this.forgetPasswordForm);
+      console.log(this.forgetPasswordObj);
       this.forgetPasswordObj.email = this.emailToReset;
-      this.forgetPasswordObj.newPassword = this.forgetPasswordForm.value.newPassword;
-      // this.forgetPasswordObj.confirmPassword = 
+      this.forgetPasswordObj.newPassword =
+        this.forgetPasswordForm.value.newPassword;
+      // this.forgetPasswordObj.confirmPassword =
       this.forgetPasswordForm.value.confirmPassword;
       this.forgetPasswordObj.emailToken = this.emailToken;
       this.resetService.resetPassword(this.forgetPasswordObj).subscribe({
@@ -75,9 +78,8 @@ export class ResetPasswordComponent implements OnInit {
           this.router.navigate(['login']);
         },
         error: (err) => {
-          let parseErr = JSON.parse(err);
           // console.log(parseErr);
-          errorToast(parseErr.message);
+          errorToast(err.error.errorMessages);
         },
       });
     } else {
@@ -85,30 +87,26 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
-  isNewPWSameAsConfirmPW() : boolean{
-    var newPass = this.forgetPasswordForm.value.newPassword
-    var confirmPass = this.forgetPasswordForm.value.confirmPassword
+  isNewPWSameAsConfirmPW(): boolean {
+    var newPass = this.forgetPasswordForm.value.newPassword;
+    var confirmPass = this.forgetPasswordForm.value.confirmPassword;
     this.passwordNotSame = newPass == confirmPass;
     // console.log("this.passwordNotSame => "+ this.passwordNotSame)
-    
+
     return this.passwordNotSame;
   }
 
-  type : string = 'password';
-  isText : boolean = false;
-  eyeIcon : string = 'fa fa-eye-slash';
+  type: string = 'password';
+  isText: boolean = false;
+  eyeIcon: string = 'fa fa-eye-slash';
 
-  hideShowPassword(){
+  hideShowPassword() {
     this.isText = !this.isText;
 
-    this.isText 
+    this.isText
       ? (this.eyeIcon = 'fa fa-eye')
       : (this.eyeIcon = 'fa fa-eye-slash');
 
-    this.isText 
-      ? (this.type = 'text')
-      : (this.type = 'password') 
-
+    this.isText ? (this.type = 'text') : (this.type = 'password');
   }
-
 }

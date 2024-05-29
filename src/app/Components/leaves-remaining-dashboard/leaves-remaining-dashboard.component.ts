@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { errorToast } from 'src/app/Helpers/swal';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
@@ -38,6 +39,9 @@ export class LeavesRemainingDashboardComponent implements OnInit {
           this.getLeaveStatusesData(this.userSessionObj.employeeId);
         }
       },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
     if (
       this.userSessionObj.role !== 'Admin' &&
@@ -57,7 +61,7 @@ export class LeavesRemainingDashboardComponent implements OnInit {
       next: (data: any) => {
         this.leaveBalance = data.data;
       },
-      error: (err) => console.log(err),
+      error: (err) => errorToast(err.error.errorMessages),
     });
   }
   getLeaveStatusesData(employeeId: number) {
@@ -69,7 +73,7 @@ export class LeavesRemainingDashboardComponent implements OnInit {
           this.leaveBalance.balance -
           this.leaveStatusesCount.pendingLeavesCount;
       },
-      error: (err) => console.log(err),
+      error: (err) => errorToast(err.error.errorMessages),
     });
   }
 }

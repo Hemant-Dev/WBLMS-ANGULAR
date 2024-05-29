@@ -5,14 +5,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { EncodeForms } from 'src/app/Helpers/encodeForms';
-import {
-  errorAlert,
-  errorToast,
-  showReasonDisplayMessage,
-  successToast,
-} from 'src/app/Helpers/swal';
+import { errorAlert, errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { LeaveBalance } from 'src/app/Models/leave-balance';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
@@ -44,15 +38,14 @@ export class LeaveRequestComponent implements OnInit {
     new Date().getFullYear(),
     new Date().getMonth() + 3,
     new Date().getDate()
-  );;
+  );
   employeeId!: number;
   todayDate: any = new Date();
   todaysDateFormatted = this.formatDate(this.todayDate);
   leaveTypeData!: LeaveTypeModel[];
 
-
   ngOnInit(): void {
-    console.log(this.maxDate.getMonth())
+    console.log(this.maxDate.getMonth());
     this.getLeaveType();
     this.getDataFromUserStore();
     this.submitStatus = false;
@@ -76,14 +69,13 @@ export class LeaveRequestComponent implements OnInit {
     // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
     // this.setDate()
-   // this.todayDate = this.formatDate(this.todayDate);
+    // this.todayDate = this.formatDate(this.todayDate);
   }
 
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private userService: UserStoreService,
     private auth: AuthService,
-    private router: Router,
     private service: SharedServiceService,
     private fb: FormBuilder
   ) {}
@@ -107,8 +99,6 @@ export class LeaveRequestComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  
-
   getLeaveType() {
     this.leaveRequestService.getLeaveType().subscribe({
       next: (response: any) => {
@@ -123,6 +113,9 @@ export class LeaveRequestComponent implements OnInit {
         this.wonderbizHolidays = response.data;
         // console.log(this.wonderbizHolidays)
       },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
   }
 
@@ -132,8 +125,9 @@ export class LeaveRequestComponent implements OnInit {
         this.leaveBalance = data.data;
         // console.log(this.leaveBalance)
       },
-      error: (err) =>
-        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
   }
 
@@ -146,21 +140,28 @@ export class LeaveRequestComponent implements OnInit {
           (this.leaveStatusesCount.approvedLeavesCount +
             this.leaveStatusesCount.pendingLeavesCount);
       },
-      error: (err) =>
-        errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
     });
   }
 
   calculateLeaveDays() {
     const showHolidays: WonderbizHolidaysModel[] = [];
 
-    var startDate : Date | string = this.getValue('startDate') != "" ? this.formatDate(this.getValue('startDate')) : "";
-    var endDate = this.getValue('endDate') != "" ? this.formatDate(this.getValue('endDate')) : "";
+    var startDate: Date | string =
+      this.getValue('startDate') != ''
+        ? this.formatDate(this.getValue('startDate'))
+        : '';
+    var endDate =
+      this.getValue('endDate') != ''
+        ? this.formatDate(this.getValue('endDate'))
+        : '';
     if (startDate == '' || endDate == '') {
       return;
     }
 
-    console.log(typeof startDate)
+    console.log(typeof startDate);
 
     if (this.checkForHalfDayRemaining(startDate, showHolidays)) {
       return;
@@ -180,7 +181,7 @@ export class LeaveRequestComponent implements OnInit {
     //   start.setMinutes(0),
     //   start.setSeconds(0)
     // )
-    console.log(start)
+    console.log(start);
     let end = new Date(this.getValue('endDate'));
     let count = 0;
 
@@ -192,7 +193,7 @@ export class LeaveRequestComponent implements OnInit {
       )
     ) {
       this.halfDayIsDisable(startDate, endDate);
-      console.log(startDate, endDate)
+      console.log(startDate, endDate);
       while (start <= end) {
         const dayOfWeek = start.getDay();
         // console.log("start => ", start)
@@ -216,7 +217,7 @@ export class LeaveRequestComponent implements OnInit {
       if (start === end && this.getValue('isHalfDay')) {
         count = 0.5;
       }
-      if(startDate === this.todaysDateFormatted){
+      if (startDate === this.todaysDateFormatted) {
         count++;
       }
       this.leaveRequestForm.patchValue({
@@ -343,12 +344,12 @@ export class LeaveRequestComponent implements OnInit {
           this.leaveRequestForm.controls['reason'].value
         ),
       });
-      console.log(this.leaveRequestForm.value)
+      console.log(this.leaveRequestForm.value);
       this.leaveRequestForm.patchValue({
-        startDate : this.formatDate(this.getValue('startDate')),
-        endDate : this.formatDate(this.getValue('endDate')),
-      })
-      console.log(this.leaveRequestForm.value)
+        startDate: this.formatDate(this.getValue('startDate')),
+        endDate: this.formatDate(this.getValue('endDate')),
+      });
+      console.log(this.leaveRequestForm.value);
       // return;
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
@@ -363,8 +364,9 @@ export class LeaveRequestComponent implements OnInit {
             this.leaveRequestForm.reset();
             this.ngOnInit();
           },
-          error: (err) =>
-            errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
+          error: (err) => {
+            errorToast(err.error.errorMessages);
+          },
         });
     } else {
       // console.log(this.leaveRequestForm.value)
