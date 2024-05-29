@@ -67,11 +67,15 @@ const routes: Routes = [
             canActivate: [AdminGuard],
           },
           {
-            path: 'employee',
+            path: 'hr-manager',
             component: ByTeamLeaveRequestsComponent,
             canActivate: [AdminGuard],
           },
-          
+          {
+            path: 'developer',
+            component: ByTeamLeaveRequestsComponent,
+            canActivate: [AdminGuard],
+          },
         ],
       },
       { path: 'employee', component: EmployeeComponent },

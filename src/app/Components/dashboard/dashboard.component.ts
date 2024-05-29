@@ -88,16 +88,20 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  handleHRLeaveRequestClick() {
-    this.byRolesService.changeData('HR');
-    this.byRolesService.saveData('HR');
+  handleHRManagerLeaveRequestClick() {
+    this.byRolesService.changeData('HR Manager');
+    this.byRolesService.saveData('HR Manager');
   }
   handleTeamLeadLeaveRequestClick() {
     this.byRolesService.changeData('Team Lead');
     this.byRolesService.saveData('Team Lead');
   }
-  handleEmployeeLeaveRequestClick() {
-    this.byRolesService.changeData('Employee');
-    this.byRolesService.saveData('Employee');
+  handleDeveloperLeaveRequestClick() {
+    this.byRolesService.changeData('Developer');
+    this.byRolesService.saveData('Developer');
+  }
+  handleHRLeaveRequestClick() {
+    this.byRolesService.changeData('HR');
+    this.byRolesService.saveData('HR');
   }
 }

@@ -1,9 +1,24 @@
 .card-deck {
-  min-height: 15vh;
+  min-height: 4.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
 }
 .card {
   min-height: 100%;
+}
+
+.leaves-taken-card {
+  background-color: #fefce8;
+}
+
+.leaves-notapproved-card {
+  background-color: #f0fdf4;
+}
+
+.leaves-remaining-card {
+  background-color: #eff6ff;
+}
+.leaves-total-card {
+  background-color: #fef2f2;
 }

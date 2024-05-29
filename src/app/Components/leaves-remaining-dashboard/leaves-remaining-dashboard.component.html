@@ -1,46 +1,167 @@
-<div class="row card-deck" *ngIf="this.userSessionObj.role !== 'Admin'">
-  <div class="col-sm-3">
-    <div class="card bg-info">
-      <div class="card-body">
+<div class="row flex-wrap" *ngIf="this.userSessionObj.role !== 'Admin'">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-warning">
+      <div
+        class="leaves-taken-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Taken</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveStatusesCount.approvedLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          styleClass="leavesKnob"
+          [(ngModel)]="leaveStatusesCount.approvedLeavesCount"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#eab308"
+          rangeColor="#fde047"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-warning">
-      <div class="card-body">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-success">
+      <div
+        class="leaves-notapproved-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Not Approved</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveStatusesCount.pendingLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leaveStatusesCount.pendingLeavesCount"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#22c55e"
+          rangeColor="#86efac"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-danger">
-      <div class="card-body">
+  <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-primary">
+      <div
+        class="leaves-remaining-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Leaves Remaining</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveBalance.balance - leaveStatusesCount.pendingLeavesCount }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leavesRemaining"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#3b82f6"
+          rangeColor="#93c5fd"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-3">
-    <div class="card bg-success">
-      <div class="card-body">
+  <div class="col-col-xl-3 col-md-6 col-lg-3 col-sm-12">
+    <div class="card border-3 border-danger">
+      <div
+        class="leaves-total-card card-body d-flex align-items-center justify-content-evenly"
+      >
         <h5 class="card-title">Total Leaves</h5>
-        <p class="card-text">
+        <!-- <p class="card-text">
           {{ leaveBalance.totalLeaves }}
-        </p>
+        </p> -->
+        <p-knob
+          [(ngModel)]="leaveBalance.totalLeaves"
+          [readonly]="true"
+          [min]="0"
+          [max]="leaveBalance.totalLeaves"
+          [strokeWidth]="6"
+          valueColor="#ef4444"
+          rangeColor="#fca5a5"
+          textColor="black"
+        ></p-knob>
       </div>
     </div>
   </div>
 </div>
 <!-- Things to make dynamic 1. card bg- 2.card-title 3. card-text 4. col-sm- -->
+<!-- <div class="col-12 lg:col-6 xl:col-3">
+  <div class="card mb-0">
+    <div class="flex justify-content-between mb-3">
+      <div>
+        <span class="block text-500 font-medium mb-3">Orders</span>
+        <div class="text-900 font-medium text-xl">152</div>
+      </div>
+      <div
+        class="flex align-items-center justify-content-center bg-blue-100 border-round"
+        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+      >
+        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+      </div>
+    </div>
+    <span class="text-green-500 font-medium">24 new </span>
+    <span class="text-500">since last visit</span>
+  </div>
+</div>
+<div class="col-12 lg:col-6 xl:col-3">
+  <div class="card mb-0">
+    <div class="flex justify-content-between mb-3">
+      <div>
+        <span class="block text-500 font-medium mb-3">Revenue</span>
+        <div class="text-900 font-medium text-xl">$2.100</div>
+      </div>
+      <div
+        class="flex align-items-center justify-content-center bg-orange-100 border-round"
+        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+      >
+        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+      </div>
+    </div>
+    <span class="text-green-500 font-medium">%52+ </span>
+    <span class="text-500">since last week</span>
+  </div>
+</div>
+<div class="col-12 lg:col-6 xl:col-3">
+  <div class="card mb-0">
+    <div class="flex justify-content-between mb-3">
+      <div>
+        <span class="block text-500 font-medium mb-3">Customers</span>
+        <div class="text-900 font-medium text-xl">28441</div>
+      </div>
+      <div
+        class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+      >
+        <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+      </div>
+    </div>
+    <span class="text-green-500 font-medium">520 </span>
+    <span class="text-500">newly registered</span>
+  </div>
+</div>
+<div class="col-12 lg:col-6 xl:col-3">
+  <div class="card mb-0">
+    <div class="flex justify-content-between mb-3">
+      <div>
+        <span class="block text-500 font-medium mb-3">Comments</span>
+        <div class="text-900 font-medium text-xl">152 Unread</div>
+      </div>
+      <div
+        class="flex align-items-center justify-content-center bg-purple-100 border-round"
+        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+      >
+        <i class="pi pi-comment text-purple-500 text-xl"></i>
+      </div>
+    </div>
+    <span class="text-green-500 font-medium">85 </span>
+    <span class="text-500">responded</span>
+  </div>
+</div> -->

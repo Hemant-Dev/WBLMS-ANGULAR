@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EncodeForms } from 'src/app/Helpers/encodeForms';
 import { errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -69,7 +70,9 @@ export class LoginComponent implements OnInit {
           this.auth.storeRefreshToken(res.refreshToken);
           const tokenPayload = this.auth.decodedToken();
           console.log(tokenPayload);
-          this.userStore.setFullNameToStore(tokenPayload.name);
+          this.userStore.setFullNameToStore(
+            EncodeForms.htmlDecode(tokenPayload.name)
+          );
           this.userStore.setRoleToStore(tokenPayload.role);
           this.userStore.setEmailToStore(tokenPayload.email);
           this.userStore.setEmployeeIdToStore(tokenPayload.employeeId);
