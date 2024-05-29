@@ -35,7 +35,7 @@ export class TokenInterceptor implements HttpInterceptor {
             return this.handleUnAuthorizedError(request, next);
           }
           if (err.status === 403) {
-            console.log(err.status);
+            errorAlert('Forbidden Request');
           }
           if (err.status === 0) {
             // console.log(err.message);
