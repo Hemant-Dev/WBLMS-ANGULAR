@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content" style="z-index: 99">
   <div class="modal-header">
     <h5 class="modal-title" id="addLeaveRequestModalLabel">
       Leave Request Form
@@ -83,7 +83,7 @@
           >*Leave reason exceed max length</small
         >
       </div>
-      <div  class="row mb-3">
+      <div class="row mb-3">
         <div
           class="col input-field"
           [class.error]="
@@ -102,7 +102,7 @@
           <!-- <p-calendar dateFormat="0001-01-01" formControlName="startDate" (change)="calculateLeaveDays()" [readonlyInput]="true"></p-calendar> -->
           <!-- <p-calendar  (onSelect)="calculateLeaveDays()"  dateFormat="yy-mm-dd" [minDate]="minDate" [maxDate]="maxDate" formControlName="startDate"></p-calendar> -->
           <p-calendar
-          
+            styleClass="my-calender"
             (onSelect)="calculateLeaveDays()"
             dateFormat="yy-mm-dd"
             [minDate]="minDate"

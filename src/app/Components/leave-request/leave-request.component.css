@@ -5,14 +5,14 @@
   max-height: 150px;
   overflow-y: auto;
 }
- /* .input-field.error {
+/* .input-field.error {
   border: 1px solid red;
   color: red;
 }   */
 .calendar-expanded {
   flex-wrap: wrap;
   width: 50px;
-  height: 100px; 
+  height: 100px;
   size: 100px;
 }
 .input-field.error .form-select,
@@ -38,4 +38,19 @@
 .form-control:focus {
   border-color: #80bdff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+:host ::ng-deep {
+  .my-calender {
+    min-width: 100px;
+    max-width: 200px;
+    z-index: 100;
+  }
+
+  .calendar-expanded {
+    size: 100px;
+    max-width: 100px;
+    width: 100px;
+    height: fit-content;
+  }
 }

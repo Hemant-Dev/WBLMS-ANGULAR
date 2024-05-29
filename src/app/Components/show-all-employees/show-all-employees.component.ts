@@ -120,11 +120,11 @@ export class ShowAllEmployeesComponent implements OnInit {
   updateBarThickness() {
     const width = window.innerWidth;
     if (width < 768) {
-      this.dynaminBarThickness = 20; // Small screens
+      this.dynaminBarThickness = 20;
     } else if (width < 1024) {
-      this.dynaminBarThickness = 40; // Medium screens
+      this.dynaminBarThickness = 40;
     } else {
-      this.dynaminBarThickness = 60; // Large screens
+      this.dynaminBarThickness = 60;
     }
     this.barChart();
   }
