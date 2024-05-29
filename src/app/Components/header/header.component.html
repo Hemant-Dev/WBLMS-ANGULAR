@@ -8,16 +8,8 @@
 
   <a class="navbar-brand px-4" id="logo"> WBLMS </a>
   <div class="flex align-items-center">
-    <!-- <p-chip styleClass="pl-0 pr-3"> -->
-    <!-- <span
-        class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center"
-      >
-        P
-      </span> -->
-    <!-- <span class="font-medium"> {{role}} </span>
-    </p-chip> -->
     <p-tag>
-      {{ role }}
+      {{ this.initialUserSessionObj.role }}
     </p-tag>
   </div>
   <!-- <div class="navbar-collapse">
@@ -38,11 +30,7 @@
         </ul>
       </li>
     </ul>
-  </div>
-  <form class="d-flex me-5">
-    <input type="search" placeholder="Search" class="form-control me-2" />
-    <button class="btn btn-outline-light" type="submit">Search</button>
-  </form> -->
+  </div> -->
 
   <div class="profile-logo dropstart ms-auto">
     <p-chip
@@ -50,7 +38,7 @@
       class="btn btn-outline-light dropdown-toggle pointer-cursor"
       class=".bg-dark"
       data-bs-toggle="dropdown"
-      label="{{ fullName | htmlDecode }}"
+      label="{{ this.initialUserSessionObj.fullName | htmlDecode }}"
       image="../../../assets/img/WBLMS-logo.jfif"
       alt="Avatar image"
     />

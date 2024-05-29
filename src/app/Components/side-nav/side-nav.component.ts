@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
+import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
 
@@ -9,10 +11,12 @@ import { UserStoreService } from 'src/app/Services/user-store.service';
   styleUrls: ['./side-nav.component.css'],
 })
 export class SideNavComponent implements OnInit {
-  role!: string;
-  fullName!: string;
-  email!: string;
-  employeeId!: string;
+  initialUserSessionObj: UserSessionModel = {
+    employeeId: 0,
+    fullName: '',
+    email: '',
+    role: '',
+  };
   list = [
     {
       number: '1',
@@ -52,33 +56,13 @@ export class SideNavComponent implements OnInit {
   ];
   filteredList: any[] = [];
   @Input() sideNavStatus: boolean = false;
-  constructor(
-    private auth: AuthService,
-    private userStore: UserStoreService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService, private userStore: UserStoreService) {}
   ngOnInit(): void {
-    this.fetchSessionData();
+    // this.fetchSessionData();
+    const sessionObj = new FetchSessionData(this.auth, this.userStore);
+    sessionObj.fetchSessionData(this.initialUserSessionObj);
     this.filteredList = this.list.filter((item) => {
-      return item.role.includes(this.role);
-    });
-  }
-  fetchSessionData() {
-    this.userStore.getFullNameFromStore().subscribe((val) => {
-      const fullNameFromToken = this.auth.getFullNameFromToken();
-      this.fullName = val || fullNameFromToken;
-    });
-    this.userStore.getRoleFromStore().subscribe((val) => {
-      const roleFromToken = this.auth.getRoleFromToken();
-      this.role = val || roleFromToken;
-    });
-    this.userStore.getEmailFromStore().subscribe((val) => {
-      const emailFromToken = this.auth.getEmailFromToken();
-      this.email = val || emailFromToken;
-    });
-    this.userStore.getEmployeeIdFromStore().subscribe((val) => {
-      const employeeIdFromToken = this.auth.getEmployeeIdFromToken();
-      this.employeeId = val || employeeIdFromToken;
+      return item.role.includes(this.initialUserSessionObj.role);
     });
   }
 }
