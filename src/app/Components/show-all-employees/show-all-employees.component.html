@@ -23,13 +23,13 @@
     <ng-template pTemplate="body" let-employee #index>
       <tr>
         <td>{{ 1 }}</td>
-        <td>{{ employee.firstName }}</td>
-        <td>{{ employee.lastName }}</td>
-        <td>{{ employee.emailAddress }}</td>
-        <td>{{ employee.contactNumber }}</td>
-        <td>{{ employee.genderName }}</td>
-        <td>{{ employee.roleName }}</td>
-        <td>{{ employee.managerName }}</td>
+        <td>{{ employee.firstName | htmlDecode }}</td>
+        <td>{{ employee.lastName | htmlDecode }}</td>
+        <td>{{ employee.emailAddress | htmlDecode }}</td>
+        <td>{{ employee.contactNumber | htmlDecode }}</td>
+        <td>{{ employee.genderName | htmlDecode }}</td>
+        <td>{{ employee.roleName | htmlDecode }}</td>
+        <td>{{ employee.managerName | htmlDecode }}</td>
         <td>{{ employee.joiningDate }}</td>
         <td>{{ employee.balanceLeaveRequest }}</td>
         <td>{{ employee.totalLeaveRequest }}</td>

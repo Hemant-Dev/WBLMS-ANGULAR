@@ -104,7 +104,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
   fetchByRoleLeaveRequestData() {
     // Only if a manager logs in other than admin
-    if (this.role !== 'Employee' && this.role !== 'Admin') {
+    if (this.role === 'HR Manager' || this.role === 'Team Lead') {
       this.initialLeaveRequestObj.managerId = Number(this.employeeId);
       this.initialLeaveRequestObj.roleName = '';
     }
@@ -120,7 +120,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
       )
       .subscribe({
         next: (res: any) => {
-          // console.log(res);
+          console.log(res);
           this.leaveRequests = res.data.dataArray;
           this.totalCount = res.data.totalCount;
           this.loading = false;

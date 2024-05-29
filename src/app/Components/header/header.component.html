@@ -45,21 +45,12 @@
   </form> -->
 
   <div class="profile-logo dropstart ms-auto">
-    <!-- <button
-      class="btn btn-outline-light dropdown-toggle"
-      data-bs-toggle="dropdown"
-    >
-    image="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava{{
-        2
-      }}.webp"
-      {{ fullName }}
-    </button> -->
     <p-chip
       styleClass="profile-logo"
       class="btn btn-outline-light dropdown-toggle pointer-cursor"
       class=".bg-dark"
       data-bs-toggle="dropdown"
-      label="{{ fullName }}"
+      label="{{ fullName | htmlDecode }}"
       image="../../../assets/img/WBLMS-logo.jfif"
       alt="Avatar image"
     />

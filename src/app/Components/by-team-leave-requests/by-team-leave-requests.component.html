@@ -134,9 +134,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-request>
       <tr>
-        <td>{{ request.firstName }}</td>
+        <td>{{ request.firstName | htmlDecode }}</td>
         <td>
-          {{ request.lastName }}
+          {{ request.lastName | htmlDecode }}
         </td>
         <td>{{ request.leaveType }}</td>
         <td
@@ -146,7 +146,7 @@
           data-placement="top"
           (click)="showReason(request.reason)"
         >
-          {{ request.reason.slice(0, 10) }}...
+          {{ request.reason.slice(0, 10) | htmlDecode }}...
         </td>
         <td>
           <p-tag

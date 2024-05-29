@@ -6,6 +6,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EncodeForms } from 'src/app/Helpers/encodeForms';
 import { successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
@@ -55,7 +56,7 @@ export class RegisterComponent implements OnInit {
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
   registerForm!: FormGroup;
 
   ngOnInit() {
@@ -93,6 +94,11 @@ export class RegisterComponent implements OnInit {
 
   async handleSubmit() {
     console.log(this.registerForm.value);
+    this.registerForm.patchValue({
+      firstName: EncodeForms.htmlEncode(this.getValue('firstName')),
+      lastName: EncodeForms.htmlEncode(this.getValue('lastName')),
+    });
+
     if (this.registerForm.valid) {
       if (this.initialEmployeeData.id) {
         try {
@@ -108,7 +114,7 @@ export class RegisterComponent implements OnInit {
         }
       } else {
         try {
-          console.log("Submit")
+          // console.log('Submit');
           this.employeeService
             .createEmployees(this.registerForm.value)
             .subscribe({
@@ -138,6 +144,9 @@ export class RegisterComponent implements OnInit {
   onNameChange(event: any) {
     const newVal = event.target.value;
     console.log(newVal);
+  }
+  getValue(name: string): any {
+    return this.registerForm.get(name)?.value;
   }
 
   hideShowPassword() {
@@ -176,7 +185,9 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         console.log(response);
         this.roleData = response.data;
-        this.roleData = this.roleData.filter(role => role.roleName != 'Admin');
+        this.roleData = this.roleData.filter(
+          (role) => role.roleName != 'Admin'
+        );
         console.log(this.roleData);
       },
     });

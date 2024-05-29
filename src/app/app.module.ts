@@ -38,6 +38,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
 import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
 import { KnobModule } from 'primeng/knob';
+import { HtmlDecodePipe } from './Pipes/html-decode.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +60,7 @@ import { KnobModule } from 'primeng/knob';
     ByTeamLeaveRequestsComponent,
     ShowAllEmployeesComponent,
     HTMLEncodePipe,
+    HtmlDecodePipe,
   ],
   imports: [
     BrowserModule,

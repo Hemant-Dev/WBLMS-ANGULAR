@@ -37,7 +37,6 @@
           <i class="fa fa-search"></i>
         </button> -->
         <button
-        
           style="z-index: 1"
           class="btn btn-primary me-4"
           data-bs-toggle="modal"
@@ -162,7 +161,7 @@
           title="Click to see Reason"
           (click)="getReason(request.reason)"
         >
-          {{ request.reason.slice(0, 10) }}...
+          {{ request.reason.slice(0, 10) | htmlDecode }}...
         </td>
         <td>
           <p-tag

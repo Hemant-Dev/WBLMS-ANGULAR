@@ -46,24 +46,11 @@ export class LeaveRequestsService {
     leaveReqObj: LeaveRequestModel,
     searchKeyword?: string
   ): Observable<any> {
-    return this.http
-      .post<any>(
-        this.leave_api_url +
-          `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}&searchKeyword=${searchKeyword}`,
-        leaveReqObj
-      )
-      .pipe(
-        map((res: any) => {
-          res.data.dataArray = res.data.dataArray.filter(
-            (data: LeaveRequestModel) => ({
-              firstName: EncodeForms.htmlDecode(data.firstName || ''),
-              lastName: EncodeForms.htmlDecode(data.lastName || ''),
-              reason: EncodeForms.htmlDecode(data.reason || ''),
-            })
-          );
-          return res;
-        })
-      );
+    return this.http.post<any>(
+      this.leave_api_url +
+        `/byRoles?sortColumn=${sortColumn}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}&searchKeyword=${searchKeyword}`,
+      leaveReqObj
+    );
   }
 
   getLeaveRequestsByYear(year: number): Observable<LeaveReqByYearModel> {
