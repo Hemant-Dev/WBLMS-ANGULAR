@@ -32,19 +32,23 @@ export class LeaveRequestComponent implements OnInit {
   updateLeaveDaysDebounced: any;
   @Output() submitLeaveRequestClicked: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  submitStatus: boolean = false;
+  submitStatus: boolean = true;
 
   leaveRequestForm!: FormGroup;
   wonderbizHolidays!: WonderbizHolidaysModel[];
   leaveBalance!: LeaveBalance;
   leaveStatusesCount!: LeaveStatusesCount;
-
+  isCalendarExpanded = false;
   minDate: Date = new Date();
   maxDate: Date = new Date(
     new Date().getFullYear(),
     new Date().getMonth() + 3,
     new Date().getDate()
   );;
+  employeeId!: number;
+  todayDate: any = new Date();
+  todaysDateFormatted = this.formatDate(this.todayDate);
+  leaveTypeData!: LeaveTypeModel[];
 
 
   ngOnInit(): void {
@@ -84,6 +88,14 @@ export class LeaveRequestComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
+  expandCalendar() {
+    this.isCalendarExpanded = true;
+  }
+
+  shrinkCalendar() {
+    this.isCalendarExpanded = false;
+  }
+
   submitButtonClicked() {
     this.submitStatus = !this.submitStatus;
     this.submitLeaveRequestClicked.emit(this.submitStatus);
@@ -95,9 +107,7 @@ export class LeaveRequestComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  employeeId!: number;
-  todayDate: any = new Date();
-  leaveTypeData!: LeaveTypeModel[];
+  
 
   getLeaveType() {
     this.leaveRequestService.getLeaveType().subscribe({
@@ -144,11 +154,13 @@ export class LeaveRequestComponent implements OnInit {
   calculateLeaveDays() {
     const showHolidays: WonderbizHolidaysModel[] = [];
 
-    var startDate = this.getValue('startDate') != "" ? this.formatDate(this.getValue('startDate')) : "";
+    var startDate : Date | string = this.getValue('startDate') != "" ? this.formatDate(this.getValue('startDate')) : "";
     var endDate = this.getValue('endDate') != "" ? this.formatDate(this.getValue('endDate')) : "";
     if (startDate == '' || endDate == '') {
       return;
     }
+
+    console.log(typeof startDate)
 
     if (this.checkForHalfDayRemaining(startDate, showHolidays)) {
       return;
@@ -163,6 +175,12 @@ export class LeaveRequestComponent implements OnInit {
       return;
     }
     let start = new Date(this.getValue('startDate'));
+    // start = new Date(
+    //   start.setHours(0),
+    //   start.setMinutes(0),
+    //   start.setSeconds(0)
+    // )
+    console.log(start)
     let end = new Date(this.getValue('endDate'));
     let count = 0;
 
@@ -174,6 +192,7 @@ export class LeaveRequestComponent implements OnInit {
       )
     ) {
       this.halfDayIsDisable(startDate, endDate);
+      console.log(startDate, endDate)
       while (start <= end) {
         const dayOfWeek = start.getDay();
         // console.log("start => ", start)
@@ -196,6 +215,9 @@ export class LeaveRequestComponent implements OnInit {
       }
       if (start === end && this.getValue('isHalfDay')) {
         count = 0.5;
+      }
+      if(startDate === this.todaysDateFormatted){
+        count++;
       }
       this.leaveRequestForm.patchValue({
         numberOfLeaveDays: count,

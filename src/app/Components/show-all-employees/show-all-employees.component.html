@@ -1,38 +1,12 @@
-<!-- <div class="container flex-wrap">
-  <h1 class="text-align-center">Employee Leave Calender</h1>
-</div> -->
 <div *ngIf="'Admin' === 'Admin'">
+  <h2 style="text-align: center;">Admin Dashboard</h2>
   <div class="card" class="card">
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col-sm-6">
-    <h2 class="text-center">Employee</h2>
-    <table class="table table-bordered table-hover"> 
-      <thead>
-        <tr>
-          <th scope="col" *ngFor="let header of tableHeader">
-            {{ header }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let employee of employeesList">
-          <td>{{ employee.firstName }}</td>
-          <td>{{ employee.lastName }}</td>
-          <td>{{ employee.emailAddress }}</td>
-          <td>{{ employee.contactNumber }}</td>
-          <td>{{ employee.genderName }}</td>
-          <td>{{ employee.roleName }}</td>
-          <td>{{ employee.managerName }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div> -->
 
 <div class="card">
+  <h2 style="text-align: center;">Admin Dashboard</h2>
   <p-table [value]="employeeData" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>

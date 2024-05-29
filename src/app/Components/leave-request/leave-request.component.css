@@ -9,7 +9,12 @@
   border: 1px solid red;
   color: red;
 }   */
-
+.calendar-expanded {
+  flex-wrap: wrap;
+  width: 50px;
+  height: 100px; 
+  size: 100px;
+}
 .input-field.error .form-select,
 .input-field.error .form-control,
 .input-field.error .form-check-input {

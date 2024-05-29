@@ -72,6 +72,8 @@ export class ShowAllEmployeesComponent implements OnInit {
   ngOnInit(): void {
     this.getLeaveRequestByYear();
     this.getEmployee();
+    this.updateBarThickness();
+    window.addEventListener('resize', this.updateBarThickness.bind(this));
   }
 
   getLeaveRequestByYear() {
@@ -115,7 +117,17 @@ export class ShowAllEmployeesComponent implements OnInit {
       });
   }
 
-
+  updateBarThickness() {
+    const width = window.innerWidth;
+    if (width < 768) {
+      this.dynaminBarThickness = 20; // Small screens
+    } else if (width < 1024) {
+      this.dynaminBarThickness = 40; // Medium screens
+    } else {
+      this.dynaminBarThickness = 60; // Large screens
+    }
+    this.barChart();
+  }
 
   barChart() {
     const documentStyle = getComputedStyle(document.documentElement);
