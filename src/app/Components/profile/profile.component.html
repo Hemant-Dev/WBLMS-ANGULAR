@@ -18,15 +18,20 @@
           </h5>
           <p class="text-muted mb-1">{{ employeeData.roleName }}</p>
           <p class="text-muted mb-4">{{ employeeData.genderName }}</p>
-          <div class="d-flex justify-content-center mb-2">
-            <!-- <button
-              type="button"
+          <form
+            (ngSubmit)="handleFileUpload()"
+            class="d-flex justify-content-center mb-2"
+          >
+            <input type="file" (change)="onUpload($event)" name="imageFile" />
+            <button
+              type="submit"
               data-mdb-button-init
               data-mdb-ripple-init
-              class="btn btn-primary"
+              class="btn btn-outline-primary ms-1"
             >
-              Update
+              Submit
             </button>
+            <!-- 
             <button
               type="button"
               data-mdb-button-init
@@ -35,7 +40,7 @@
             >
               Message
             </button> -->
-          </div>
+          </form>
         </div>
       </div>
     </div>

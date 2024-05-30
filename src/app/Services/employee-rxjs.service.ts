@@ -84,4 +84,11 @@ export class EmployeeRxjsService {
   getRoles(): Observable<RolesModel[]> {
     return this.http.get<RolesModel[]>(this.api_url + `/roles`);
   }
+
+  imageUpload(employeeId: number, imageFile: any): Observable<any> {
+    return this.http.post<any>(
+      this.api_url + `/profilePicUpload?employeeId=${employeeId}`,
+      imageFile
+    );
+  }
 }

@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
-import { errorAlert, errorToast } from 'src/app/Helpers/swal';
+import { errorToast, successToast } from 'src/app/Helpers/swal';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -17,6 +16,7 @@ export class ProfileComponent implements OnInit {
     id: 0,
     firstName: '',
     lastName: '',
+    profilePic: '',
     emailAddress: '',
     contactNumber: '',
     genderName: '',
@@ -30,8 +30,8 @@ export class ProfileComponent implements OnInit {
     email: '',
     role: '',
   };
+  file: any;
   genderPicId: number = 3;
-
   constructor(
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService,
@@ -61,6 +61,24 @@ export class ProfileComponent implements OnInit {
         },
         error: (err) => {
           errorToast(err.error.errorMessages);
+        },
+      });
+  }
+  onUpload(event: any) {
+    if (event.target.files.length > 0) {
+      this.file = event.target.files[0];
+    }
+  }
+  handleFileUpload() {
+    console.log(this.file);
+    this.employeeService
+      .imageUpload(this.employeeData.id, this.file)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
         },
       });
   }

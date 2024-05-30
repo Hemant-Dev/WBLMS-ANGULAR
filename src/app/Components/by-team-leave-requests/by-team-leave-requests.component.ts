@@ -5,6 +5,7 @@ import {
   AfterViewChecked,
 } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
+import { EncodeForms } from 'src/app/Helpers/encodeForms';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import {
   errorAlert,
@@ -249,11 +250,17 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     if (this.selectedFields) {
       this.selectedFields.forEach((header) => {
         if (header === 'firstName')
-          this.initialLeaveRequestObj.firstName = this.searchKeyword;
+          this.initialLeaveRequestObj.firstName = EncodeForms.htmlEncode(
+            this.searchKeyword
+          );
         else if (header === 'lastName')
-          this.initialLeaveRequestObj.lastName = this.searchKeyword;
+          this.initialLeaveRequestObj.lastName = EncodeForms.htmlEncode(
+            this.searchKeyword
+          );
         else if (header === 'reason')
-          this.initialLeaveRequestObj.reason = this.searchKeyword;
+          this.initialLeaveRequestObj.reason = EncodeForms.htmlEncode(
+            this.searchKeyword
+          );
         else if (
           header === 'numberOfLeaveDays' &&
           typeof Number(this.searchKeyword) === 'number' &&
@@ -262,8 +269,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
           this.initialLeaveRequestObj.numberOfLeaveDays = Number(
             this.searchKeyword
           );
-        else return;
-        this.searchKeyword = '';
+        // else return;
+        // this.searchKeyword = '';
       });
     } else {
       this.initialLeaveRequestObj.numberOfLeaveDays = 0;
