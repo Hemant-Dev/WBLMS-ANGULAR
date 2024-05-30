@@ -52,10 +52,14 @@ export class LeaveRequestsService {
       leaveReqObj
     );
   }
+  ///leaverequest/getLeaveBy/6?year=2023
 
-  getLeaveRequestsByYear(year: number): Observable<LeaveReqByYearModel> {
+  getLeaveRequestsByYear(
+    employeeId : number,
+    year: number,
+  ): Observable<LeaveReqByYearModel> {
     return this.http.get<LeaveReqByYearModel>(
-      this.leave_api_url + `/getLeaveBy/${year}`
+      this.leave_api_url + `/getLeaveBy/${employeeId}?year=${year}`
     );
   }
 

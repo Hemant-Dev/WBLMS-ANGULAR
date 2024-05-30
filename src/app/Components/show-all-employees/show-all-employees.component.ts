@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { errorToast } from 'src/app/Helpers/swal';
 import { EmployeeLeaveReqModel } from 'src/app/Models/EmployeeLeaveReqModel';
 import {
@@ -13,7 +14,7 @@ import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
   templateUrl: './show-all-employees.component.html',
   styleUrls: ['./show-all-employees.component.css'],
 })
-export class ShowAllEmployeesComponent implements OnInit {
+export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   data: any;
   options: any;
   dynaminBarThickness = 60;
@@ -21,12 +22,12 @@ export class ShowAllEmployeesComponent implements OnInit {
   setBackgroundColor2: any = ['rgba(255, 101, 1, 0.2)'];
   setBackgroundColor3: any = ['rgba(55, 201, 101, 0.2)'];
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 5;
   srNoIndex: number = (this.currentPage - 1) * 10 + 1;
   sortColumn: string = '';
   sortOrder: string = '';
   year: number = 2024;
-
+  totalCount!: number;
   leaveRequestStatus!: LeaveRequestStatusModel[];
   leaveRequestByYear!: LeaveReqByYearModel;
 
@@ -47,6 +48,19 @@ export class ShowAllEmployeesComponent implements OnInit {
     totalLeaveRequest: 0,
   };
 
+  tableSortColumn = [
+    "firstName",
+    "lastName",
+    "emailAddress",
+    "contactNumber",
+    "genderName",
+    "roleName",
+    "managerName",
+    "joiningDate",
+    "balanceLeaveRequest",
+    "totalLeaveRequest"
+  ]
+
   tableHeader = [
     'Sr. no.',
     'First Name',
@@ -62,9 +76,6 @@ export class ShowAllEmployeesComponent implements OnInit {
   ];
   loading: boolean | undefined;
 
-  inreaseSrNoValue() {
-    this.srNoIndex++;
-  }
 
   appliedLeaveRequests: number[] = [];
   acceptedLeaveRequests: number[] = [];
@@ -74,21 +85,40 @@ export class ShowAllEmployeesComponent implements OnInit {
   employeeData: EmployeeLeaveReqModel[] = [];
   constructor(
     private employeeService: EmployeeRxjsService,
-    private leaveReqService: LeaveRequestsService
-  ) {}
+    private leaveReqService: LeaveRequestsService,
+    private cdr: ChangeDetectorRef
+  ) { }
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
+  }
+  compareId = -100;
+  selectedEmployee!: LeaveReqByYearModel;
+  barChartTitle = "Employees Leave request";
+  row_active: boolean = false
+
   ngOnInit(): void {
-    this.getLeaveRequestByYear();
-    this.getEmployee();
+    this.getLeaveRequestByYear(0, "Employee", "");
+    // this.getEmployee();
+    this.getEmployeeAsync()
     this.updateBarThickness();
     window.addEventListener('resize', this.updateBarThickness.bind(this));
+
   }
 
-  getLeaveRequestByYear() {
-    this.leaveReqService.getLeaveRequestsByYear(this.year).subscribe({
+  getLeaveRequestByYear(
+    employeeId: number = 1,
+    firstName: string,
+    lastName: string
+  ) {
+    this.leaveReqService.getLeaveRequestsByYear(employeeId, this.year).subscribe({
       next: (response: any) => {
+        this.row_active = true;
         console.log(response);
         this.leaveRequestByYear = response.data;
-
+        this.acceptedLeaveRequests = [];
+        this.rejectedLeaveRequests = [];
+        this.appliedLeaveRequests = [];
+        this.pendingLeaveRequests = [];
         Object.values(response.data).forEach((monthData: any) => {
           console.log(monthData.acceptedLeaveRequests);
 
@@ -98,33 +128,87 @@ export class ShowAllEmployeesComponent implements OnInit {
           this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
         });
         this.barChart();
-        // console.log(this.acceptedLeaveRequests)
+        if (employeeId == this.compareId) {
+          this.getLeaveRequestByYear(0, "Employee", "");
+        } else {
+          this.compareId = employeeId;
+        }
+        this.barChartTitle = firstName + " " + lastName + " Leave Requests";
       },
       error: (err) => {
-        // console.error('Error fetching leave requests by year:', error);
         errorToast(err.error.errorMessages);
       },
     });
   }
-  getEmployee() {
+  // getEmployee() {
+  //   this.employeeService
+  //     .getEmployeesLeaveReq(
+  //       this.currentPage,
+  //       this.pageSize,
+  //       this.sortColumn,
+  //       this.sortOrder,
+  //       this.initialEmployeeData
+  //     )
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         console.log(response);
+  //         this.employeeData = response.data.dataArray;
+  //         console.log(this.employeeData);
+  //         this.totalCount = response.data.totalCount;
+  //         this.loading = false;
+  //       },
+  //       error: (err) => {
+  //         errorToast(err.error.errorMessages);
+  //       },
+  //     });
+  // }
+
+
+  getEmployeeAsync() {
     this.employeeService
-      .getEmployeesLeaveReq(
-        this.currentPage,
+      .getEmployeesAsync(
+        this.pageNumber,
         this.pageSize,
-        this.sortColumn,
-        this.sortOrder,
-        this.initialEmployeeData
+        this.lazyRequest.sortField,
+        this.lazyRequest.sortOrder == 1 ? "asc" : "desc",
+        this.search
       )
       .subscribe({
         next: (response: any) => {
           console.log(response);
           this.employeeData = response.data.dataArray;
           console.log(this.employeeData);
+          this.totalCount = response.data.totalCount;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           errorToast(err.error.errorMessages);
         },
       });
+  }
+
+  lazyRequest = {
+    first: 0,
+    rows: 0,
+    sortField: '',
+    sortOrder: 1,
+  };
+  search = "";
+  pageNumber: number = 1;
+  lazyLoadRequestData($event: TableLazyLoadEvent) {
+    this.loading = true;
+    this.lazyRequest.first = $event.first || 0;
+    this.lazyRequest.rows = $event.rows || 5;
+    this.lazyRequest.sortField = $event.sortField?.toString() || '';
+    this.lazyRequest.sortOrder = $event.sortOrder || 1;
+    this.pageNumber = this.lazyRequest.first / this.lazyRequest.rows;
+    this.pageNumber++;
+    this.pageSize = this.lazyRequest.rows;
+
+    setTimeout(() => {
+      this.getEmployeeAsync();
+    }, 1000);
   }
 
   updateBarThickness() {

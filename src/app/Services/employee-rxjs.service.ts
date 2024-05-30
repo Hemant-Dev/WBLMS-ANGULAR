@@ -13,7 +13,7 @@ import { EncodeForms } from '../Helpers/encodeForms';
   providedIn: 'root',
 })
 export class EmployeeRxjsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   api_url = API_URL + 'employee';
 
@@ -27,7 +27,7 @@ export class EmployeeRxjsService {
     return this.http
       .post<any>(
         this.api_url +
-          `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+        `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
         initialEmployeeObj
       )
       .pipe();
@@ -42,7 +42,7 @@ export class EmployeeRxjsService {
   ): Observable<any> {
     return this.http.post<any>(
       this.api_url +
-        `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+      `/employeeLeaveReq?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
       initialEmployeeObj
     );
     // .pipe(
@@ -56,6 +56,18 @@ export class EmployeeRxjsService {
     //     return res;
     //   })
     // );
+  }
+  getEmployeesAsync(
+    page: number,
+    pageSize: number,
+    sortColumn: string,
+    sortOrder: string,
+    searchKeyword : string
+  ): Observable<any> {
+    return this.http.get<any>(
+      this.api_url +
+      `/getAll?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&searchKeyword=${searchKeyword}`,
+    );
   }
 
   getEmployeesById(id: number): Observable<any> {
