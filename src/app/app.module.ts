@@ -41,6 +41,8 @@ import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
 import { KnobModule } from 'primeng/knob';
 import { HtmlDecodePipe } from './Pipes/html-decode.pipe';
 import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+
 @NgModule({
   declarations: [
     AppComponent,

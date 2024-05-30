@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from '../ApiUrl';
 import { EmployeeModel } from '../Models/EmployeeModel';
@@ -85,10 +85,22 @@ export class EmployeeRxjsService {
     return this.http.get<RolesModel[]>(this.api_url + `/roles`);
   }
 
-  imageUpload(employeeId: number, imageFile: any): Observable<any> {
+  imageUpload(imageFile: FormData): Observable<any> {
     return this.http.post<any>(
-      this.api_url + `/profilePicUpload?employeeId=${employeeId}`,
+      this.api_url + `/profilePicUpload?employeeId=1`,
       imageFile
+    );
+  }
+  uploadImage(formFile: File, employeeId: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('formFile', formFile);
+    formData.append('employeeId', employeeId.toString());
+
+    return this.http.post<any>(this.api_url + `/profilePicUpload?`, formData);
+  }
+  getImageUrl(employeeId: number): Observable<any> {
+    return this.http.get<any>(
+      this.api_url + `/getProfilePic?employeeId=${employeeId}`
     );
   }
 }
