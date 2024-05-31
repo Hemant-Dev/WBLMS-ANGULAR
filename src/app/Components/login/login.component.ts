@@ -29,25 +29,23 @@ export class LoginComponent implements OnInit {
     private ngZone: NgZone
   ) {}
   ngOnInit(): void {
-    debugger;
     if (!this.auth.isLoggedIn()) {
       this.router.navigate(['home/dashboard']);
-    } else {
-      this.loginForm = this.fb.group(
-        {
-          email: ['', [Validators.required, Validators.email]],
-          password: [
-            '',
-            [
-              Validators.required,
-              Validators.minLength(1),
-              Validators.maxLength(25),
-            ],
-          ],
-        },
-        []
-      );
     }
+    this.loginForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(25),
+          ],
+        ],
+      },
+      []
+    );
   }
 
   hideShowPassword() {
