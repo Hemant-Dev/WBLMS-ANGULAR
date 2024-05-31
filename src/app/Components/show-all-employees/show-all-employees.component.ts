@@ -48,32 +48,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
     totalLeaveRequest: 0,
   };
 
-  tableSortColumn = [
-    "firstName",
-    "lastName",
-    "emailAddress",
-    "contactNumber",
-    "genderName",
-    "roleName",
-    "managerName",
-    "joiningDate",
-    "balanceLeaveRequest",
-    "totalLeaveRequest"
-  ]
 
-  tableHeader = [
-    'Sr. no.',
-    'First Name',
-    'Last Name',
-    'Email Address',
-    'Contact Number',
-    'Gender',
-    'Role Name',
-    'Manager Name',
-    'Joining Date',
-    'Balance Leave',
-    'Total Leave',
-  ];
   loading: boolean | undefined;
 
 
@@ -140,28 +115,32 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
       },
     });
   }
-  // getEmployee() {
-  //   this.employeeService
-  //     .getEmployeesLeaveReq(
-  //       this.currentPage,
-  //       this.pageSize,
-  //       this.sortColumn,
-  //       this.sortOrder,
-  //       this.initialEmployeeData
-  //     )
-  //     .subscribe({
-  //       next: (response: any) => {
-  //         console.log(response);
-  //         this.employeeData = response.data.dataArray;
-  //         console.log(this.employeeData);
-  //         this.totalCount = response.data.totalCount;
-  //         this.loading = false;
-  //       },
-  //       error: (err) => {
-  //         errorToast(err.error.errorMessages);
-  //       },
-  //     });
-  // }
+  // tableSortColumn = [
+  //   "firstName",
+  //   "lastName",
+  //   "emailAddress",
+  //   "contactNumber",
+  //   "genderName",
+  //   "roleName",
+  //   "managerName",
+  //   "joiningDate",
+  //   "balanceLeaveRequest",
+  //   "totalLeaveRequest"
+  // ]
+
+  // tableHeader = [
+  //   'Sr. no.',
+  //   'First Name',
+  //   'Last Name',
+  //   'Email Address',
+  //   'Contact Number',
+  //   'Gender',
+  //   'Role Name',
+  //   'Manager Name',
+  //   'Joining Date',
+  //   'Balance Leave',
+  //   'Total Leave',
+  // ];
 
 
   getEmployeeAsync() {
@@ -261,21 +240,21 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
           label: 'Rejected Leaves',
           backgroundColor: documentStyle.getPropertyValue('--red-600'),
           data: this.rejectedLeaveRequests,
-          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, 
         },
         {
           type: 'bar',
           label: 'Pending Leaves',
           backgroundColor: documentStyle.getPropertyValue('--yellow-400'),
           data: this.pendingLeaveRequests,
-          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, 
         },
         {
           type: '',
           label: 'Total Leaves',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           data: this.appliedLeaveRequests,
-          barThickness: this.dynaminBarThickness, // Adjust this value to decrease bar width
+          barThickness: this.dynaminBarThickness, 
         },
       ],
     };
