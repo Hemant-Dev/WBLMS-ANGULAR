@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -21,11 +22,17 @@ export class DashboardComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private userStore: UserStoreService,
-    private byRolesService: ByRolesService
+    private byRolesService: ByRolesService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     const obj = new FetchSessionData(this.auth, this.userStore);
     obj.fetchSessionData(this.initialUserSessionObj);
+    if (this.initialUserSessionObj.role === 'Admin') {
+      this.router.navigate(['home/dashboard/hr-manager']);
+    } else {
+      this.router.navigate(['home/dashboard/leaveRequests']);
+    }
   }
 
   handleHRManagerLeaveRequestClick() {

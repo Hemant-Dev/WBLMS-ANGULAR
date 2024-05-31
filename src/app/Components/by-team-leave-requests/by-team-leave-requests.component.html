@@ -1,26 +1,26 @@
-  <div class="card my-4 table-card">
-    <p-table
-      #dt2
-      [value]="leaveRequests"
-      [scrollable]="true"
-      scrollHeight="60vh"
-      dataKey="id"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [paginator]="true"
-      [rows]="lazyRequest.rows"
-      [first]="lazyRequest.first"
-      [rowsPerPageOptions]="[5, 10, 15]"
-      [lazy]="true"
-      (onLazyLoad)="lazyLoadSelfRequestsData($event)"
-      [totalRecords]="totalCount"
-      [customSort]="true"
-      (sortFunction)="lazyLoadSelfRequestsData($event)"
-      [loading]="loading"
-      loadingIcon="fa fa-spinner fa-spin"
-      [tableStyle]="{ width: '100vw - 4rem' }"
-      styleClass="my-spinner"
-    >
+<div class="card my-4 table-card">
+  <p-table
+    #dt2
+    [value]="leaveRequests"
+    [scrollable]="true"
+    scrollHeight="60vh"
+    dataKey="id"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [paginator]="true"
+    [rows]="lazyRequest.rows"
+    [first]="lazyRequest.first"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadSelfRequestsData($event)"
+    [totalRecords]="totalCount"
+    [customSort]="true"
+    (sortFunction)="lazyLoadSelfRequestsData($event)"
+    [loading]="loading"
+    loadingIcon="fa fa-spinner fa-spin"
+    [tableStyle]="{ width: '100vw - 4rem' }"
+    styleClass="my-spinner"
+  >
     <ng-template pTemplate="caption">
       <p-header> Leave Requests</p-header>
       <div
