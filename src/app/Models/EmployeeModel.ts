@@ -2,6 +2,7 @@ export interface EmployeeModel {
   id: number;
   firstName: string;
   lastName: string;
+  profilePic?: string;
   password?: string;
   emailAddress: string;
   contactNumber: string;

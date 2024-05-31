@@ -33,12 +33,16 @@ import { ByTeamLeaveRequestsComponent } from './Components/by-team-leave-request
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ChipModule } from 'primeng/chip';
+import { ToastModule } from 'primeng/toast';
 import { ChartModule } from 'primeng/chart';
 import { CalendarModule } from 'primeng/calendar';
 import { ShowAllEmployeesComponent } from './Components/show-all-employees/show-all-employees.component';
 import { HTMLEncodePipe } from './Pipes/htmlencode.pipe';
 import { KnobModule } from 'primeng/knob';
 import { HtmlDecodePipe } from './Pipes/html-decode.pipe';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,6 +87,8 @@ import { HtmlDecodePipe } from './Pipes/html-decode.pipe';
     CalendarModule,
     ChartModule,
     KnobModule,
+    ToastModule,
+    FileUploadModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
