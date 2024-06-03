@@ -48,3 +48,6 @@
     transform: scale(0.8); /* Scale down the entire calendar */
   }
 }
+.error-border {
+  border: 1px solid red;
+}

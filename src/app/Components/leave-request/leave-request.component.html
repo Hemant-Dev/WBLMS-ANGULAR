@@ -64,6 +64,7 @@
             class="form-control max-height-scrollable"
             id="reason"
             rows="3"
+            maxlength="101"
           ></textarea>
         </div>
         <small
@@ -80,7 +81,7 @@
             leaveRequestForm.hasError('maxlength', 'reason')
           "
           class="text-danger"
-          >*Leave reason exceed max length</small
+          >*Leave reason exceed max length. >> 100chars</small
         >
       </div>
       <div class="row mb-3">
@@ -136,16 +137,22 @@
             class="form-control"
             id="endDate"
           /> -->
-          <p-calendar
-            (onSelect)="calculateLeaveDays()"
-            [minDate]="minDate"
-            [maxDate]="maxDate"
-            dateFormat="yy-mm-dd"
-            formControlName="endDate"
-            [maxDate]="maxDate"
-            [minDate]="minDate"
-            [styleClass]="'custom-calendar'"
-          ></p-calendar>
+          <div>
+            <p-calendar
+              [class.error.border]="
+                leaveRequestForm.controls['endDate'].touched &&
+                leaveRequestForm.hasError('required', 'endDate')
+              "
+              (onSelect)="calculateLeaveDays()"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
+              dateFormat="yy-mm-dd"
+              formControlName="endDate"
+              [maxDate]="maxDate"
+              [minDate]="minDate"
+              [styleClass]="'custom-calendar'"
+            ></p-calendar>
+          </div>
 
           <small
             *ngIf="
@@ -154,7 +161,7 @@
             "
             class="text-danger"
           >
-            End Date is required
+            *End Date is required
           </small>
         </div>
 

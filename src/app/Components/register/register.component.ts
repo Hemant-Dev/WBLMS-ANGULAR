@@ -106,7 +106,7 @@ export class RegisterComponent implements OnInit {
             .updateEmployeesById(this.initialEmployeeData)
             .subscribe({
               next: (response: any) => {
-                console.log(response);
+                // console.log(response);
               },
               error: (err) => {
                 errorToast(err.error.errorMessages);
@@ -122,7 +122,7 @@ export class RegisterComponent implements OnInit {
             .createEmployees(this.registerForm.value)
             .subscribe({
               next: (response: any) => {
-                console.log(response);
+                // console.log(response);
                 // this.initialEmployeeData = response.data;
                 successToast('Employee Added Successfully');
                 this.router.navigate(['home/dashboard']);
@@ -149,7 +149,7 @@ export class RegisterComponent implements OnInit {
 
   onNameChange(event: any) {
     const newVal = event.target.value;
-    console.log(newVal);
+    // console.log(newVal);
   }
   getValue(name: string): any {
     return this.registerForm.get(name)?.value;
@@ -166,9 +166,9 @@ export class RegisterComponent implements OnInit {
   managerFieldDisable: boolean = true;
 
   onChangeRole() {
-    console.log(this.registerForm.value);
+    // console.log(this.registerForm.value);
     var roleId = this.registerForm.get('roleId')?.value;
-    console.log('roleId => ', roleId);
+    // console.log('roleId => ', roleId);
     if (!roleId) {
       this.registerForm.get('managerId')?.disable();
     } else {
@@ -180,9 +180,9 @@ export class RegisterComponent implements OnInit {
   fetchGenders() {
     this.employeeService.getGenders().subscribe({
       next: (response: any) => {
-        console.log(response);
+        // console.log(response);
         this.gendersData = response.data;
-        console.log(this.gendersData);
+        // console.log(this.gendersData);
       },
       error: (err) => {
         errorToast(err.error.errorMessages);
@@ -192,7 +192,7 @@ export class RegisterComponent implements OnInit {
   fetchRoles() {
     this.employeeService.getRoles().subscribe({
       next: (response: any) => {
-        console.log(response);
+        // console.log(response);
         this.roleData = response.data;
         this.roleData = this.roleData.filter(
           (role) => role.roleName != 'Admin'
@@ -209,10 +209,10 @@ export class RegisterComponent implements OnInit {
       .getEmployeesById(this.initialEmployeeData.id)
       .subscribe({
         next: (response: any) => {
-          console.log(response.data.roleId);
+          // console.log(response.data.roleId);
           this.initialEmployeeData = response.data;
           // this.initialEmployeeData.roleId = response.data.roleId;
-          console.log(this.initialEmployeeData.roleId);
+          // console.log(this.initialEmployeeData.roleId);
           this.fetchManagers();
         },
         error: (err) => {
@@ -224,9 +224,9 @@ export class RegisterComponent implements OnInit {
     var roleId = this.registerForm.get('roleId')?.value;
     this.employeeService.getManagers(roleId).subscribe({
       next: (response: any) => {
-        console.log(response);
+        // console.log(response);
         this.managerData = response.data;
-        console.log(this.managerData);
+        // console.log(this.managerData);
       },
       error: (err) => {
         errorToast(err.error.errorMessages);

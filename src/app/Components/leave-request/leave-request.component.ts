@@ -339,6 +339,7 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   handleSubmit() {
+    console.log("Submit")
     if (this.leaveRequestForm.valid) {
       if (!this.getValue('numberOfLeaveDays')) {
         errorAlert('Number of leaves day are zero');
