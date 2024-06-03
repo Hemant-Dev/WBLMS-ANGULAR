@@ -105,8 +105,8 @@
             styleClass="my-calender"
             (onSelect)="calculateLeaveDays()"
             dateFormat="yy-mm-dd"
-            [minDate]="minDate"
             [maxDate]="maxDate"
+            [minDate]="minDate"
             formControlName="startDate"
           ></p-calendar>
           <small
@@ -127,8 +127,6 @@
             leaveRequestForm.hasError('required', 'endDate')
           "
         >
-          <!-- [minDate]="minDate"
-            [maxDate]="maxDate" -->
           <label for="endDate" class="form-label">End Date</label>
           <!-- <input
             type="date"
@@ -143,6 +141,8 @@
             [maxDate]="maxDate"
             dateFormat="yy-mm-dd"
             formControlName="endDate"
+            [maxDate]="maxDate"
+            [minDate]="minDate"
           ></p-calendar>
 
           <small
@@ -159,7 +159,7 @@
         <div
           class="form-check form-switch"
           style="margin-left: 20px; margin-top: 5px"
-          *ngIf="getValue('endDate') === getValue('startDate')"
+          *ngIf="activeteHalfDay"
         >
           <input
             class="form-check-input"
@@ -167,7 +167,7 @@
             formControlName="isHalfDay"
             (change)="halfDay()"
             value=""
-            id="halfDay"
+            id="isHalfDay"
           />
           <label class="form-check-label" for="halfDay">Half Day</label>
         </div>

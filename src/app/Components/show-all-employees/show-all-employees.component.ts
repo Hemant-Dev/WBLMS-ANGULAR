@@ -14,6 +14,7 @@ import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
   templateUrl: './show-all-employees.component.html',
   styleUrls: ['./show-all-employees.component.css'],
 })
+
 export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   data: any;
   options: any;
@@ -175,6 +176,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   };
   search = "";
   pageNumber: number = 1;
+  
   lazyLoadRequestData($event: TableLazyLoadEvent) {
     this.loading = true;
     this.lazyRequest.first = $event.first || 0;
@@ -240,21 +242,21 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
           label: 'Rejected Leaves',
           backgroundColor: documentStyle.getPropertyValue('--red-600'),
           data: this.rejectedLeaveRequests,
-          barThickness: this.dynaminBarThickness, 
+          barThickness: this.dynaminBarThickness,
         },
         {
           type: 'bar',
           label: 'Pending Leaves',
           backgroundColor: documentStyle.getPropertyValue('--yellow-400'),
           data: this.pendingLeaveRequests,
-          barThickness: this.dynaminBarThickness, 
+          barThickness: this.dynaminBarThickness,
         },
         {
           type: '',
           label: 'Total Leaves',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           data: this.appliedLeaveRequests,
-          barThickness: this.dynaminBarThickness, 
+          barThickness: this.dynaminBarThickness,
         },
       ],
     };

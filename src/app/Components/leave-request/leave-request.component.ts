@@ -28,6 +28,8 @@ export class LeaveRequestComponent implements OnInit {
     new EventEmitter<boolean>();
   submitStatus: boolean = true;
 
+  activeteHalfDay : boolean = false;
+
   leaveRequestForm!: FormGroup;
   wonderbizHolidays!: WonderbizHolidaysModel[];
   leaveBalance!: LeaveBalance;
@@ -66,10 +68,7 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestForm.patchValue({
       employeeId: Number(this.employeeId),
     });
-    // console.log(this.leaveRequestForm.value);
     this.getLeaveStatusesData(this.employeeId);
-    // this.setDate()
-    // this.todayDate = this.formatDate(this.todayDate);
   }
 
   constructor(
@@ -78,7 +77,7 @@ export class LeaveRequestComponent implements OnInit {
     private auth: AuthService,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   expandCalendar() {
     this.isCalendarExpanded = true;
@@ -147,6 +146,7 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   calculateLeaveDays() {
+
     const showHolidays: WonderbizHolidaysModel[] = [];
 
     var startDate: Date | string =
@@ -157,6 +157,7 @@ export class LeaveRequestComponent implements OnInit {
       this.getValue('endDate') != ''
         ? this.formatDate(this.getValue('endDate'))
         : '';
+    this.halfDayIsDisable(startDate, endDate);
     if (startDate == '' || endDate == '') {
       return;
     }
@@ -175,12 +176,8 @@ export class LeaveRequestComponent implements OnInit {
       successToast('We have holiday on this day');
       return;
     }
+
     let start = new Date(this.getValue('startDate'));
-    // start = new Date(
-    //   start.setHours(0),
-    //   start.setMinutes(0),
-    //   start.setSeconds(0)
-    // )
     console.log(start);
     let end = new Date(this.getValue('endDate'));
     let count = 0;
@@ -192,7 +189,6 @@ export class LeaveRequestComponent implements OnInit {
         endDate
       )
     ) {
-      this.halfDayIsDisable(startDate, endDate);
       console.log(startDate, endDate);
       while (start <= end) {
         const dayOfWeek = start.getDay();
@@ -319,10 +315,19 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   halfDayIsDisable(startDate: string, endDate: string) {
-    if (startDate.match(endDate)) {
-      this.leaveRequestForm.get('isHalfDay')?.enable();
+    if (startDate == endDate) {
+      // this.leaveRequestForm.get('isHalfDay')?.enable();
+      // this.leaveRequestForm.patchValue({
+      //   isHalfDay : true
+      // })
+      this.activeteHalfDay = true;
+      // this.leaveRequestForm.controls['isHalfDay'].enable();
     } else {
-      this.leaveRequestForm.get('isHalfDay')?.disable();
+      // this.leaveRequestForm.get('isHalfDay')?.disable();
+      this.leaveRequestForm.patchValue({
+        isHalfDay : false
+      })
+      this.activeteHalfDay = false;
     }
   }
 
@@ -344,12 +349,10 @@ export class LeaveRequestComponent implements OnInit {
           this.leaveRequestForm.controls['reason'].value
         ),
       });
-      console.log(this.leaveRequestForm.value);
       this.leaveRequestForm.patchValue({
         startDate: this.formatDate(this.getValue('startDate')),
         endDate: this.formatDate(this.getValue('endDate')),
       });
-      console.log(this.leaveRequestForm.value);
       // return;
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
@@ -358,9 +361,9 @@ export class LeaveRequestComponent implements OnInit {
             successToast('Leave request created successfully!');
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
-            this.submitStatus = true;
-            this.submitButtonClicked();
-            this.service.changeData(this.submitStatus);
+            // this.submitStatus = true;
+            //this.submitButtonClicked();
+            // this.service.changeData(this.submitStatus);
             this.leaveRequestForm.reset();
             this.ngOnInit();
           },
