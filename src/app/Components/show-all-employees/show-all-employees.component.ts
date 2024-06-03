@@ -244,7 +244,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
       datasets: [
         {
           type: 'bar',
-          label: 'Accepted Leaves',
+          label: 'Accepted Leave Requests',
 
           backgroundColor: documentStyle.getPropertyValue('--green-700'), //this.setBackgroundColor3,//
           // data: [20, 25, 12, 48, 90, 76, 42, 50, 25, 12, 48, 90],
@@ -253,21 +253,21 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
         },
         {
           type: 'bar',
-          label: 'Rejected Leaves',
+          label: 'Rejected Leaves Requests',
           backgroundColor: documentStyle.getPropertyValue('--red-600'),
           data: this.rejectedLeaveRequests,
           barThickness: this.dynaminBarThickness,
         },
         {
           type: 'bar',
-          label: 'Pending Leaves',
+          label: 'Pending Leaves Requests',
           backgroundColor: documentStyle.getPropertyValue('--yellow-400'),
           data: this.pendingLeaveRequests,
           barThickness: this.dynaminBarThickness,
         },
         {
           type: '',
-          label: 'Total Leaves',
+          label: 'Total Leaves Requests',
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           data: this.appliedLeaveRequests,
           barThickness: this.dynaminBarThickness,

@@ -21,11 +21,10 @@
                   >
                     <span class="fa fa-user p-2"></span>
                     <input
-                      pAutoFocus
-                      [autofocus]="true"
                       type="text"
                       formControlName="firstName"
                       placeholder="First Name"
+                      maxlength="21"
                     />
                   </div>
                   <small
@@ -63,6 +62,7 @@
                       type="text"
                       formControlName="lastName"
                       placeholder="Last Name"
+                      maxlength="25"
                     />
                   </div>
                   <small
@@ -105,6 +105,8 @@
                       type="text"
                       formControlName="contactNumber"
                       placeholder="Contact Number"
+                      maxlength="10"
+                      minlength="10"
                     />
                   </div>
                   <small
@@ -193,8 +195,7 @@
                       (change)="onChangeRole()"
                     >
                       <option selected disabled [value]="0">Select Role</option>
-                      <option *ngFor="let role of roleData"  [value]="role.id">
-                        
+                      <option *ngFor="let role of roleData" [value]="role.id">
                         {{ role.roleName }}
                       </option>
                     </select>
@@ -295,6 +296,8 @@
                   [type]="type"
                   formControlName="password"
                   placeholder="Password"
+                  maxlength="25"
+                  minlength="8"
                 />
                 <span
                   (click)="hideShowPassword()"
