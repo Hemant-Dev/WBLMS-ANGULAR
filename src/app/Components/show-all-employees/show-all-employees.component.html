@@ -2,6 +2,9 @@
 <div>
   <h2 style="text-align: center">{{ barChartTitle }}</h2>
   <div class="card" class="card">
+    <!-- <input type="select" value="2016" minlength="4" maxlength="4" /> -->
+    <p-dropdown  optionLabel="name" [showClear]="true" placeholder="Select a year"></p-dropdown>
+
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>
 </div>
@@ -45,9 +48,7 @@
           />
           <label for="searchKeyword">Search</label>
         </span>
-        
       </div>
-      
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
@@ -55,17 +56,37 @@
           {{ col  }}
           <p-sortIcon field="{{sortCol}}"></p-sortIcon>
         </th> -->
-        <th >Sr No. </th>
-        <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
-        <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
-        <th pSortableColumn="emailAddress">Email Address <p-sortIcon field="emailAddress"></p-sortIcon></th>
-        <th pSortableColumn="contactNumber">Contact number <p-sortIcon field="contactNumber"></p-sortIcon></th>
-        <th pSortableColumn="genderName">Gender <p-sortIcon field="genderName"></p-sortIcon></th>
-        <th pSortableColumn="roleName">Role <p-sortIcon field="roleName"></p-sortIcon></th>
-        <th pSortableColumn="managerName">Manager Name <p-sortIcon field="managerName"></p-sortIcon></th>
-        <th pSortableColumn="joiningDate">Joining Date <p-sortIcon field="joiningDate"></p-sortIcon></th>
-        <th pSortableColumn="leaveBalance">Balance Leave <p-sortIcon field="balanceLeaveRequest"></p-sortIcon></th>
-        <th pSortableColumn="totalLeaveRequest">Total Leave <p-sortIcon field="totalLeaveRequest"></p-sortIcon></th>
+        <th>Sr No.</th>
+        <th pSortableColumn="firstName">
+          First Name <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName">
+          Last Name <p-sortIcon field="lastName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="emailAddress">
+          Email Address <p-sortIcon field="emailAddress"></p-sortIcon>
+        </th>
+        <th pSortableColumn="contactNumber">
+          Contact number <p-sortIcon field="contactNumber"></p-sortIcon>
+        </th>
+        <th pSortableColumn="genderName">
+          Gender <p-sortIcon field="genderName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="roleName">
+          Role <p-sortIcon field="roleName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="managerName">
+          Manager Name <p-sortIcon field="managerName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="joiningDate">
+          Joining Date <p-sortIcon field="joiningDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="leaveBalance">
+          Balance Leave <p-sortIcon field="balanceLeaveRequest"></p-sortIcon>
+        </th>
+        <th pSortableColumn="totalLeaveRequest">
+          Total Leave <p-sortIcon field="totalLeaveRequest"></p-sortIcon>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">

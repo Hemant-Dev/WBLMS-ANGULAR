@@ -51,6 +51,10 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
 
 
   loading: boolean | undefined;
+  todaysDate = new Date()
+  currentYear : number = this.todaysDate.getFullYear();
+
+  wonderbizFoundedInYear : number = 2011
 
 
   appliedLeaveRequests: number[] = [];
@@ -73,6 +77,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   row_active: boolean = false
 
   ngOnInit(): void {
+    console.log(this.currentYear)
     this.getLeaveRequestByYear(0, "Employee", "");
     // this.getEmployee();
     this.getEmployeeAsync()

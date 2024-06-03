@@ -28,7 +28,7 @@ export class LeaveRequestComponent implements OnInit {
     new EventEmitter<boolean>();
   submitStatus: boolean = true;
 
-  activeteHalfDay : boolean = false;
+  activeteHalfDay: boolean = false;
 
   leaveRequestForm!: FormGroup;
   wonderbizHolidays!: WonderbizHolidaysModel[];
@@ -46,8 +46,8 @@ export class LeaveRequestComponent implements OnInit {
   todaysDateFormatted = this.formatDate(this.todayDate);
   leaveTypeData!: LeaveTypeModel[];
 
+
   ngOnInit(): void {
-    console.log(this.maxDate.getMonth());
     this.getLeaveType();
     this.getDataFromUserStore();
     this.submitStatus = false;
@@ -55,7 +55,7 @@ export class LeaveRequestComponent implements OnInit {
     this.leaveRequestForm = this.fb.group({
       id: 0,
       employeeId: [0, Validators.required],
-      leaveTypeId: [0, Validators.required],
+      leaveTypeId: [null, Validators.required],
       reason: ['', [Validators.required, Validators.maxLength(100)]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -325,7 +325,7 @@ export class LeaveRequestComponent implements OnInit {
     } else {
       // this.leaveRequestForm.get('isHalfDay')?.disable();
       this.leaveRequestForm.patchValue({
-        isHalfDay : false
+        isHalfDay: false
       })
       this.activeteHalfDay = false;
     }
@@ -361,9 +361,9 @@ export class LeaveRequestComponent implements OnInit {
             successToast('Leave request created successfully!');
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
-            // this.submitStatus = true;
-            //this.submitButtonClicked();
-            // this.service.changeData(this.submitStatus);
+            this.submitStatus = true;
+            this.submitButtonClicked();
+            this.service.changeData(this.submitStatus);
             this.leaveRequestForm.reset();
             this.ngOnInit();
           },

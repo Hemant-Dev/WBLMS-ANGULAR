@@ -21,7 +21,7 @@
           class="input-field"
           [class.error]="
             leaveRequestForm.controls['leaveTypeId'].touched &&
-            leaveRequestForm.get('leaveTypeId')?.value === 0
+            leaveRequestForm.get('leaveTypeId')?.value === null
           "
         >
           <label for="leaveType" class="form-label">Leave Type</label>
@@ -30,7 +30,7 @@
             id="leaveType"
             formControlName="leaveTypeId"
           >
-            <option selected disabled [value]="0">Select Leave Type</option>
+            <option selected disabled [value]=null>Select Leave Type</option>
             <option
               *ngFor="let leaveType of leaveTypeData"
               [value]="leaveType.id"
@@ -42,7 +42,7 @@
         <small
           *ngIf="
             leaveRequestForm.controls['leaveTypeId'].touched &&
-            leaveRequestForm.get('leaveTypeId')?.value == '0'
+            leaveRequestForm.get('leaveTypeId')?.value == null
           "
           class="text-danger"
         >
