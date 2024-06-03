@@ -1,4 +1,4 @@
-<div class="modal-content" style="z-index: 99">
+<div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title" id="addLeaveRequestModalLabel">
       Leave Request Form
@@ -202,40 +202,3 @@
     </button>
   </div>
 </div>
-<!-- 
-
-To change the size of the <p-calendar> component when the user clicks on it, you can use Angular's event binding and dynamically apply a CSS class to change the size. Below are the steps to achieve this:
-
-  Add a CSS class for the new size: Define a CSS class that specifies the desired size for the calendar component.
-  
-  Modify the component's class binding: Use Angular's [ngClass] directive to conditionally apply the new size class when the calendar is clicked.
-  
-  Handle the click event: Update the component's TypeScript code to handle the click event and toggle the size class.
-  
-  Here’s how you can implement this:
-  
-  Step 1: Add CSS for the new size
-  Define a CSS class in your component's stylesheet (e.g., styles.css or the component's specific CSS file):
-  
-  css
-  Copy code
-  /* styles.css or component-specific CSS file */
-  .calendar-expanded {
-    width: 100%;
-    height: 300px; /* or any desired height */
-  }
-  Step 2: Modify the Component's HTML
-  Update the <p-calendar> elements to include [ngClass] for dynamic class binding and (onFocus) for handling the focus event:
-  
-  html
-  Copy code
-  <p-calendar
-    (onSelect)="calculateLeaveDays()"
-    dateFormat="yy-mm-dd"
-    [minDate]="minDate"
-    [maxDate]="maxDate"
-    formControlName="startDate"
-    [ngClass]="{'calendar-expanded': isCalendarExpanded}"
-    (onFocus)="expandCalendar()"
-    (onBlur)="shrinkCalendar()"
-  ></p-calendar> -->

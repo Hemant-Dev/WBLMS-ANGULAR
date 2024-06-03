@@ -8,6 +8,7 @@ import { EmployeeModel } from 'src/app/Models/EmployeeModel';
 import { UserSessionModel } from 'src/app/Models/user-session-model';
 import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
+import { SharedServiceService } from 'src/app/Services/shared-service.service';
 import { UserStoreService } from 'src/app/Services/user-store.service';
 @Component({
   selector: 'app-profile',
@@ -36,10 +37,12 @@ export class ProfileComponent implements OnInit {
   };
   selectedFile!: File;
   genderPicId: number = 3;
+  refreshProfilePicSignal = false;
   constructor(
     private employeeService: EmployeeRxjsService,
     private userStore: UserStoreService,
-    private auth: AuthService
+    private auth: AuthService,
+    private sharedService: SharedServiceService
   ) {}
 
   @ViewChild('fileUpload') fileUpload!: FileUpload;
@@ -59,7 +62,7 @@ export class ProfileComponent implements OnInit {
   getEmployeeImage() {
     this.employeeService.getImageUrl(this.employeeData.id).subscribe({
       next: (res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.employeeData.profilePic = res.data;
       },
       error: (err) => {
@@ -94,6 +97,8 @@ export class ProfileComponent implements OnInit {
             this.getEmployeeData();
             this.fileUpload.clear();
             this.selectedFile = null!;
+            this.refreshProfilePicSignal = true;
+            this.sharedService.refreshProfilePic(this.refreshProfilePicSignal);
           },
           error: (err) => {
             console.log(err);
