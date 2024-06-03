@@ -30,7 +30,7 @@
             id="leaveType"
             formControlName="leaveTypeId"
           >
-            <option selected disabled [value]=null>Select Leave Type</option>
+            <option selected disabled [value]="null">Select Leave Type</option>
             <option
               *ngFor="let leaveType of leaveTypeData"
               [value]="leaveType.id"
@@ -108,6 +108,7 @@
             [maxDate]="maxDate"
             [minDate]="minDate"
             formControlName="startDate"
+            [styleClass]="'custom-calendar'"
           ></p-calendar>
           <small
             *ngIf="
@@ -143,6 +144,7 @@
             formControlName="endDate"
             [maxDate]="maxDate"
             [minDate]="minDate"
+            [styleClass]="'custom-calendar'"
           ></p-calendar>
 
           <small
