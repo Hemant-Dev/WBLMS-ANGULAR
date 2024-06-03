@@ -122,6 +122,8 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
       this.initialLeaveRequestObj.roleName = '';
     }
     this.initialLeaveRequestObj.status = 'Pending';
+    // const EncodedSearchKeyword = EncodeForms.htmlEncode(this.searchKeyword);
+    // console.log(this.searchKeyword, 'Encoded: ' + EncodedSearchKeyword);
     this.leaveRequestService
       .getLeaveRequestsByRoles(
         this.lazyRequest.sortField,
@@ -206,32 +208,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  // handleSearch() {
-  //   this.initialLeaveRequestObj.status = 'Pending';
-  //   this.leaveRequestService
-  //     .getLeaveRequestsByRoles(
-  //       this.lazyRequest.sortField,
-  //       this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
-  //       this.pageNumber,
-  //       this.pageSize,
-  //       this.initialLeaveRequestObj,
-  //       this.searchKeyword
-  //     )
-  //     .subscribe({
-  //       next: (res) => {
-  //         this.leaveRequests = res.data.dataArray;
-  //         this.totalCount = res.data.totalCount;
-  //         this.loading = false;
-  //         this.cdr.detectChanges();
-  //       },
-  //       error: (err) => {
-  //         errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-  //       },
-  //     });
-  // }
-
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
-    // console.log($event);
     this.loading = true;
     this.lazyRequest.first = $event.first || 0;
     this.lazyRequest.rows = $event.rows || 5;
@@ -246,7 +223,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   filterData() {
-    // console.log(this.selectedFields);
+    console.log(this.selectedFields);
     if (this.selectedFields) {
       this.selectedFields.forEach((header) => {
         if (header === 'firstName')
@@ -269,10 +246,12 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
           this.initialLeaveRequestObj.numberOfLeaveDays = Number(
             this.searchKeyword
           );
-        // else return;
-        // this.searchKeyword = '';
+        // else this.searchKeyword = EncodeForms.htmlEncode(this.searchKeyword);
       });
     } else {
+      this.initialLeaveRequestObj.firstName = '';
+      this.initialLeaveRequestObj.lastName = '';
+      this.initialLeaveRequestObj.reason = '';
       this.initialLeaveRequestObj.numberOfLeaveDays = 0;
     }
     // console.log(this.initialLeaveRequestObj);

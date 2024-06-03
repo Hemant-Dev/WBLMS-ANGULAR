@@ -137,6 +137,8 @@
           /> -->
           <p-calendar
             (onSelect)="calculateLeaveDays()"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
             dateFormat="yy-mm-dd"
             formControlName="endDate"
             [maxDate]="maxDate"

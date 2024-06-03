@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
+import { EncodeForms } from 'src/app/Helpers/encodeForms';
 import { FetchSessionData } from 'src/app/Helpers/fetch-session-data';
 import {
   errorAlert,
@@ -122,12 +123,9 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
           25 -
           (this.leaveStatusesCount.approvedLeavesCount +
             this.leaveStatusesCount.pendingLeavesCount);
-        // console.log(this.leaveStatusesCount);
       },
 
-      error: (err) =>
-        // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages),
-        errorToast(err.error.errorMessages),
+      error: (err) => errorToast(err.error.errorMessages),
     });
   }
 
@@ -136,6 +134,8 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
       this.initialLeaveRequestObj.employeeId = Number(
         this.initialUserSessionObj.employeeId
       );
+      // const searchWord = this.searchKeyword;
+      // const EncodedSearchKeyword = EncodeForms.htmlEncode(searchWord);
       this.leaveRequestService
         .getLeaveRequestsByRoles(
           this.lazyRequest.sortField,
@@ -164,29 +164,6 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     showReasonDisplayMessage(reason);
   }
 
-  // handleSearch() {
-  //   this.leaveRequestService
-  //     .getLeaveRequestsByRoles(
-  //       this.lazyRequest.sortField,
-  //       this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
-  //       this.pageNumber,
-  //       this.pageSize,
-  //       this.initialLeaveRequestObj,
-  //       this.searchKeyword
-  //     )
-  //     .subscribe({
-  //       next: (res) => {
-  //         this.selfLeaveRequests = res.data.dataArray;
-  //         this.totalCount = res.data.totalCount;
-  //         this.loading = false;
-  //         this.cdr.detectChanges();
-  //       },
-  //       error: (err) => {
-  //         errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
-  //       },
-  //     });
-  // }
-
   lazyLoadSelfRequestsData($event: TableLazyLoadEvent) {
     // console.log($event);
     this.loading = true;
@@ -206,7 +183,9 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     if (this.selectedFields) {
       this.selectedFields.forEach((header) => {
         if (header === 'reason')
-          this.initialLeaveRequestObj.reason = this.searchKeyword;
+          this.initialLeaveRequestObj.reason = EncodeForms.htmlEncode(
+            this.searchKeyword
+          );
         else if (
           header === 'numberOfLeaveDays' &&
           typeof Number(this.searchKeyword) === 'number' &&
