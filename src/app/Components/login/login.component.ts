@@ -112,8 +112,6 @@ export class LoginComponent implements OnInit {
             errorToast(err.error.errorMessages);
           },
         });
-    } else {
-      errorToast('Invalid Email');
     }
   }
   decodeToken(token: string) {

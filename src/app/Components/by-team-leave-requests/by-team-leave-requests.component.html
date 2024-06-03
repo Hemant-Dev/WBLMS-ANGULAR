@@ -152,7 +152,7 @@
           data-placement="top"
           (click)="showReason(request.reason)"
         >
-          {{ request.reason.slice(0, 10) | htmlDecode }}...
+          {{ (request.reason | htmlDecode).slice(0, 10) }}...
         </td>
         <td>
           <p-tag

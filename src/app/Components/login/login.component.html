@@ -140,7 +140,10 @@
 
       <div class="modal-body">
         <div class="form-group pt-3">
-          <div class="input-field">
+          <div
+            class="input-field accordion"
+            [class.error]="!resetPasswordEmail || !isValidEmail"
+          >
             <span class="fa fa-user p-2"></span>
             <input
               [(ngModel)]="resetPasswordEmail"

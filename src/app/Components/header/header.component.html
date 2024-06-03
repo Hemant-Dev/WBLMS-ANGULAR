@@ -39,7 +39,7 @@
       class=".bg-dark"
       data-bs-toggle="dropdown"
       label="{{ this.initialUserSessionObj.fullName | htmlDecode }}"
-      image="../../../assets/img/WBLMS-logo.jfif"
+      [image]="this.profilePic"
       alt="Avatar image"
     />
     <ul class="dropdown-menu dropdown-menu-dark">
@@ -50,3 +50,4 @@
     </ul>
   </div>
 </nav>
+<!-- image="../../../assets/img/WBLMS-logo.jfif" -->
