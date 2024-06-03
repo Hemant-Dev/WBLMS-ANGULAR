@@ -1,9 +1,29 @@
 <!-- *ngIf="'Admin' === 'Admin'" -->
+
 <div>
   <h2 style="text-align: center">{{ barChartTitle }}</h2>
   <div class="card" class="card">
     <!-- <input type="select" value="2016" minlength="4" maxlength="4" /> -->
-    <p-dropdown  optionLabel="name" [showClear]="true" placeholder="Select a year"></p-dropdown>
+    <!-- <p-dropdown
+      [options]="searchByYears"
+      [(ngModel)]="selectYear"
+      name="selectYear"
+      optionLabel="year"
+      [showClear]="true"
+      placeholder="Select a Year"
+    ></p-dropdown> -->
+    <!-- <label for="selectYear" class="form-label">Search Year</label>
+    <select
+      name="selectYear"
+      id="selectYear"
+      class="form-select"
+      [(ngModel)]="selectYear"
+    >
+      <option selected [value]="null">Select a Year</option>
+      <option *ngFor="let year of searchByYears" [value]="year">
+        {{ year }}
+      </option>
+    </select> -->
 
     <p-chart type="bar" [data]="data" [options]="options" />
   </div>

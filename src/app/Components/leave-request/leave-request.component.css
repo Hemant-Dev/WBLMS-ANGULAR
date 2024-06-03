@@ -2,7 +2,7 @@
   filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(180deg);
 }
 .max-height-scrollable {
-  max-height: 150px;
+  max-height: 250px;
   overflow-y: auto;
 }
 /* .input-field.error {

@@ -52,10 +52,18 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
 
   loading: boolean | undefined;
   todaysDate = new Date()
-  currentYear : number = this.todaysDate.getFullYear();
+  currentYear: number = this.todaysDate.getFullYear();
 
-  wonderbizFoundedInYear : number = 2011
-
+  wonderbizFoundedInYear: number = 2011
+  // searchByYears: number[] = [];
+  // selectYear!: number;
+  // selectByYears!: number[];
+  // getYears() {
+  //   for (let year = this.wonderbizFoundedInYear; year <= this.currentYear; year++) {
+  //     this.selectByYears.push(year)
+  //   }
+  //   console.log(this.searchByYears)
+  // }
 
   appliedLeaveRequests: number[] = [];
   acceptedLeaveRequests: number[] = [];
@@ -77,6 +85,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   row_active: boolean = false
 
   ngOnInit(): void {
+    // this.getYears()
     console.log(this.currentYear)
     this.getLeaveRequestByYear(0, "Employee", "");
     // this.getEmployee();
@@ -181,7 +190,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   };
   search = "";
   pageNumber: number = 1;
-  
+
   lazyLoadRequestData($event: TableLazyLoadEvent) {
     this.loading = true;
     this.lazyRequest.first = $event.first || 0;
