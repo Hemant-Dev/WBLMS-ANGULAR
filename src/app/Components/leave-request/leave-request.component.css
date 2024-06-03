@@ -41,16 +41,10 @@
 }
 
 :host ::ng-deep {
-  .my-calender {
-    min-width: 100px;
-    max-width: 200px;
-    z-index: 100;
-  }
-
-  .calendar-expanded {
-    size: 100px;
-    max-width: 100px;
-    width: 100px;
-    height: fit-content;
+  /* .custom-calendar .p-datepicker {
+    top: 0 !important;
+  } */
+  .custom-calendar .p-datepicker {
+    transform: scale(0.8); /* Scale down the entire calendar */
   }
 }
