@@ -5,8 +5,6 @@ import { API_URL } from '../ApiUrl';
 import { LeaveRequestModel } from '../Models/leave-requestsModel';
 import { UpdateRequestStatus } from '../Models/update-request-status';
 import { LeaveReqByYearModel } from '../Models/LeaveReqByYearModel';
-import { EncodeForms } from '../Helpers/encodeForms';
-import { EmployeeLeaveReqModel } from '../Models/EmployeeLeaveReqModel';
 
 @Injectable({
   providedIn: 'root',
@@ -55,8 +53,8 @@ export class LeaveRequestsService {
   ///leaverequest/getLeaveBy/6?year=2023
 
   getLeaveRequestsByYear(
-    employeeId : number,
-    year: number,
+    employeeId: number,
+    year: number
   ): Observable<LeaveReqByYearModel> {
     return this.http.get<LeaveReqByYearModel>(
       this.leave_api_url + `/getLeaveBy/${employeeId}?year=${year}`

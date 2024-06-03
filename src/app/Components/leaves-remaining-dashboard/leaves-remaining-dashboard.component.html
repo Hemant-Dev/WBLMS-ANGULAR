@@ -2,16 +2,15 @@
   <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
     <div class="card border-3 border-warning">
       <div
-        class="leaves-taken-card card-body d-flex align-items-center justify-content-evenly"
+        class="leaves-taken-card card-body d-flex align-items-center justify-content-between"
       >
         <h5 class="card-title">Leaves Taken</h5>
 
         <p-knob
-          styleClass="leavesKnob"
           [(ngModel)]="leaveStatusesCount.approvedLeavesCount"
           [readonly]="true"
           [min]="0"
-          [max]="leaveBalance.totalLeaves || 1"
+          [max]="leaveBalance.totalLeaves || 25"
           [strokeWidth]="6"
           valueColor="#eab308"
           rangeColor="#fde047"
@@ -24,7 +23,7 @@
   <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
     <div class="card border-3 border-success">
       <div
-        class="leaves-notapproved-card card-body d-flex align-items-center justify-content-evenly"
+        class="leaves-notapproved-card card-body d-flex align-items-center justify-content-between"
       >
         <h5 class="card-title">Leaves Not Approved</h5>
 
@@ -32,7 +31,7 @@
           [(ngModel)]="leaveStatusesCount.pendingLeavesCount"
           [readonly]="true"
           [min]="0"
-          [max]="leaveBalance.totalLeaves || 1"
+          [max]="leaveBalance.totalLeaves || 25"
           [strokeWidth]="6"
           valueColor="#22c55e"
           rangeColor="#86efac"
@@ -45,7 +44,7 @@
   <div class="col-xl-3 col-md-6 col-lg-3 col-sm-12">
     <div class="card border-3 border-primary">
       <div
-        class="leaves-remaining-card card-body d-flex align-items-center justify-content-evenly"
+        class="leaves-remaining-card card-body d-flex align-items-center justify-content-between"
       >
         <h5 class="card-title">Leaves Remaining</h5>
 
@@ -53,7 +52,7 @@
           [(ngModel)]="leavesRemaining"
           [readonly]="true"
           [min]="0"
-          [max]="leaveBalance.totalLeaves || 1"
+          [max]="leaveBalance.totalLeaves || 25"
           [strokeWidth]="6"
           valueColor="#3b82f6"
           rangeColor="#93c5fd"
@@ -66,7 +65,7 @@
   <div class="col-col-xl-3 col-md-6 col-lg-3 col-sm-12">
     <div class="card border-3 border-danger">
       <div
-        class="leaves-total-card card-body d-flex align-items-center justify-content-evenly"
+        class="leaves-total-card card-body d-flex align-items-center justify-content-between"
       >
         <h5 class="card-title">Total Leaves</h5>
 
@@ -74,7 +73,7 @@
           [(ngModel)]="leaveBalance.totalLeaves"
           [readonly]="true"
           [min]="0"
-          [max]="leaveBalance.totalLeaves || 1"
+          [max]="leaveBalance.totalLeaves || 25"
           [strokeWidth]="6"
           valueColor="#ef4444"
           rangeColor="#fca5a5"
