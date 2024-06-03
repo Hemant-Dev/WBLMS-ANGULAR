@@ -29,9 +29,9 @@ export class LoginComponent implements OnInit {
     private ngZone: NgZone
   ) {}
   ngOnInit(): void {
-    if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['home/dashboard']);
-    }
+    // if (!this.auth.isLoggedIn()) {
+    //   this.router.navigate(['home/dashboard']);
+    // }
     this.loginForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -76,7 +76,15 @@ export class LoginComponent implements OnInit {
         },
         error: (err) => {
           // console.log(err);
-          errorToast(err.error.errorMessages);
+          if (err.status === 0) {
+            errorToast('Http Connection Error, Server Refused to connect!');
+            this.router.navigate(['login']);
+          } else if (err.status == 403) {
+            errorToast('UNAUTHORIZED!');
+            this.router.navigate(['unauthorized']);
+          } else {
+            errorToast(err.error.errorMessages);
+          }
         },
       });
     } else {

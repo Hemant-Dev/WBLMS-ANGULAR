@@ -1,6 +1,11 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { errorToast } from 'src/app/Helpers/swal';
+import { errorAlert, errorToast } from 'src/app/Helpers/swal';
 import { EmployeeLeaveReqModel } from 'src/app/Models/EmployeeLeaveReqModel';
 import {
   LeaveReqByYearModel,
@@ -14,7 +19,6 @@ import { LeaveRequestsService } from 'src/app/Services/leave-requests.service';
   templateUrl: './show-all-employees.component.html',
   styleUrls: ['./show-all-employees.component.css'],
 })
-
 export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   data: any;
   options: any;
@@ -49,12 +53,11 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
     totalLeaveRequest: 0,
   };
 
-
   loading: boolean | undefined;
-  todaysDate = new Date()
+  todaysDate = new Date();
   currentYear: number = this.todaysDate.getFullYear();
 
-  wonderbizFoundedInYear: number = 2011
+  wonderbizFoundedInYear: number = 2011;
   // searchByYears: number[] = [];
   // selectYear!: number;
   // selectByYears!: number[];
@@ -75,24 +78,23 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
     private employeeService: EmployeeRxjsService,
     private leaveReqService: LeaveRequestsService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
   }
   compareId = -100;
   selectedEmployee!: LeaveReqByYearModel;
-  barChartTitle = "Employees Leave request";
-  row_active: boolean = false
+  barChartTitle = 'Employees Leave request';
+  row_active: boolean = false;
 
   ngOnInit(): void {
     // this.getYears()
-    console.log(this.currentYear)
-    this.getLeaveRequestByYear(0, "Employee", "");
+    console.log(this.currentYear);
+    this.getLeaveRequestByYear(0, 'Employee', '');
     // this.getEmployee();
-    this.getEmployeeAsync()
+    this.getEmployeeAsync();
     this.updateBarThickness();
     window.addEventListener('resize', this.updateBarThickness.bind(this));
-
   }
 
   getLeaveRequestByYear(
@@ -100,35 +102,37 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
     firstName: string,
     lastName: string
   ) {
-    this.leaveReqService.getLeaveRequestsByYear(employeeId, this.year).subscribe({
-      next: (response: any) => {
-        this.row_active = true;
-        console.log(response);
-        this.leaveRequestByYear = response.data;
-        this.acceptedLeaveRequests = [];
-        this.rejectedLeaveRequests = [];
-        this.appliedLeaveRequests = [];
-        this.pendingLeaveRequests = [];
-        Object.values(response.data).forEach((monthData: any) => {
-          console.log(monthData.acceptedLeaveRequests);
+    this.leaveReqService
+      .getLeaveRequestsByYear(employeeId, this.year)
+      .subscribe({
+        next: (response: any) => {
+          this.row_active = true;
+          console.log(response);
+          this.leaveRequestByYear = response.data;
+          this.acceptedLeaveRequests = [];
+          this.rejectedLeaveRequests = [];
+          this.appliedLeaveRequests = [];
+          this.pendingLeaveRequests = [];
+          Object.values(response.data).forEach((monthData: any) => {
+            console.log(monthData.acceptedLeaveRequests);
 
-          this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
-          this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
-          this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
-          this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
-        });
-        this.barChart();
-        if (employeeId == this.compareId) {
-          this.getLeaveRequestByYear(0, "Employee", "");
-        } else {
-          this.compareId = employeeId;
-        }
-        this.barChartTitle = firstName + " " + lastName + " Leave Requests";
-      },
-      error: (err) => {
-        errorToast(err.error.errorMessages);
-      },
-    });
+            this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
+            this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
+            this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
+            this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
+          });
+          this.barChart();
+          if (employeeId == this.compareId) {
+            this.getLeaveRequestByYear(0, 'Employee', '');
+          } else {
+            this.compareId = employeeId;
+          }
+          this.barChartTitle = firstName + ' ' + lastName + ' Leave Requests';
+        },
+        error: (err) => {
+          errorToast(err.error.errorMessages);
+        },
+      });
   }
   // tableSortColumn = [
   //   "firstName",
@@ -157,14 +161,13 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   //   'Total Leave',
   // ];
 
-
   getEmployeeAsync() {
     this.employeeService
       .getEmployeesAsync(
         this.pageNumber,
         this.pageSize,
         this.lazyRequest.sortField,
-        this.lazyRequest.sortOrder == 1 ? "asc" : "desc",
+        this.lazyRequest.sortOrder == 1 ? 'asc' : 'desc',
         this.search
       )
       .subscribe({
@@ -177,7 +180,12 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          errorToast(err.error.errorMessages);
+          // console.log(err);
+          if (err.status === 403) {
+            errorAlert('Forbidden Request');
+          } else {
+            errorToast(err.error.errorMessages);
+          }
         },
       });
   }
@@ -188,7 +196,7 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
     sortField: '',
     sortOrder: 1,
   };
-  search = "";
+  search = '';
   pageNumber: number = 1;
 
   lazyLoadRequestData($event: TableLazyLoadEvent) {
