@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
           this.auth.storeToken(res.accessToken);
           this.auth.storeRefreshToken(res.refreshToken);
           const tokenPayload = this.auth.decodedToken();
-          console.log(tokenPayload);
+          // console.log(tokenPayload);
           this.userStore.setFullNameToStore(tokenPayload.name);
           this.userStore.setRoleToStore(tokenPayload.role);
           this.userStore.setEmailToStore(tokenPayload.email);

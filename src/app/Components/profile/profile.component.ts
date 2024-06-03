@@ -85,14 +85,14 @@ export class ProfileComponent implements OnInit {
       });
   }
   onUpload(event: any) {
-    console.log(event.files[0]);
+    // console.log(event.files[0]);
     this.selectedFile = event.files[0];
     if (this.selectedFile) {
       this.employeeService
         .uploadImage(event.files[0], this.employeeData.id)
         .subscribe({
           next: (res) => {
-            console.log(res.errorMessages);
+            // console.log(res.errorMessages);
             successToast(res.errorMessages);
             this.getEmployeeData();
             this.fileUpload.clear();

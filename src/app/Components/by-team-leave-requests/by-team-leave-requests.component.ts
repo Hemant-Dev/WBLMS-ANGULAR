@@ -135,7 +135,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
       )
       .subscribe({
         next: (res: any) => {
-          console.log(res);
+          // console.log(res);
           this.leaveRequests = res.data.dataArray;
           this.totalCount = res.data.totalCount;
           this.loading = false;

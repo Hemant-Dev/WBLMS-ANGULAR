@@ -125,7 +125,7 @@ export class RegisterComponent implements OnInit {
                 // console.log(response);
                 // this.initialEmployeeData = response.data;
                 successToast('Employee Added Successfully');
-                this.router.navigate(['home/dashboard']);
+                this.router.navigate(['home/showAllEmployees']);
               },
               error: (err) => {
                 errorToast(err.error.errorMessages);

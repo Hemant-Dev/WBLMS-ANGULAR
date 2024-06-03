@@ -1,3 +1,15 @@
 :host ::ng-deep .row-active {
   background-color: rgba(0, 0, 0, 0.15) !important;
 }
+
+:host ::ng-deep {
+  .my-spinner {
+    color: #3377f2;
+  }
+  .my-spinner .p-datatable-loading-overlay {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .table-card {
+    z-index: 1;
+  }
+}
