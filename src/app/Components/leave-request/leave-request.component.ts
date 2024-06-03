@@ -376,4 +376,7 @@ export class LeaveRequestComponent implements OnInit {
       ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
   }
+  resetForm(){
+    this.leaveRequestForm.reset()
+  }
 }
