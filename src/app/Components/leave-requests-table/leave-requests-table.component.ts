@@ -138,7 +138,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
       // const EncodedSearchKeyword = EncodeForms.htmlEncode(searchWord);
       this.leaveRequestService
         .getLeaveRequestsByRoles(
-          this.lazyRequest.sortField,
+          this.lazyRequest.sortField || 'approvedDate',
           this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
           this.pageNumber,
           this.pageSize,
