@@ -10,11 +10,9 @@ import { EncodeForms } from 'src/app/Helpers/encodeForms';
 import { errorToast, successToast } from 'src/app/Helpers/swal';
 import ValidateForm from 'src/app/Helpers/validateform';
 import { EmployeeModel } from 'src/app/Models/EmployeeModel';
-import { ErrorModel } from 'src/app/Models/ErrorModel';
 import { GenderModel } from 'src/app/Models/GenderModel';
 import { ManagerModel } from 'src/app/Models/ManagerModel';
 import { RolesModel } from 'src/app/Models/RolesModels';
-import { AuthService } from 'src/app/Services/auth.service';
 import { EmployeeRxjsService } from 'src/app/Services/employee-rxjs.service';
 
 @Component({
@@ -56,7 +54,7 @@ export class RegisterComponent implements OnInit {
     // private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   registerForm!: FormGroup;
 
   ngOnInit() {
