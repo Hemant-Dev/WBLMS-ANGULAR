@@ -65,8 +65,9 @@ export class TokenInterceptor implements HttpInterceptor {
       switchMap((data: TokenApi) => {
         this.auth.storeRefreshToken(data.refreshToken);
         this.auth.storeToken(data.accessToken);
+        const accessToken = this.auth.getToken();
         req = req.clone({
-          setHeaders: { Authorization: `Bearer ${data.accessToken}` },
+          setHeaders: { Authorization: `Bearer ${accessToken}` },
         });
         return next.handle(req);
       }),
