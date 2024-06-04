@@ -87,6 +87,19 @@
           <label for="float-label">Select LeaveType</label>
         </span>
         <span class="p-float-label">
+          <p-dropdown
+            styleClass="dropdown-size"
+            inputId="float-label"
+            [options]="leaveStatuses"
+            optionLabel="leaveStatusName"
+            [showClear]="true"
+            placeholder=""
+            optionValue="leaveStatusName"
+            (onChange)="filterLeaveStatusData($event)"
+          ></p-dropdown>
+          <label for="float-label">Select Status</label>
+        </span>
+        <span class="p-float-label">
           <p-calendar
             id="rangeDate"
             [(ngModel)]="rangeDates"

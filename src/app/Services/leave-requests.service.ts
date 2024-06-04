@@ -92,6 +92,9 @@ export class LeaveRequestsService {
   getLeaveType(): Observable<any> {
     return this.http.get(this.leave_api_url + '/leavetype');
   }
+  getLeaveStatuses(): Observable<any> {
+    return this.http.get(this.leave_api_url + '/leaveStatuses');
+  }
 
   getLeaveStatusesCount(employeeId: number): Observable<any> {
     return this.http.get<any>(

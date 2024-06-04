@@ -1,4 +1,4 @@
 export interface LeaveTypeModel {
-    id : number,
-    leaveTypeName : string
+  id: number;
+  leaveTypeName: string;
 }

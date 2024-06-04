@@ -12,6 +12,7 @@ import {
   errorToast,
   showReasonDisplayMessage,
 } from 'src/app/Helpers/swal';
+import { LeaveStatusModel } from 'src/app/Models/LeaveStatusModel';
 import { LeaveTypeModel } from 'src/app/Models/LeaveTypeModel';
 import { LeaveRequestModel } from 'src/app/Models/leave-requestsModel';
 import { LeaveStatusesCount } from 'src/app/Models/leave-statuses-count';
@@ -83,6 +84,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     { name: 'Number of Days', value: 'numberOfLeaveDays' },
   ];
   leaveTypes: LeaveTypeModel[] = [];
+  leaveStatuses: LeaveStatusModel[] = [];
   constructor(
     private leaveRequestService: LeaveRequestsService,
     private auth: AuthService,
@@ -97,6 +99,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     sessionObj.fetchSessionData(this.initialUserSessionObj);
     this.getLeaveStatusesData(Number(this.initialUserSessionObj.employeeId));
     this.fetchLeaveTypes();
+    this.fetchLeaveStatuses();
   }
 
   ngAfterViewChecked(): void {
@@ -108,6 +111,19 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
       next: (res) => {
         // console.log(res);
         this.leaveTypes = res.data;
+      },
+      error: (err) => {
+        errorToast(err.error.errorMessages);
+      },
+    });
+  }
+
+  fetchLeaveStatuses() {
+    this.leaveRequestService.getLeaveStatuses().subscribe({
+      next: (res) => {
+        // console.log(res);
+        this.leaveStatuses = res.data;
+        console.log(this.leaveStatuses);
       },
       error: (err) => {
         errorToast(err.error.errorMessages);
@@ -205,6 +221,10 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
   }
   filterLeaveTypeData(event$: any) {
     this.initialLeaveRequestObj.leaveType = event$.value || '';
+    this.filterData();
+  }
+  filterLeaveStatusData(event$: any) {
+    this.initialLeaveRequestObj.status = event$.value || '';
     this.filterData();
   }
   filterDate() {
