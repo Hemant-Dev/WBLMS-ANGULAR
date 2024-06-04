@@ -32,16 +32,20 @@ export class AuthService {
     this.router.navigate(['login']);
   }
   storeRefreshToken(tokenValue: string) {
-    localStorage.setItem('refreshToken', tokenValue);
-  }
-  storeToken(tokenValue: string) {
-    localStorage.setItem('token', tokenValue);
+    var encodedRefreshToken = btoa(tokenValue);
+    localStorage.setItem('refreshToken', encodedRefreshToken);
   }
   getRefreshToken() {
-    return localStorage.getItem('refreshToken');
+    var refreshToken = localStorage.getItem('refreshToken');
+    return atob(refreshToken || "");
+  }
+  storeToken(tokenValue: string) {
+    let encodedToken = btoa(tokenValue);
+    localStorage.setItem('token', encodedToken);
   }
   getToken() {
-    return localStorage.getItem('token');
+    var encodedToken =  localStorage.getItem('token');
+    return atob(encodedToken || "")
   }
   isLoggedIn(): boolean {
     return !localStorage.getItem('token');
