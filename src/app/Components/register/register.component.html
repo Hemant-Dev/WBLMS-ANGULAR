@@ -62,7 +62,7 @@
                       type="text"
                       formControlName="lastName"
                       placeholder="Last Name"
-                      maxlength="25"
+                      maxlength="21"
                     />
                   </div>
                   <small
@@ -133,7 +133,9 @@
                     *ngIf="
                       registerForm.controls['contactNumber'].touched &&
                       registerForm.hasError('pattern', 'contactNumber') &&
-                      !registerForm.hasError('required', 'contactNumber')
+                      !registerForm.hasError('required', 'contactNumber') &&
+                      registerForm.controls['contactNumber']?.value.length ==
+                        10 
                     "
                     class="text-danger"
                   >
@@ -263,6 +265,7 @@
                   type="text"
                   formControlName="emailAddress"
                   placeholder="Email"
+                  maxlength="100"
                 />
               </div>
               <small

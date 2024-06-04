@@ -1,3 +1,157 @@
+<!-- *ngIf="'Admin' === 'Admin'" -->
+
+<div>
+  <h2 style="text-align: center">{{ barChartTitle }}</h2>
+  <div class="header">
+    <div class="year-selector">
+      <label for="yearSelect">Select Year:</label>
+      <select
+        id="yearSelect"
+        [(ngModel)]="selectedYear"
+        (change)="onYearChange(year)"
+      >
+        <option *ngFor="let year of availableYears" [value]="year">
+          {{ year }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="card" class="card">
+    <p-chart type="bar" [data]="data" [options]="options" />
+  </div>
+</div>
+<!-- <input type="select" value="2016" minlength="4" maxlength="4" /> -->
+<!-- <p-dropdown
+      [options]="searchByYears"
+      [(ngModel)]="selectYear"
+      name="selectYear"
+      optionLabel="year"
+      [showClear]="true"
+      placeholder="Select a Year"
+    ></p-dropdown> -->
+<!-- <label for="selectYear" class="form-label">Search Year</label>
+    <select
+      name="selectYear"
+      id="selectYear"
+      class="form-select"
+      [(ngModel)]="selectYear"
+    >
+      <option selected [value]="null">Select a Year</option>
+      <option *ngFor="let year of searchByYears" [value]="year">
+        {{ year }}
+      </option>
+    </select> -->
+
+<div class="card mt-4">
+  <p-table
+    [value]="employeeData"
+    selectionMode="single"
+    [(selection)]="selectedEmployee"
+    [scrollable]="true"
+    scrollHeight="60vh"
+    dataKey="id"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [paginator]="true"
+    [rows]="lazyRequest.rows"
+    [first]="lazyRequest.first"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadRequestData($event)"
+    [totalRecords]="totalCount"
+    [customSort]="true"
+    (sortFunction)="lazyLoadRequestData($event)"
+    [loading]="loading"
+    loadingIcon="fa fa-spinner fa-spin"
+    [tableStyle]="{ width: '100vw - 4rem' }"
+    styleClass="my-spinner"
+  >
+    <ng-template pTemplate="caption">
+      <!-- <i class="fa fa-search bg-success"></i> -->
+      <div class="d-flex gap-4 mt-2">
+        <h3 style="text-align: center">Employee Details</h3>
+        <span class="p-input-icon-right p-float-label">
+          <i class="fa-solid fa-search"></i>
+          <input
+            id="searchKeyword"
+            type="text"
+            [(ngModel)]="search"
+            (ngModelChange)="getEmployeeAsync()"
+            pInputText
+          />
+          <label for="searchKeyword">Search</label>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th *ngFor="let col of tableHeader;let sortCol of tableSortColumn" pSortableColumn="{{sortCol}}">
+          {{ col  }}
+          <p-sortIcon field="{{sortCol}}"></p-sortIcon>
+        </th> -->
+        <th>Sr No.</th>
+        <th pSortableColumn="firstName">
+          First Name <p-sortIcon field="firstName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastName">
+          Last Name <p-sortIcon field="lastName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="emailAddress">
+          Email Address <p-sortIcon field="emailAddress"></p-sortIcon>
+        </th>
+        <th pSortableColumn="contactNumber">
+          Contact number <p-sortIcon field="contactNumber"></p-sortIcon>
+        </th>
+        <th pSortableColumn="genderName">
+          Gender <p-sortIcon field="genderName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="roleName">
+          Role <p-sortIcon field="roleName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="managerName">
+          Manager Name <p-sortIcon field="managerName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="joiningDate">
+          Joining Date <p-sortIcon field="joiningDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="leaveBalance">
+          Balance Leave <p-sortIcon field="balanceLeaveRequest"></p-sortIcon>
+        </th>
+        <th pSortableColumn="totalLeaveRequest">
+          Total Leave <p-sortIcon field="totalLeaveRequest"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-employee let-rowIndex="rowIndex">
+      <tr
+        tooltipPosition="right"
+        [pSelectableRow]="employee"
+        style="cursor: pointer"
+        [ngClass]="{ row_active: 'row-active' }"
+        (click)="
+          getLeaveRequestByYearEmpId(
+            employee.id,
+            employee.firstName,
+            employee.lastName
+          )
+        "
+      >
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ employee.firstName | htmlDecode }}</td>
+        <td>{{ employee.lastName | htmlDecode }}</td>
+        <td>{{ employee.emailAddress | htmlDecode }}</td>
+        <td>{{ employee.contactNumber | htmlDecode }}</td>
+        <td>{{ employee.genderName | htmlDecode }}</td>
+        <td>{{ employee.roleName | htmlDecode }}</td>
+        <td>{{ employee.managerName | htmlDecode }}</td>
+        <td>{{ employee.joiningDate }}</td>
+        <td>{{ employee.balanceLeaveRequest }}</td>
+        <td>{{ employee.totalLeaveRequest }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
 import {
   AfterViewChecked,
   ChangeDetectorRef,
@@ -73,14 +227,30 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   rejectedLeaveRequests: number[] = [];
   pendingLeaveRequests: number[] = [];
 
+  availableYears: number[] = [];
+  selectedYear: number = this.currentYear;
+
+  initializeYears() {
+    for (let year = this.wonderbizFoundedInYear; year <= this.currentYear; year++) {
+      this.availableYears.push(year);
+    }
+  }
+  onYearChange(year: number) {
+    console.log(this.selectedYear)
+    console.log(year)
+    //this.getLeaveRequestByYear(0, 'Employee', '');
+
+    this.getleaveRequestByYear(this.selectedYear);
+  }
+
   employeeData: EmployeeLeaveReqModel[] = [];
   constructor(
     private employeeService: EmployeeRxjsService,
     private leaveReqService: LeaveRequestsService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
   ngAfterViewChecked(): void {
-    this.cdr.detectChanges();
+    // this.cdr.detectChanges();
   }
   compareId = -100;
   selectedEmployee!: LeaveReqByYearModel;
@@ -88,42 +258,47 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
   row_active: boolean = false;
 
   ngOnInit(): void {
+    debugger
     // this.getYears()
-    this.getLeaveRequestByYear(0, 'Employee', '');
+    this.initializeYears()
+    console.log(this.currentYear);
+    this.getleaveRequestByYear(this.year);
     // this.getEmployee();
     this.getEmployeeAsync();
     this.updateBarThickness();
     window.addEventListener('resize', this.updateBarThickness.bind(this));
   }
 
-  getLeaveRequestByYear(
+  getleaveRequestByYear2(
     employeeId: number = 1,
     firstName: string,
-    lastName: string
+    lastName: string,
+    year: number
   ) {
     this.leaveReqService
-      .getLeaveRequestsByYear(employeeId, this.year)
+      .getLeaveRequestsByYear(employeeId, year)
       .subscribe({
         next: (response: any) => {
           this.row_active = true;
+          console.log(response);
           this.leaveRequestByYear = response.data;
           this.acceptedLeaveRequests = [];
           this.rejectedLeaveRequests = [];
           this.appliedLeaveRequests = [];
           this.pendingLeaveRequests = [];
           Object.values(response.data).forEach((monthData: any) => {
-
+            console.log(monthData.acceptedLeaveRequests);
             this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
             this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
             this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
             this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
           });
           this.barChart();
-          if (employeeId == this.compareId) {
-            this.getLeaveRequestByYear(0, 'Employee', '');
-          } else {
-            this.compareId = employeeId;
-          }
+          // if (employeeId == this.compareId) {
+          //   this.getLeaveRequestByYearEmpId(0, 'Employee', '');
+          // } else {
+          //   this.compareId = employeeId;
+          // }
           this.barChartTitle = firstName + ' ' + lastName + ' Leave Requests';
         },
         error: (err) => {
@@ -131,6 +306,56 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
         },
       });
   }
+  getleaveRequestByYear(
+    year: number
+  ) {
+    this.getleaveRequestByYear2(1, 'Employee', '', year);
+  }
+
+  getLeaveRequestByYearEmpId(
+    employeeId: number = 1,
+    firstName: string,
+    lastName: string
+  ) {
+    this.getleaveRequestByYear2(employeeId, firstName, lastName, this.year);
+  }
+  // getLeaveRequestByYear(
+  //   employeeId: number = 1,
+  //   firstName: string,
+  //   lastName: string
+  // ) {
+  //   this.leaveReqService
+  //     .getLeaveRequestsByYear(employeeId, this.year)
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         this.row_active = true;
+  //         console.log(response);
+  //         this.leaveRequestByYear = response.data;
+  //         this.acceptedLeaveRequests = [];
+  //         this.rejectedLeaveRequests = [];
+  //         this.appliedLeaveRequests = [];
+  //         this.pendingLeaveRequests = [];
+  //         Object.values(response.data).forEach((monthData: any) => {
+  //           console.log(monthData.acceptedLeaveRequests);
+
+  //           this.acceptedLeaveRequests.push(monthData.acceptedLeaveRequests);
+  //           this.rejectedLeaveRequests.push(monthData.rejectedLeaveRequests);
+  //           this.pendingLeaveRequests.push(monthData.pendingLeaveRequests);
+  //           this.appliedLeaveRequests.push(monthData.appliedLeaveRequests);
+  //         });
+  //         this.barChart();
+  //         if (employeeId == this.compareId) {
+  //           this.getLeaveRequestByYear(0, 'Employee', '');
+  //         } else {
+  //           this.compareId = employeeId;
+  //         }
+  //         this.barChartTitle = firstName + ' ' + lastName + ' Leave Requests';
+  //       },
+  //       error: (err) => {
+  //         errorToast(err.error.errorMessages);
+  //       },
+  //     });
+  // }
   // tableSortColumn = [
   //   "firstName",
   //   "lastName",
@@ -169,7 +394,9 @@ export class ShowAllEmployeesComponent implements OnInit, AfterViewChecked {
       )
       .subscribe({
         next: (response: any) => {
+          console.log(response);
           this.employeeData = response.data.dataArray;
+          console.log(this.employeeData);
           this.totalCount = response.data.totalCount;
           this.loading = false;
           this.cdr.detectChanges();
