@@ -16,6 +16,7 @@
     [totalRecords]="totalCount"
     [customSort]="true"
     (sortFunction)="lazyLoadSelfRequestsData($event)"
+    [sortField]="'requestDate'"
     [loading]="loading"
     loadingIcon="fa fa-spinner fa-spin"
     [tableStyle]="{ width: '90vw - 4rem' }"

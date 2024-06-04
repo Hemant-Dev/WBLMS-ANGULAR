@@ -126,7 +126,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     // console.log(this.searchKeyword, 'Encoded: ' + EncodedSearchKeyword);
     this.leaveRequestService
       .getLeaveRequestsByRoles(
-        this.lazyRequest.sortField || 'approvedDate',
+        this.lazyRequest.sortField,
         this.lazyRequest.sortOrder === 1 ? 'asc' : 'desc',
         this.pageNumber,
         this.pageSize,
@@ -223,7 +223,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
   }
 
   filterData() {
-    console.log(this.selectedFields);
+    // console.log(this.selectedFields);
     if (this.selectedFields) {
       this.selectedFields.forEach((header) => {
         if (header === 'firstName')

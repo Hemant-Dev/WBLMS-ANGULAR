@@ -18,6 +18,8 @@
     [totalRecords]="totalCount"
     [customSort]="true"
     (sortFunction)="lazyLoadSelfRequestsData($event)"
+    [sortField]="'requestDate'"
+    [sortOrder]="-1"
     loadingIcon="fa fa-spinner fa-spin"
     [tableStyle]="{ width: '100vw - 4rem' }"
     styleClass="my-spinner"
