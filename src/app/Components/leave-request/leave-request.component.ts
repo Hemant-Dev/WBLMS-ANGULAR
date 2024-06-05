@@ -211,9 +211,9 @@ export class LeaveRequestComponent implements OnInit {
       if (start === end && this.getValue('isHalfDay')) {
         count = 0.5;
       }
-      // if (startDate === this.todaysDateFormatted) {
-      //   count++;
-      // }
+      if (startDate === this.todaysDateFormatted && endDate != this.todaysDateFormatted) {
+        count++;
+      }
       this.leaveRequestForm.patchValue({
         numberOfLeaveDays: count,
       });
@@ -348,10 +348,19 @@ export class LeaveRequestComponent implements OnInit {
           this.leaveRequestForm.controls['reason'].value
         ),
       });
-      this.leaveRequestForm.patchValue({
-        startDate: this.formatDate(this.getValue('startDate')),
-        endDate: this.formatDate(this.getValue('endDate')),
-      });
+      if (this.leaveStatusesCount.leavesRemaining == 0.5) {
+        this.leaveRequestForm.patchValue({
+          startDate: this.formatDate(this.getValue('startDate')),
+        });
+        this.leaveRequestForm.patchValue({
+          endDate: this.getValue('startDate'),
+        });
+      } else {
+        this.leaveRequestForm.patchValue({
+          startDate: this.formatDate(this.getValue('startDate')),
+          endDate: this.formatDate(this.getValue('endDate')),
+        });
+      }
       // return;
       const loader = document.getElementById('loader');
       const modalRef = document.getElementById('request-form');
@@ -391,6 +400,6 @@ export class LeaveRequestComponent implements OnInit {
     }
   }
   resetForm() {
-    this.leaveRequestForm.reset();
+    this.leaveRequestForm.reset()
   }
 }
