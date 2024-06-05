@@ -107,6 +107,7 @@
                       placeholder="Contact Number"
                       maxlength="10"
                       minlength="10"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                     />
                   </div>
                   <small
