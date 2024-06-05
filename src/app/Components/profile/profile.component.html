@@ -77,8 +77,10 @@
               </p>
             </div>
           </div>
-          <hr />
-          <div class="row">
+          <div *ngIf="employeeData.roleName != 'Admin'">
+            <hr />
+          </div>
+          <div class="row" *ngIf="employeeData.roleName != 'Admin'">
             <div class="col-sm-3">
               <p class="mb-0">Manager Name</p>
             </div>
@@ -88,7 +90,6 @@
               </p>
             </div>
           </div>
-          <hr />
         </div>
       </div>
     </div>

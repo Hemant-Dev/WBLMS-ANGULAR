@@ -350,10 +350,19 @@ export class LeaveRequestComponent implements OnInit {
           this.leaveRequestForm.controls['reason'].value
         ),
       });
-      this.leaveRequestForm.patchValue({
-        startDate: this.formatDate(this.getValue('startDate')),
-        endDate: this.formatDate(this.getValue('endDate')),
-      });
+      if (this.leaveStatusesCount.leavesRemaining == 0.5) {
+        this.leaveRequestForm.patchValue({
+          startDate: this.formatDate(this.getValue('startDate')),
+        });
+        this.leaveRequestForm.patchValue({
+          endDate: this.getValue('startDate'),
+        });
+      } else {
+        this.leaveRequestForm.patchValue({
+          startDate: this.formatDate(this.getValue('startDate')),
+          endDate: this.formatDate(this.getValue('endDate')),
+        });
+      }
       // return;
       this.leaveRequestService
         .createLeaveRequest(this.leaveRequestForm.value)
@@ -377,7 +386,7 @@ export class LeaveRequestComponent implements OnInit {
       ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
   }
-  resetForm(){
+  resetForm() {
     this.leaveRequestForm.reset()
   }
 }
