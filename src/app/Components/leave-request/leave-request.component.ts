@@ -213,9 +213,9 @@ export class LeaveRequestComponent implements OnInit {
       if (start === end && this.getValue('isHalfDay')) {
         count = 0.5;
       }
-      // if (startDate === this.todaysDateFormatted) {
-      //   count++;
-      // }
+      if (startDate === this.todaysDateFormatted && endDate != this.todaysDateFormatted) {
+        count++;
+      }
       this.leaveRequestForm.patchValue({
         numberOfLeaveDays: count,
       });
