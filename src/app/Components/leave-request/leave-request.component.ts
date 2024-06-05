@@ -46,7 +46,6 @@ export class LeaveRequestComponent implements OnInit {
   todaysDateFormatted = this.formatDate(this.todayDate);
   leaveTypeData!: LeaveTypeModel[];
 
-
   ngOnInit(): void {
     this.getLeaveType();
     this.getDataFromUserStore();
@@ -77,7 +76,7 @@ export class LeaveRequestComponent implements OnInit {
     private auth: AuthService,
     private service: SharedServiceService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   expandCalendar() {
     this.isCalendarExpanded = true;
@@ -146,7 +145,6 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   calculateLeaveDays() {
-
     const showHolidays: WonderbizHolidaysModel[] = [];
 
     var startDate: Date | string =
@@ -325,8 +323,8 @@ export class LeaveRequestComponent implements OnInit {
     } else {
       // this.leaveRequestForm.get('isHalfDay')?.disable();
       this.leaveRequestForm.patchValue({
-        isHalfDay: false
-      })
+        isHalfDay: false,
+      });
       this.activeteHalfDay = false;
     }
   }
@@ -339,7 +337,7 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   handleSubmit() {
-    console.log("Submit")
+    console.log('Submit');
     if (this.leaveRequestForm.valid) {
       if (!this.getValue('numberOfLeaveDays')) {
         errorAlert('Number of leaves day are zero');
@@ -355,11 +353,21 @@ export class LeaveRequestComponent implements OnInit {
         endDate: this.formatDate(this.getValue('endDate')),
       });
       // return;
+      const loader = document.getElementById('loader');
+      const modalRef = document.getElementById('request-form');
+      // console.log(modalRef);
+      if (loader !== null) {
+        modalRef?.classList.add('load-overlay');
+        loader.style.display = 'block'; // Show the loader
+      }
       this.leaveRequestService
-      
         .createLeaveRequest(this.leaveRequestForm.value)
         .subscribe({
           next: (res) => {
+            if (loader !== null) {
+              modalRef?.classList.remove('load-overlay');
+              loader.style.display = 'none'; // Hide the loader
+            }
             successToast('Leave request created successfully!');
             const buttonRef = document.getElementById('closeBtn');
             buttonRef?.click();
@@ -370,6 +378,10 @@ export class LeaveRequestComponent implements OnInit {
             this.ngOnInit();
           },
           error: (err) => {
+            if (loader !== null) {
+              modalRef?.classList.remove('load-overlay');
+              loader.style.display = 'none'; // Hide the loader
+            }
             errorToast(err.error.errorMessages);
           },
         });
@@ -378,7 +390,7 @@ export class LeaveRequestComponent implements OnInit {
       ValidateForm.validateAllFormFields(this.leaveRequestForm);
     }
   }
-  resetForm(){
-    this.leaveRequestForm.reset()
+  resetForm() {
+    this.leaveRequestForm.reset();
   }
 }

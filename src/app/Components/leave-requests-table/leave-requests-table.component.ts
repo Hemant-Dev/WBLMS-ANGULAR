@@ -171,6 +171,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
           },
           error: (err) => {
             // errorAlert(`Status Code: ${err.StatusCode}` + err.ErrorMessages);
+            console.log(err);
             errorToast(err.error.errorMessages);
           },
         });

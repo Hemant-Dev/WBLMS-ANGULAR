@@ -10,7 +10,9 @@
       aria-label="Close"
     ></button>
   </div>
-  <div class="modal-body">
+
+  <div id="loader" class="loader" style="display: none"></div>
+  <div class="modal-body" id="request-form">
     <form
       [formGroup]="leaveRequestForm"
       (ngSubmit)="handleSubmit()"
@@ -194,19 +196,19 @@
         />
       </div>
     </form>
-  </div>
-  <div class="modal-footer">
-    <button
-      id="closeBtn"
-      type="button"
-      class="btn btn-secondary"
-      data-bs-dismiss="modal"
-    >
-      Close
-    </button>
-    <button class="btn btn-danger" (click)="resetForm()">Clear</button>
-    <button class="btn btn-primary" type="submit" (click)="handleSubmit()">
-      Submit
-    </button>
+    <div class="modal-footer">
+      <button
+        id="closeBtn"
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
+      <button class="btn btn-danger" (click)="resetForm()">Clear</button>
+      <button class="btn btn-primary" type="submit" (click)="handleSubmit()">
+        Submit
+      </button>
+    </div>
   </div>
 </div>
