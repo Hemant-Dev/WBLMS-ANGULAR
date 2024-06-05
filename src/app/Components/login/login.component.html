@@ -57,6 +57,7 @@
                     formControlName="password"
                     [type]="type"
                     placeholder="Password"
+                    maxlength="26"
                   />
                   <span
                     (click)="hideShowPassword()"
@@ -77,7 +78,7 @@
                     loginForm.hasError('minlength', 'password')
                   "
                   class="text-danger"
-                  >*Password should be of min length 6</small
+                  >*Password should be of min length 8</small
                 >
                 <small
                   *ngIf="

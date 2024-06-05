@@ -123,7 +123,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
       next: (res) => {
         // console.log(res);
         this.leaveStatuses = res.data;
-        console.log(this.leaveStatuses);
+        // console.log(this.leaveStatuses);
       },
       error: (err) => {
         errorToast(err.error.errorMessages);
