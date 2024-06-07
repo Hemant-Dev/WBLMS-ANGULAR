@@ -28,7 +28,6 @@ export async function CreateEmployeeAsync(
     .catch((error) => {
       handleError(error, result);
     });
-
   return result;
 }
 
@@ -117,7 +116,7 @@ export async function GetEmployeeAsync(
   await axios
     .post(
       api_url +
-        `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
+      `/paginated?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`,
       data
     )
     .then((response) => {

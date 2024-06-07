@@ -90,7 +90,7 @@ export class LeaveRequestsTableComponent implements OnInit, AfterViewChecked {
     private auth: AuthService,
     private userStore: UserStoreService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loading = true;

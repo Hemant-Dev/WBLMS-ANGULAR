@@ -83,7 +83,7 @@ export class ByTeamLeaveRequestsComponent implements OnInit, AfterViewChecked {
     private userStore: UserStoreService,
     private auth: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
